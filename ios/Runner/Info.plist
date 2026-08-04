@@ -74,12 +74,27 @@
 	<string>Crazy Hen Run needs photo library access so you can pick a profile picture.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Crazy Hen Run may save images you generate inside the app to your photo library.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Your device identifier helps us understand which Crazy Hen Run campaigns bring players to the game.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<false/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
 	</dict>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+		<string>tel</string>
+		<string>mailto</string>
+	</array>
 </dict>
 </plist>

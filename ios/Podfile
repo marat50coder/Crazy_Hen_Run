@@ -1,7 +1,8 @@
-platform :ios, '13.0'
+platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+install! 'cocoapods', :disable_input_output_paths => true
 
 project 'Runner', {
   'Debug' => :debug,
@@ -35,12 +36,22 @@ target 'Runner' do
   end
 end
 
+# Notification Service Extension — rich-media push. Pin Firebase/Messaging to
+# the SAME version the Runner side resolves so CocoaPods can't pull a newer
+# Firebase that needs a higher iOS minimum.
+target 'TrailMediaService' do
+  use_frameworks!
+  platform :ios, '15.0'
+  pod 'Firebase/Messaging', '12.17.0'
+end
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
 
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
 
       # permission_handler: enable ONLY the permissions the app actually asks for.
       # See https://pub.dev/packages/permission_handler#setup for the full macro list.
