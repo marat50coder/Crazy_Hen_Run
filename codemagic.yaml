@@ -16,8 +16,9 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-        BUNDLE_ID: com.embercrest.rungame
-        APP_STORE_APPLE_ID: "6792816894"
+        BUNDLE_ID: com.crazyhenrun.crazyhenrungame
+        APP_STORE_APPLE_ID: "6790464294"
+        APPLE_TEAM_ID: "SP5WD556PA"
 
     triggering:
       events:
