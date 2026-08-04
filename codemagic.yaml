@@ -1,0 +1,63 @@
+workflows:
+  ios-release:
+    name: iOS Release → App Store
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    integrations:
+      # TODO: replace with the exact App Store Connect integration name
+      # configured in the Codemagic team settings for the Crazy Hen Run app.
+      app_store_connect: Crazy Hen Run Codemagic
+
+    environment:
+      groups:
+        - code-signing
+      flutter: 3.44.7
+      xcode: latest
+      cocoapods: default
+      vars:
+        BUNDLE_ID: com.embercrest.rungame
+        APP_STORE_APPLE_ID: "6792816894"
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: ios-white-part
+          include: true
+
+    scripts:
+      - name: Install Flutter dependencies
+        script: flutter pub get
+
+      - name: Install CocoaPods
+        script: pod install
+        working_directory: ios
+
+      - name: Code signing & Build IPA
+        script: |
+          keychain initialize
+          # Fetch (and create if missing) the App Store distribution cert
+          # + provisioning profile for the app's bundle id.
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --platform IOS \
+            --create
+          keychain add-certificates
+          # Compile Dart/Flutter unsigned first — this can rewrite the
+          # Xcode project, so apply provisioning profiles AFTER it.
+          flutter build ios --release --no-codesign
+          xcode-project use-profiles
+          xcode-project build-ipa \
+            --workspace "ios/Runner.xcworkspace" \
+            --scheme "Runner"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false
