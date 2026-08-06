@@ -26,8 +26,27 @@ workflows:
       branch_patterns:
         - pattern: ios-white-part
           include: true
+        - pattern: ios-gray-part
+          include: true
 
     scripts:
+      - name: Restore Firebase config (GoogleService-Info.plist)
+        # GOOGLE_SERVICE_INFO_PLIST_BASE64 must be set in the Codemagic
+        # environment group `code-signing` (mark as secret). It contains the
+        # base64-encoded contents of ios/Runner/GoogleService-Info.plist, which
+        # is intentionally not committed to this public repository.
+        script: |
+          set -euo pipefail
+          if [ -z "${GOOGLE_SERVICE_INFO_PLIST_BASE64:-}" ]; then
+            echo "ERROR: GOOGLE_SERVICE_INFO_PLIST_BASE64 env var is not set."
+            echo "Add the base64-encoded GoogleService-Info.plist to the"
+            echo "'code-signing' environment group in Codemagic."
+            exit 1
+          fi
+          echo "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode \
+            > ios/Runner/GoogleService-Info.plist
+          plutil -lint ios/Runner/GoogleService-Info.plist
+
       - name: Install Flutter dependencies
         script: flutter pub get
 
