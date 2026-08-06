@@ -88,17 +88,21 @@ class CoopMarshal {
       chrTrace(() => '[CHR.MARSHAL] first: no interface → offline');
       return const OfflineStop(returnToNative: false);
     }
-    progress(0.28);
+    progress(0.22);
+    // pulse (FCM+APNs) and tracer (AppsFlyer+ATT) do not depend on each other's
+    // completion; running them in parallel shaves 3–5 s off the cold start.
+    unawaited(tracer.start());
     try {
       await pulse.boot();
     } catch (_) {}
+    progress(0.40);
     if (!await scout.canReachNetwork()) {
       chrTrace(() => '[CHR.MARSHAL] first: DNS probe failed → offline');
       return const OfflineStop(returnToNative: false);
     }
-    progress(0.48);
+    progress(0.52);
     await tracer.awaitSignals();
-    progress(0.72);
+    progress(0.78);
     final reply = await _requestConfig();
     progress(1);
     chrTrace(

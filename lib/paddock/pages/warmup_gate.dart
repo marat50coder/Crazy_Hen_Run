@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../app.dart';
 import '../coop_marshal.dart';
+import '../core/coop_log.dart';
 import '../core/coop_models.dart';
 import 'no_signal_page.dart';
 import 'pasture_portal.dart';
@@ -29,7 +30,8 @@ class _WarmupGateState extends State<WarmupGate> {
   bool _navigating = false;
   late final DateTime _startTime;
   Timer? _hardDeadline;
-  static const Duration _minSplash = Duration(milliseconds: 1600);
+  static const Duration _minSplash = Duration(milliseconds: 1200);
+  static const Duration _hardTimeout = Duration(seconds: 25);
 
   @override
   void initState() {
@@ -40,9 +42,10 @@ class _WarmupGateState extends State<WarmupGate> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    _hardDeadline = Timer(const Duration(seconds: 8), () {
-      if (mounted && !_navigating) {
-        _destination ??= const NativeStop();
+    _hardDeadline = Timer(_hardTimeout, () {
+      if (mounted && !_navigating && _destination == null) {
+        chrTrace(() => '[CHR.GATE] hard deadline hit → NativeStop');
+        _destination = const NativeStop();
         _maybeNavigate();
       }
     });
@@ -106,6 +109,7 @@ class _WarmupGateState extends State<WarmupGate> {
 
     // Organic / gate disabled → native game (its own MaterialApp + providers).
     if (destination is NativeStop || marshal == null) {
+      chrTrace(() => '[CHR.GATE] open → NativeStop');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(builder: (_) => const CrazyHenRunApp()),
       );
@@ -113,6 +117,7 @@ class _WarmupGateState extends State<WarmupGate> {
     }
 
     if (destination is OfflineStop) {
+      chrTrace(() => '[CHR.GATE] open → OfflineStop');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(
           builder: (_) => NoSignalPage(
@@ -135,14 +140,21 @@ class _WarmupGateState extends State<WarmupGate> {
           );
 
       void openPortal() {
+        chrTrace(() => '[CHR.GATE] open → PasturePortal');
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(builder: portalBuilder),
         );
       }
 
-      if (marshal.vault.shouldShowPushInvite &&
-          await marshal.pulse.canOfferPermission()) {
+      final showInvite = marshal.vault.shouldShowPushInvite &&
+          await marshal.pulse.canOfferPermission();
+      chrTrace(
+        () => '[CHR.GATE] portal decision showInvite=$showInvite '
+            'shouldShow=${marshal.vault.shouldShowPushInvite}',
+      );
+      if (showInvite) {
         if (!mounted) return;
+        chrTrace(() => '[CHR.GATE] open → PulseInvite');
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(
             builder: (_) => PulseInvite(
