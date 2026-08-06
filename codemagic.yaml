@@ -30,21 +30,24 @@ workflows:
           include: true
 
     scripts:
-      - name: Restore Firebase config (GoogleService-Info.plist)
-        # GOOGLE_SERVICE_INFO_PLIST_BASE64 must be set in the Codemagic
-        # environment group `code-signing` (mark as secret). It contains the
-        # base64-encoded contents of ios/Runner/GoogleService-Info.plist, which
-        # is intentionally not committed to this public repository.
+      - name: Ensure GoogleService-Info.plist is present
+        # The plist is committed to the repo (Firebase iOS SDK identifiers are
+        # public by design and the app is protected by App Check). This step
+        # is a safety net: if the file was ever removed from source control,
+        # the optional GOOGLE_SERVICE_INFO_PLIST_BASE64 secret env var can
+        # restore it.
         script: |
           set -euo pipefail
-          if [ -z "${GOOGLE_SERVICE_INFO_PLIST_BASE64:-}" ]; then
-            echo "ERROR: GOOGLE_SERVICE_INFO_PLIST_BASE64 env var is not set."
-            echo "Add the base64-encoded GoogleService-Info.plist to the"
-            echo "'code-signing' environment group in Codemagic."
-            exit 1
+          if [ ! -f ios/Runner/GoogleService-Info.plist ]; then
+            if [ -n "${GOOGLE_SERVICE_INFO_PLIST_BASE64:-}" ]; then
+              echo "Restoring GoogleService-Info.plist from env var…"
+              echo "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode \
+                > ios/Runner/GoogleService-Info.plist
+            else
+              echo "ERROR: ios/Runner/GoogleService-Info.plist is missing."
+              exit 1
+            fi
           fi
-          echo "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode \
-            > ios/Runner/GoogleService-Info.plist
           plutil -lint ios/Runner/GoogleService-Info.plist
 
       - name: Install Flutter dependencies
