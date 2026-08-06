@@ -57,6 +57,13 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  # We stay on CocoaPods on iOS because the TrailMediaService NSE target
+  # depends on `pod 'Firebase/Messaging'`. Flutter 3.24+ enables SPM by
+  # default and also adds Firebase as a SPM package, which produced a
+  # "Redefinition of module 'Firebase'" build error on Codemagic.
+  config:
+    enable-swift-package-manager: false
+
   assets:
     - assets/
 

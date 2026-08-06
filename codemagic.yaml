@@ -50,6 +50,24 @@ workflows:
           fi
           plutil -lint ios/Runner/GoogleService-Info.plist
 
+      - name: Sync NSE version with pubspec.yaml
+        # Apple rejects TestFlight submissions when the NSE app extension's
+        # CFBundleShortVersionString / CFBundleVersion do not match the main
+        # app. Runner uses $(FLUTTER_BUILD_NAME|NUMBER) automatically, but
+        # TrailMediaService has literal values baked into the pbxproj by our
+        # NSE bootstrap script — sync them here from pubspec.yaml on every
+        # build.
+        script: |
+          set -euo pipefail
+          RAW=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          NAME="${RAW%+*}"
+          NUMBER="${RAW#*+}"
+          echo "Syncing NSE version → $NAME ($NUMBER)"
+          /usr/bin/sed -i '' \
+            -e "s/MARKETING_VERSION = [0-9][0-9.]*;/MARKETING_VERSION = ${NAME};/g" \
+            -e "s/CURRENT_PROJECT_VERSION = [0-9][0-9]*;/CURRENT_PROJECT_VERSION = ${NUMBER};/g" \
+            ios/Runner.xcodeproj/project.pbxproj
+
       - name: Install Flutter dependencies
         script: flutter pub get
 
