@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/achievement.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/achievement.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
 
@@ -15,7 +15,7 @@ class AchievementsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
     final all = app.achievements;
     final unlocked = all.where((a) => a.unlocked).length;
@@ -25,14 +25,14 @@ class AchievementsScreen extends StatelessWidget {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: const EdgeInsets.all(Insets.lg),
             child: Row(
               children: <Widget>[
                 ProgressRing(
@@ -41,7 +41,7 @@ class AchievementsScreen extends StatelessWidget {
                   stroke: 9,
                   child: Text('$unlocked', style: context.text.headlineSmall),
                 ),
-                const SizedBox(width: AppSpacing.md),
+                const SizedBox(width: Insets.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +63,7 @@ class AchievementsScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           ...AchievementGroup.values.map((group) {
             final items =
                 all.where((a) => a.achievement.group == group).toList();
@@ -103,7 +103,7 @@ class AchievementsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
               ],
             );
           }),
@@ -138,10 +138,10 @@ class _BadgeCard extends StatelessWidget {
         showDragHandle: true,
         builder: (context) => Padding(
           padding: const EdgeInsets.fromLTRB(
-            AppSpacing.lg,
+            Insets.lg,
             0,
-            AppSpacing.lg,
-            AppSpacing.xl,
+            Insets.lg,
+            Insets.xl,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -152,15 +152,15 @@ class _BadgeCard extends StatelessWidget {
                 height: 56,
                 decoration: BoxDecoration(
                   color: a.color.withValues(alpha: 0.16),
-                  borderRadius: BorderRadius.circular(AppRadii.md),
+                  borderRadius: BorderRadius.circular(Corners.md),
                 ),
                 child: Icon(a.icon, color: a.color),
               ),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: Insets.md),
               Text(a.title, style: context.text.headlineSmall),
               const SizedBox(height: 4),
               Text(a.description, style: context.text.bodyMedium),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: Insets.md),
               TrackBar(value: progress.ratio, color: a.color),
               const SizedBox(height: 8),
               Text(
@@ -185,7 +185,7 @@ class _BadgeCard extends StatelessWidget {
                   color: unlocked
                       ? a.color.withValues(alpha: 0.18)
                       : c.surfaceMuted,
-                  borderRadius: BorderRadius.circular(AppRadii.sm),
+                  borderRadius: BorderRadius.circular(Corners.sm),
                 ),
                 child: Icon(
                   a.icon,

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/avatar_store.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/avatar_cache.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/avatar.dart';
 import '../../widgets/surfaces.dart';
 
@@ -28,7 +28,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    final profile = context.read<AppState>().profile;
+    final profile = context.read<HenState>().profile;
     _name = TextEditingController(text: profile.name);
     _tagline = TextEditingController(text: profile.tagline);
     _dailyGoal = profile.dailyGoal;
@@ -54,7 +54,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (picked == null) return;
       final path = await AvatarStore.save(File(picked.path));
       if (!mounted) return;
-      final app = context.read<AppState>();
+      final app = context.read<HenState>();
       await app.updateProfile(app.profile.copyWith(avatarPath: path));
       // The file name changes on every save, so the image cache cannot serve
       // a stale bitmap — but old entries are still worth dropping.
@@ -71,17 +71,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _showPhotoSheet() async {
-    final app = context.read<AppState>();
+    final app = context.read<HenState>();
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       builder: (sheetContext) => SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
-            AppSpacing.md,
+            Insets.md,
             0,
-            AppSpacing.md,
-            AppSpacing.lg,
+            Insets.md,
+            Insets.lg,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -125,7 +125,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _save() async {
-    final app = context.read<AppState>();
+    final app = context.read<HenState>();
     await app.updateProfile(
       app.profile.copyWith(
         name: _name.text.trim().isEmpty ? 'Runner' : _name.text.trim(),
@@ -139,7 +139,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
 
     return Scaffold(
@@ -147,10 +147,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           Center(
@@ -193,7 +193,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           Center(
             child: TextButton.icon(
               onPressed: _showPhotoSheet,
@@ -201,7 +201,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               label: const Text('Change photo'),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           Text('Display name', style: context.text.titleSmall),
           const SizedBox(height: 8),
           TextField(
@@ -209,7 +209,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             textCapitalization: TextCapitalization.words,
             decoration: const InputDecoration(hintText: 'Your name'),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           Text('Tagline', style: context.text.titleSmall),
           const SizedBox(height: 8),
           TextField(
@@ -219,7 +219,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               hintText: 'What are you working towards?',
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SoftCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +255,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: Insets.xl),
           FilledButton(onPressed: _save, child: const Text('Save changes')),
         ],
       ),
@@ -283,7 +283,7 @@ class _SheetAction extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppRadii.md),
+        borderRadius: BorderRadius.circular(Corners.md),
       ),
       leading: Icon(icon, color: tone),
       title: Text(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/constants/app_config.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/constants/app_meta.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
-import '../web/web_page_screen.dart';
+import '../web/web_doc_screen.dart';
 
 /// Editorial layout: a centred logo, a short manifesto and a spec table.
 class AboutScreen extends StatelessWidget {
@@ -21,30 +21,30 @@ class AboutScreen extends StatelessWidget {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
+          Insets.lg,
           0,
-          AppSpacing.lg,
-          AppSpacing.xxl,
+          Insets.lg,
+          Insets.xxl,
         ),
         children: <Widget>[
           Center(
             child: Column(
               children: <Widget>[
-                Image.asset(AppAssets.logo, height: 96),
-                const SizedBox(height: AppSpacing.sm),
+                Image.asset(Artwork.logo, height: 96),
+                const SizedBox(height: Insets.sm),
                 Text(
-                  'Version ${AppConfig.version}',
+                  'Version ${AppMeta.version}',
                   style: context.text.labelSmall,
                 ),
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: Insets.xl),
           Text(
             'A habit tracker that actually goes somewhere.',
             style: context.text.headlineSmall,
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           Text(
             'Most trackers give you a checkbox and hope you feel something. '
             'Crazy Hen Run turns every completed habit into distance on a track, '
@@ -53,13 +53,13 @@ class AboutScreen extends StatelessWidget {
             'point is simple: keep moving forward.',
             style: context.text.bodyLarge?.copyWith(color: c.textSecondary),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SoftCard(
             color: c.accentSoft,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const HenFigure(asset: AppAssets.henLegend, size: 72),
+                const HenFigure(asset: Artwork.henLegend, size: 72),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -78,29 +78,29 @@ class AboutScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'Details'),
           SoftCard(
             padding: EdgeInsets.zero,
             child: Column(
               children: <Widget>[
-                _Row(label: 'App name', value: AppConfig.appName),
-                _Row(label: 'Version', value: AppConfig.version),
-                _Row(label: 'Bundle ID', value: AppConfig.bundleId),
-                _Row(label: 'App ID', value: AppConfig.appId, last: true),
+                _Row(label: 'App name', value: AppMeta.appName),
+                _Row(label: 'Version', value: AppMeta.version),
+                _Row(label: 'Bundle ID', value: AppMeta.bundleId),
+                _Row(label: 'App ID', value: AppMeta.appId, last: true),
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           Row(
             children: <Widget>[
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebPageScreen(
+                      builder: (_) => const WebDocScreen(
                         title: 'Privacy Policy',
-                        url: AppConfig.privacyPolicyUrl,
+                        url: AppMeta.privacyPolicyUrl,
                       ),
                     ),
                   ),
@@ -108,14 +108,14 @@ class AboutScreen extends StatelessWidget {
                   label: const Text('Privacy'),
                 ),
               ),
-              const SizedBox(width: AppSpacing.sm),
+              const SizedBox(width: Insets.sm),
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebPageScreen(
+                      builder: (_) => const WebDocScreen(
                         title: 'Support',
-                        url: AppConfig.supportUrl,
+                        url: AppMeta.supportUrl,
                       ),
                     ),
                   ),
@@ -125,7 +125,7 @@ class AboutScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           Center(
             child: Text(
               '© ${DateTime.now().year} Crazy Hen Run',
@@ -152,7 +152,7 @@ class _Row extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
+            horizontal: Insets.md,
             vertical: 14,
           ),
           child: Row(
@@ -170,7 +170,7 @@ class _Row extends StatelessWidget {
         ),
         if (!last)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+            padding: const EdgeInsets.symmetric(horizontal: Insets.md),
             child: Divider(height: 1, color: c.outline),
           ),
       ],

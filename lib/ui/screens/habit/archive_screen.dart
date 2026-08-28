@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
 
@@ -14,7 +14,7 @@ class ArchiveScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
     final archived = app.archivedHabits;
 
@@ -25,22 +25,22 @@ class ArchiveScreen extends StatelessWidget {
               title: 'Archive is empty',
               message:
                   'Habits you retire end up here. Their history is kept, so you can bring one back at any time.',
-              asset: AppAssets.henStanding,
+              asset: Artwork.henStanding,
               henSize: 160,
             )
           : ListView.separated(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(
-                AppSpacing.md,
+                Insets.md,
                 0,
-                AppSpacing.md,
-                AppSpacing.xxl,
+                Insets.md,
+                Insets.xxl,
               ),
               itemCount: archived.length,
               separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (context, i) {
                 final habit = archived[i];
-                final tone = HabitPalette.at(habit.colorIndex);
+                final tone = HabitSwatches.at(habit.colorIndex);
                 final completions = app.completionCountFor(habit);
 
                 return SoftCard(
@@ -51,7 +51,7 @@ class ArchiveScreen extends StatelessWidget {
                         height: 44,
                         decoration: BoxDecoration(
                           color: tone.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(AppRadii.sm),
+                          borderRadius: BorderRadius.circular(Corners.sm),
                         ),
                         child: Icon(
                           habit.category.icon,

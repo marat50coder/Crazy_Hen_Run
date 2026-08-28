@@ -4,16 +4,16 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../core/constants/app_config.dart';
-import '../core/theme/app_palette.dart';
-import '../core/utils/day_key.dart';
-import '../data/local_store.dart';
-import '../data/models/achievement.dart';
-import '../data/models/habit.dart';
-import '../data/models/habit_log.dart';
-import '../data/models/hen_rank.dart';
-import '../data/models/journal_entry.dart';
-import '../data/models/profile.dart';
+import '../foundation/constants/app_meta.dart';
+import '../foundation/theme/palette.dart';
+import '../foundation/utils/day_key.dart';
+import '../persistence/snapshot_store.dart';
+import '../persistence/models/achievement.dart';
+import '../persistence/models/habit.dart';
+import '../persistence/models/habit_log.dart';
+import '../persistence/models/hen_rank.dart';
+import '../persistence/models/journal_entry.dart';
+import '../persistence/models/profile.dart';
 
 /// A habit paired with the log for the day currently being rendered.
 @immutable
@@ -49,12 +49,12 @@ class DaySummary {
   double get ratio => scheduled <= 0 ? 0 : (completed / scheduled).clamp(0.0, 1.0);
 }
 
-class AppState extends ChangeNotifier {
-  AppState(this._store) {
+class HenState extends ChangeNotifier {
+  HenState(this._store) {
     _load();
   }
 
-  final LocalStore _store;
+  final SnapshotStore _store;
 
   List<Habit> _habits = <Habit>[];
   Map<String, HabitLog> _logs = <String, HabitLog>{};
@@ -79,7 +79,7 @@ class AppState extends ChangeNotifier {
   Profile get profile => _profile;
   ThemeMode get themeMode => _themeMode;
   int get accentIndex => _accentIndex;
-  Color get accentColor => HabitPalette.at(_accentIndex);
+  Color get accentColor => HabitSwatches.at(_accentIndex);
   bool get haptics => _haptics;
   bool get celebrate => _celebrate;
   bool get mondayFirst => _mondayFirst;
@@ -411,7 +411,7 @@ class AppState extends ChangeNotifier {
       if (!log.isComplete) continue;
       final habit = byId[log.habitId];
       final multiplier = habit?.difficulty.multiplier ?? 1;
-      metres += AppConfig.metresPerCompletion * multiplier;
+      metres += AppMeta.metresPerCompletion * multiplier;
     }
     return metres;
   }
@@ -646,8 +646,8 @@ class AppState extends ChangeNotifier {
   }
 
   Map<String, dynamic> exportSnapshot() => <String, dynamic>{
-        'app': AppConfig.appName,
-        'version': AppConfig.version,
+        'app': AppMeta.appName,
+        'version': AppMeta.version,
         'exportedAt': DateTime.now().toIso8601String(),
         'profile': _profile.toJson(),
         'habits': _habits.map((h) => h.toJson()).toList(),

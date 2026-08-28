@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../core/theme/app_theme.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/theme/henyard_theme.dart';
 
 /// Circular progress with a rounded cap and an optional centred child.
 class ProgressRing extends StatelessWidget {
@@ -126,7 +126,7 @@ class TrackBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.palette;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(AppRadii.pill),
+      borderRadius: BorderRadius.circular(Corners.pill),
       child: SizedBox(
         height: height,
         child: Stack(
@@ -142,7 +142,7 @@ class TrackBar extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: gradient == null ? (color ?? c.accent) : null,
                     gradient: gradient,
-                    borderRadius: BorderRadius.circular(AppRadii.pill),
+                    borderRadius: BorderRadius.circular(Corners.pill),
                   ),
                 ),
               ),

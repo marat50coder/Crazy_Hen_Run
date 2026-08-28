@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/running_challenge.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/running_challenge.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -22,7 +22,7 @@ class ChallengesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final run = context.watch<RunState>();
+    final run = context.watch<RunTracker>();
     final challenges = RunningChallenge.catalog;
     final done = challenges
         .where((ch) => ch.isDoneFrom(run.challengeValue(ch.metric)))
@@ -32,18 +32,18 @@ class ChallengesScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Challenges')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
-          AppSpacing.sm,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.sm,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             child: Row(
               children: <Widget>[
                 const HenFigure(asset: 'assets/achivments_and_strong_chicken.webp', size: 60),
-                const SizedBox(width: AppSpacing.md),
+                const SizedBox(width: Insets.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,11 +62,11 @@ class ChallengesScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           ...challenges.map((ch) {
             final value = run.challengeValue(ch.metric);
             return Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              padding: const EdgeInsets.only(bottom: Insets.sm),
               child: _ChallengeCard(
                 challenge: ch,
                 current: value,
@@ -100,7 +100,7 @@ class _ChallengeCard extends StatelessWidget {
     final done = challenge.isDoneFrom(current);
 
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Row(
         children: <Widget>[
           SizedBox(
@@ -116,7 +116,7 @@ class _ChallengeCard extends StatelessWidget {
                   : Icon(challenge.icon, color: challenge.color, size: 20),
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: Insets.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/interval_plan.dart';
-import '../../../data/models/run_type.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/interval_plan.dart';
+import '../../../persistence/models/run_type.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import 'run_summary_screen.dart';
@@ -34,7 +34,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final run = context.read<RunState>();
+      final run = context.read<RunTracker>();
       if (!run.isRunning) run.startRun(RunType.interval);
       _start();
     });
@@ -61,7 +61,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
 
   Future<void> _finish() async {
     _timer?.cancel();
-    final run = context.read<RunState>();
+    final run = context.read<RunTracker>();
     final session = await run.finishRun();
     if (!mounted) return;
     if (session == null) {
@@ -90,7 +90,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final seg = _timeline[_index];
-    final color = Color.lerp(Brand.sky, Brand.comb, seg.intensity)!;
+    final color = Color.lerp(Meadow.sky, Meadow.comb, seg.intensity)!;
     final remaining = seg.seconds - _phaseElapsed;
     final phaseProgress = seg.seconds <= 0 ? 0.0 : _phaseElapsed / seg.seconds;
     final onColor = Colors.white;
@@ -115,7 +115,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: const EdgeInsets.all(Insets.lg),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -139,7 +139,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
                       letterSpacing: 3,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: Insets.md),
                   ProgressRing(
                     value: phaseProgress,
                     size: 220,
@@ -165,7 +165,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: Insets.md),
                   HenFigure(
                     asset: seg.isEffort
                         ? 'assets/run_fust_chicken.webp'
@@ -181,7 +181,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
                         color: onColor.withValues(alpha: 0.85),
                       ),
                     ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: Insets.md),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -199,7 +199,7 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
                         size: 82,
                         onTap: () {
                           setState(() => _paused = !_paused);
-                          final run = context.read<RunState>();
+                          final run = context.read<RunTracker>();
                           _paused ? run.pauseRun() : run.resumeRun();
                         },
                       ),

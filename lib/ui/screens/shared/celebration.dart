@@ -3,10 +3,10 @@ import 'dart:math' as math;
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/achievement.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/achievement.dart';
 import '../../widgets/hen.dart';
 
 Future<void> showAchievementCelebration(
@@ -64,19 +64,19 @@ class _CelebrationDialogState extends State<_CelebrationDialog> {
       children: <Widget>[
         Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            padding: const EdgeInsets.symmetric(horizontal: Insets.lg),
             child: Container(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: const EdgeInsets.all(Insets.lg),
               decoration: BoxDecoration(
                 color: c.surface,
-                borderRadius: BorderRadius.circular(AppRadii.xl),
+                borderRadius: BorderRadius.circular(Corners.xl),
                 border: Border.all(color: c.outline),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const HenFigure(asset: AppAssets.henHappy, size: 150),
-                  const SizedBox(height: AppSpacing.sm),
+                  const HenFigure(asset: Artwork.henHappy, size: 150),
+                  const SizedBox(height: Insets.sm),
                   Text('Achievement unlocked', style: context.text.labelSmall),
                   const SizedBox(height: 6),
                   Text(
@@ -90,7 +90,7 @@ class _CelebrationDialogState extends State<_CelebrationDialog> {
                     textAlign: TextAlign.center,
                     style: context.text.bodyMedium,
                   ),
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: Insets.lg),
                   FilledButton(
                     onPressed: () => Navigator.of(context).pop(),
                     child: const Text('Keep running'),
@@ -110,11 +110,11 @@ class _CelebrationDialogState extends State<_CelebrationDialog> {
           minBlastForce: 8,
           gravity: 0.24,
           colors: const <Color>[
-            Brand.lime,
-            Brand.corn,
-            Brand.comb,
-            Brand.sky,
-            Brand.lavender,
+            Meadow.lime,
+            Meadow.corn,
+            Meadow.comb,
+            Meadow.sky,
+            Meadow.lavender,
           ],
         ),
       ],

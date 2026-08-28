@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/habit.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/habit.dart';
 import '../../widgets/surfaces.dart';
 import 'habit_editor_screen.dart';
 
@@ -253,7 +253,7 @@ class _HabitLibraryScreenState extends State<HabitLibraryScreen> {
             height: 44,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              padding: const EdgeInsets.symmetric(horizontal: Insets.md),
               children: <Widget>[
                 _FilterChip(
                   label: 'All',
@@ -274,10 +274,10 @@ class _HabitLibraryScreenState extends State<HabitLibraryScreen> {
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.fromLTRB(
-                AppSpacing.md,
-                AppSpacing.md,
-                AppSpacing.md,
-                AppSpacing.xxl,
+                Insets.md,
+                Insets.md,
+                Insets.md,
+                Insets.xxl,
               ),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -288,7 +288,7 @@ class _HabitLibraryScreenState extends State<HabitLibraryScreen> {
               itemCount: visible.length,
               itemBuilder: (context, i) {
                 final t = visible[i];
-                final tone = HabitPalette.at(t.colorIndex);
+                final tone = HabitSwatches.at(t.colorIndex);
                 return SoftCard(
                   padding: const EdgeInsets.all(14),
                   onTap: () => Navigator.of(context).push(
@@ -304,7 +304,7 @@ class _HabitLibraryScreenState extends State<HabitLibraryScreen> {
                         height: 40,
                         decoration: BoxDecoration(
                           color: tone.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(AppRadii.sm),
+                          borderRadius: BorderRadius.circular(Corners.sm),
                         ),
                         child: Icon(t.category.icon, size: 20, color: tone),
                       ),
@@ -380,7 +380,7 @@ class _FilterChip extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: selected ? c.accent : c.surface,
-            borderRadius: BorderRadius.circular(AppRadii.pill),
+            borderRadius: BorderRadius.circular(Corners.pill),
             border: Border.all(color: selected ? c.accent : c.outline),
           ),
           child: Row(

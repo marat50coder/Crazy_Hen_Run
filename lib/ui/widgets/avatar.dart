@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../data/models/profile.dart';
+import '../../foundation/theme/palette.dart';
+import '../../persistence/models/profile.dart';
 
 /// Circular profile picture with an initials fallback. The photo lives in the
 /// app's documents directory, so it renders without any network access.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../state/app_state.dart';
+import '../../domain/hen_state.dart';
 import '../widgets/hen_nav_bar.dart';
 import 'coop/coop_screen.dart';
 import 'home/today_screen.dart';
@@ -10,14 +10,14 @@ import 'run/run_hub_screen.dart';
 import 'stats/stats_screen.dart';
 import 'shared/celebration.dart';
 
-class RootShell extends StatefulWidget {
-  const RootShell({super.key});
+class AppShell extends StatefulWidget {
+  const AppShell({super.key});
 
   @override
-  State<RootShell> createState() => _RootShellState();
+  State<AppShell> createState() => _RootShellState();
 }
 
-class _RootShellState extends State<RootShell> {
+class _RootShellState extends State<AppShell> {
   static const List<HenNavItem> _items = <HenNavItem>[
     HenNavItem(
       icon: Icons.directions_run_outlined,
@@ -57,7 +57,7 @@ class _RootShellState extends State<RootShell> {
 
   void _drainCelebrations() {
     if (!mounted) return;
-    final app = context.read<AppState>();
+    final app = context.read<HenState>();
     if (app.pendingCelebrations.isEmpty) return;
     final unlocked = app.pendingCelebrations.first;
     app.consumeCelebrations();
@@ -67,7 +67,7 @@ class _RootShellState extends State<RootShell> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<AppState>();
+    context.watch<HenState>();
     WidgetsBinding.instance.addPostFrameCallback((_) => _drainCelebrations());
 
     return Scaffold(

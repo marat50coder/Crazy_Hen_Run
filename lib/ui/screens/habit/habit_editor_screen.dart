@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/habit.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/habit.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/surfaces.dart';
 
 /// Four step wizard. Each step owns one decision, so the form never turns into
@@ -87,7 +87,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
   }
 
   Future<void> _save() async {
-    final app = context.read<AppState>();
+    final app = context.read<HenState>();
     final existing = widget.existing;
     final habit = Habit(
       id: existing?.id ??
@@ -129,10 +129,10 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(
-              AppSpacing.md,
+              Insets.md,
               0,
-              AppSpacing.md,
-              AppSpacing.md,
+              Insets.md,
+              Insets.md,
             ),
             child: Row(
               children: List<Widget>.generate(_steps.length, (i) {
@@ -182,10 +182,10 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
             top: false,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(
-                AppSpacing.md,
-                AppSpacing.sm,
-                AppSpacing.md,
-                AppSpacing.md,
+                Insets.md,
+                Insets.sm,
+                Insets.md,
+                Insets.md,
               ),
               child: Row(
                 children: <Widget>[
@@ -196,7 +196,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
                         child: const Text('Back'),
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: Insets.sm),
                   ],
                   Expanded(
                     flex: 2,
@@ -219,10 +219,10 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
   Widget _stepBody({required String title, required String hint, required List<Widget> children}) {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
+        Insets.md,
         0,
-        AppSpacing.md,
-        AppSpacing.lg,
+        Insets.md,
+        Insets.lg,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +230,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
           Text(title, style: context.text.headlineSmall),
           const SizedBox(height: 4),
           Text(hint, style: context.text.bodyMedium),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           ...children,
         ],
       ),
@@ -248,9 +248,9 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
           onChanged: (_) => setState(() {}),
           decoration: const InputDecoration(hintText: 'Morning run'),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: Insets.lg),
         Text('Category', style: context.text.titleSmall),
-        const SizedBox(height: AppSpacing.sm),
+        const SizedBox(height: Insets.sm),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -264,7 +264,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
             );
           }).toList(),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: Insets.lg),
         TextField(
           controller: _note,
           maxLines: 3,
@@ -331,7 +331,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
           );
         }),
         if (_goalType != HabitGoalType.check) ...<Widget>[
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           SoftCard(
             child: Row(
               children: <Widget>[
@@ -368,7 +368,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
             ),
           ),
           if (_goalType == HabitGoalType.quantity) ...<Widget>[
-            const SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: Insets.sm),
             TextField(
               controller: _unit,
               onChanged: (_) => setState(() {}),
@@ -379,14 +379,14 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
             ),
           ],
         ],
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: Insets.lg),
         Text('Effort', style: context.text.titleSmall),
         const SizedBox(height: 4),
         Text(
           'Harder habits pay more distance when you close them.',
           style: context.text.bodySmall,
         ),
-        const SizedBox(height: AppSpacing.sm),
+        const SizedBox(height: Insets.sm),
         Row(
           children: HabitDifficulty.values.map((d) {
             final selected = d == _difficulty;
@@ -400,7 +400,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     decoration: BoxDecoration(
                       color: selected ? c.accent : c.surface,
-                      borderRadius: BorderRadius.circular(AppRadii.md),
+                      borderRadius: BorderRadius.circular(Corners.md),
                       border: Border.all(
                         color: selected ? c.accent : c.outline,
                       ),
@@ -470,7 +470,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.md),
+        const SizedBox(height: Insets.md),
         Row(
           children: List<Widget>.generate(7, (i) {
             final weekday = i + 1;
@@ -491,7 +491,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     decoration: BoxDecoration(
                       color: selected ? c.accent : c.surface,
-                      borderRadius: BorderRadius.circular(AppRadii.sm),
+                      borderRadius: BorderRadius.circular(Corners.sm),
                       border: Border.all(
                         color: selected ? c.accent : c.outline,
                       ),
@@ -514,7 +514,7 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
             );
           }),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: Insets.lg),
         SoftCard(
           onTap: () async {
             final picked = await showTimePicker(
@@ -563,9 +563,9 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
         Wrap(
           spacing: 12,
           runSpacing: 12,
-          children: List<Widget>.generate(HabitPalette.swatches.length, (i) {
+          children: List<Widget>.generate(HabitSwatches.swatches.length, (i) {
             final selected = i == _colorIndex;
-            final tone = HabitPalette.at(i);
+            final tone = HabitSwatches.at(i);
             return GestureDetector(
               onTap: () => setState(() => _colorIndex = i),
               child: AnimatedContainer(
@@ -587,21 +587,21 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
             );
           }),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: Insets.lg),
         SoftCard(
-          color: HabitPalette.at(_colorIndex).withValues(alpha: 0.12),
+          color: HabitSwatches.at(_colorIndex).withValues(alpha: 0.12),
           child: Row(
             children: <Widget>[
               Container(
                 width: 46,
                 height: 46,
                 decoration: BoxDecoration(
-                  color: HabitPalette.at(_colorIndex).withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(AppRadii.sm),
+                  color: HabitSwatches.at(_colorIndex).withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(Corners.sm),
                 ),
                 child: Icon(
                   _category.icon,
-                  color: HabitPalette.at(_colorIndex),
+                  color: HabitSwatches.at(_colorIndex),
                 ),
               ),
               const SizedBox(width: 12),
@@ -653,7 +653,7 @@ class _ChoicePill extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: selected ? c.accent : c.surface,
-          borderRadius: BorderRadius.circular(AppRadii.pill),
+          borderRadius: BorderRadius.circular(Corners.pill),
           border: Border.all(color: selected ? c.accent : c.outline),
         ),
         child: Row(
@@ -702,7 +702,7 @@ class _PresetChip extends StatelessWidget {
       backgroundColor: c.surfaceMuted,
       side: BorderSide(color: c.outline),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppRadii.pill),
+        borderRadius: BorderRadius.circular(Corners.pill),
       ),
     );
   }

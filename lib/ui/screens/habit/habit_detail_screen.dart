@@ -2,11 +2,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/habit.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/habit.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/heatmap.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -21,14 +21,14 @@ class HabitDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final habit = app.habitById(habitId);
     if (habit == null) {
       return const Scaffold(body: Center(child: Text('Habit not found')));
     }
 
     final c = context.palette;
-    final tone = HabitPalette.at(habit.colorIndex);
+    final tone = HabitSwatches.at(habit.colorIndex);
     final streak = app.streakFor(habit);
     final best = app.bestStreakFor(habit);
     final completions = app.completionCountFor(habit);
@@ -97,9 +97,9 @@ class HabitDetailScreen extends StatelessWidget {
                 child: SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(
-                      AppSpacing.md,
-                      AppSpacing.xl,
-                      AppSpacing.md,
+                      Insets.md,
+                      Insets.xl,
+                      Insets.md,
                       48,
                     ),
                     child: Row(
@@ -149,10 +149,10 @@ class HabitDetailScreen extends StatelessWidget {
           ),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(
-              AppSpacing.md,
-              AppSpacing.md,
-              AppSpacing.md,
-              AppSpacing.xxl,
+              Insets.md,
+              Insets.md,
+              Insets.md,
+              Insets.xxl,
             ),
             sliver: SliverList.list(
               children: <Widget>[
@@ -164,22 +164,22 @@ class HabitDetailScreen extends StatelessWidget {
                         value: '$streak',
                         unit: streak == 1 ? 'day' : 'days',
                         icon: Icons.local_fire_department_rounded,
-                        tone: Brand.yolk,
+                        tone: Meadow.yolk,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: Insets.sm),
                     Expanded(
                       child: _Metric(
                         label: 'Best streak',
                         value: '$best',
                         unit: best == 1 ? 'day' : 'days',
                         icon: Icons.emoji_events_rounded,
-                        tone: Brand.corn,
+                        tone: Meadow.corn,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: Insets.sm),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -191,20 +191,20 @@ class HabitDetailScreen extends StatelessWidget {
                         tone: tone,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: Insets.sm),
                     Expanded(
                       child: _Metric(
                         label: 'Distance',
                         value: _distance(completions, habit),
                         unit: 'earned',
                         icon: Icons.route_rounded,
-                        tone: Brand.moss,
+                        tone: Meadow.moss,
                       ),
                     ),
                   ],
                 ),
                 if (habit.note.isNotEmpty) ...<Widget>[
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: Insets.md),
                   SoftCard(
                     color: tone.withValues(alpha: 0.08),
                     child: Row(
@@ -219,7 +219,7 @@ class HabitDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 SectionHeader(
                   title: 'Last 20 weeks',
                   subtitle: 'Every square is one day',
@@ -238,12 +238,12 @@ class HabitDetailScreen extends StatelessWidget {
                         },
                         onTapDay: (day) => _toggleDay(context, app, habit, day),
                       ),
-                      const SizedBox(height: AppSpacing.sm),
+                      const SizedBox(height: Insets.sm),
                       HeatmapLegend(tone: tone),
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 SectionHeader(
                   title: 'Last 14 days',
                   subtitle: 'How close you got to the target',
@@ -255,7 +255,7 @@ class HabitDetailScreen extends StatelessWidget {
                     child: _MiniBarChart(habit: habit, app: app, tone: tone),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 SectionHeader(title: 'Scheduled on'),
                 SoftCard(
                   child: Row(
@@ -297,7 +297,7 @@ class HabitDetailScreen extends StatelessWidget {
 
   Future<void> _toggleDay(
     BuildContext context,
-    AppState app,
+    HenState app,
     Habit habit,
     DateTime day,
   ) async {
@@ -377,7 +377,7 @@ class _MiniBarChart extends StatelessWidget {
   });
 
   final Habit habit;
-  final AppState app;
+  final HenState app;
   final Color tone;
 
   @override

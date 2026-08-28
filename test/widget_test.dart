@@ -1,6 +1,6 @@
-import 'package:crazy_hen_run/core/utils/day_key.dart';
-import 'package:crazy_hen_run/data/models/habit.dart';
-import 'package:crazy_hen_run/data/models/hen_rank.dart';
+import 'package:henyard_daily/foundation/utils/day_key.dart';
+import 'package:henyard_daily/persistence/models/habit.dart';
+import 'package:henyard_daily/persistence/models/hen_rank.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

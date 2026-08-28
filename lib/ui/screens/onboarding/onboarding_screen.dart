@@ -3,10 +3,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../root_shell.dart';
 
@@ -26,58 +26,58 @@ class _Slide {
   final Color tint;
 }
 
-class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  State<WelcomeScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends State<WelcomeScreen> {
   final PageController _controller = PageController();
   int _index = 0;
 
   static const List<_Slide> _slides = <_Slide>[
     _Slide(
-      asset: AppAssets.henCurious,
+      asset: Artwork.henCurious,
       kicker: 'Welcome',
       title: 'Every habit is a\nstretch of road',
       body:
           'Crazy Hen Run turns your daily routine into a track. Add habits, close them, and watch the distance add up.',
-      tint: Brand.lime,
+      tint: Meadow.lime,
     ),
     _Slide(
-      asset: AppAssets.henRunner,
+      asset: Artwork.henRunner,
       kicker: 'Run',
       title: 'Close habits,\ncover distance',
       body:
           'Every completed habit puts real metres behind you. Harder habits pay more, so the effort actually shows.',
-      tint: Brand.moss,
+      tint: Meadow.moss,
     ),
     _Slide(
-      asset: AppAssets.henSprinter,
+      asset: Artwork.henSprinter,
       kicker: 'Grow',
       title: 'Your hen levels\nup with you',
       body:
           'Chick, Hen, Runner, Sprinter, Legend. Keep the streak alive and the bird in your pocket gets faster.',
-      tint: Brand.corn,
+      tint: Meadow.corn,
     ),
     _Slide(
-      asset: AppAssets.henLegend,
+      asset: Artwork.henLegend,
       kicker: 'Own it',
       title: 'Everything stays\non your phone',
       body:
           'No account, no sync, no internet needed. Your streaks, notes and photos never leave the device.',
-      tint: Brand.comb,
+      tint: Meadow.comb,
     ),
   ];
 
   Future<void> _finish() async {
-    final app = context.read<AppState>();
+    final app = context.read<HenState>();
     await app.completeOnboarding();
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute<void>(builder: (_) => const RootShell()),
+      MaterialPageRoute<void>(builder: (_) => const AppShell()),
     );
   }
 
@@ -122,14 +122,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.sm,
-                  AppSpacing.md,
+                  Insets.lg,
+                  Insets.sm,
+                  Insets.md,
                   0,
                 ),
                 child: Row(
                   children: <Widget>[
-                    Image.asset(AppAssets.logo, height: 42),
+                    Image.asset(Artwork.logo, height: 42),
                     const Spacer(),
                     TextButton(
                       onPressed: _finish,
@@ -148,10 +148,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
+                  Insets.lg,
                   0,
-                  AppSpacing.lg,
-                  AppSpacing.lg,
+                  Insets.lg,
+                  Insets.lg,
                 ),
                 child: Column(
                   children: <Widget>[
@@ -167,7 +167,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         activeDotColor: c.accent,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: Insets.lg),
                     FilledButton(
                       onPressed: _next,
                       child: Text(
@@ -195,7 +195,7 @@ class _SlideView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(horizontal: Insets.lg),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,12 +206,12 @@ class _SlideView extends StatelessWidget {
                 .fadeIn(duration: 420.ms)
                 .scale(begin: const Offset(0.9, 0.9), curve: Curves.easeOutBack),
           ),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: Insets.xl),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: slide.tint.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(AppRadii.pill),
+              borderRadius: BorderRadius.circular(Corners.pill),
             ),
             child: Text(
               slide.kicker.toUpperCase(),
@@ -223,12 +223,12 @@ class _SlideView extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           Text(slide.title, style: context.text.displaySmall)
               .animate()
               .fadeIn(delay: 120.ms)
               .moveY(begin: 12, end: 0),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           Text(slide.body, style: context.text.bodyLarge?.copyWith(
                 color: context.palette.textSecondary,
               ))

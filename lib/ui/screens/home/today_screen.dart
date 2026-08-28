@@ -4,13 +4,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/coach.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/habit.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/coach_lines.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/habit.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/avatar.dart';
 import '../../widgets/habit_tile.dart';
 import '../../widgets/hen.dart';
@@ -47,7 +47,7 @@ class _TodayScreenState extends State<TodayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
     final entries = app.habitsForDay(_selected);
     final visible = app.hideCompleted
@@ -80,9 +80,9 @@ class _TodayScreenState extends State<TodayScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  AppSpacing.md,
-                  AppSpacing.md,
+                  Insets.md,
+                  Insets.md,
+                  Insets.md,
                   0,
                 ),
                 child: _RunCard(
@@ -98,9 +98,9 @@ class _TodayScreenState extends State<TodayScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  AppSpacing.md,
-                  AppSpacing.md,
+                  Insets.md,
+                  Insets.md,
+                  Insets.md,
                   0,
                 ),
                 child: WeekStrip(
@@ -114,9 +114,9 @@ class _TodayScreenState extends State<TodayScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  AppSpacing.md,
-                  AppSpacing.md,
+                  Insets.md,
+                  Insets.md,
+                  Insets.md,
                   0,
                 ),
                 child: Row(
@@ -128,7 +128,7 @@ class _TodayScreenState extends State<TodayScreen> {
                         value:
                             '${app.weeklyCompletions}/${app.weeklySprintTarget}',
                         progress: app.weeklySprintProgress,
-                        tone: Brand.corn,
+                        tone: Meadow.corn,
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute<void>(
                             builder: (_) => const SprintScreen(),
@@ -136,7 +136,7 @@ class _TodayScreenState extends State<TodayScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: Insets.sm),
                     Expanded(
                       child: _MiniAction(
                         icon: Icons.edit_note_rounded,
@@ -145,7 +145,7 @@ class _TodayScreenState extends State<TodayScreen> {
                             ? 'Not written'
                             : app.journalFor(_selected)!.mood.label,
                         progress: app.journalFor(_selected) == null ? 0 : 1,
-                        tone: Brand.lavender,
+                        tone: Meadow.lavender,
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute<void>(
                             builder: (_) => JournalEditorScreen(day: _selected),
@@ -160,10 +160,10 @@ class _TodayScreenState extends State<TodayScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  AppSpacing.lg,
-                  AppSpacing.md,
-                  AppSpacing.sm,
+                  Insets.md,
+                  Insets.lg,
+                  Insets.md,
+                  Insets.sm,
                 ),
                 child: SectionHeader(
                   title: _isToday ? 'On the track today' : DayKey.pretty(_selected),
@@ -203,7 +203,7 @@ class _TodayScreenState extends State<TodayScreen> {
                         icon: const Icon(Icons.add_rounded),
                         label: const Text('Create a habit'),
                       ),
-                      const SizedBox(height: AppSpacing.sm),
+                      const SizedBox(height: Insets.sm),
                       OutlinedButton.icon(
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute<void>(
@@ -221,15 +221,15 @@ class _TodayScreenState extends State<TodayScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.lg,
+                    horizontal: Insets.md,
+                    vertical: Insets.lg,
                   ),
                   child: SoftCard(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    padding: const EdgeInsets.all(Insets.lg),
                     child: Row(
                       children: <Widget>[
-                        const HenFigure(asset: AppAssets.henHappy, size: 66),
-                        const SizedBox(width: AppSpacing.md),
+                        const HenFigure(asset: Artwork.henHappy, size: 66),
+                        const SizedBox(width: Insets.md),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +257,7 @@ class _TodayScreenState extends State<TodayScreen> {
               )
             else
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xxl),
+                padding: const EdgeInsets.fromLTRB(Insets.md, 0, Insets.md, Insets.xxl),
                 sliver: SliverList.separated(
                   itemCount: visible.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 10),
@@ -280,7 +280,7 @@ class _TodayScreenState extends State<TodayScreen> {
                                       _openEditor(habit: entry.habit),
                                   backgroundColor: c.surfaceMuted,
                                   foregroundColor: c.textPrimary,
-                                  borderRadius: BorderRadius.circular(AppRadii.lg),
+                                  borderRadius: BorderRadius.circular(Corners.lg),
                                   icon: Icons.tune_rounded,
                                   label: 'Edit',
                                 ),
@@ -292,7 +292,7 @@ class _TodayScreenState extends State<TodayScreen> {
                                   backgroundColor:
                                       c.danger.withValues(alpha: 0.14),
                                   foregroundColor: c.danger,
-                                  borderRadius: BorderRadius.circular(AppRadii.lg),
+                                  borderRadius: BorderRadius.circular(Corners.lg),
                                   icon: Icons.inventory_2_rounded,
                                   label: 'Archive',
                                 ),
@@ -331,7 +331,7 @@ class _TodayScreenState extends State<TodayScreen> {
     );
   }
 
-  Widget _header(AppState app) {
+  Widget _header(HenState app) {
     final c = context.palette;
     final hour = DateTime.now().hour;
     final greeting = hour < 5
@@ -346,9 +346,9 @@ class _TodayScreenState extends State<TodayScreen> {
       bottom: false,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
-          AppSpacing.sm,
-          AppSpacing.md,
+          Insets.md,
+          Insets.sm,
+          Insets.md,
           0,
         ),
         child: Row(
@@ -479,7 +479,7 @@ class _RunCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           RunTrackHero(
             progress: summary.ratio,
             henAsset: henAsset,

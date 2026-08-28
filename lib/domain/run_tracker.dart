@@ -4,25 +4,25 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import '../core/services/pedometer_service.dart';
-import '../core/utils/day_key.dart';
-import '../data/local_store.dart';
-import '../data/models/hen_rank.dart';
-import '../data/models/interval_plan.dart';
-import '../data/models/run_session.dart';
-import '../data/models/run_type.dart';
-import '../data/models/running_challenge.dart';
+import '../foundation/services/step_feed.dart';
+import '../foundation/utils/day_key.dart';
+import '../persistence/snapshot_store.dart';
+import '../persistence/models/hen_rank.dart';
+import '../persistence/models/interval_plan.dart';
+import '../persistence/models/run_session.dart';
+import '../persistence/models/run_type.dart';
+import '../persistence/models/running_challenge.dart';
 
 /// Owns everything about running: the live step sensor, run sessions, interval
-/// plans and every derived running metric. Habits stay in [AppState]; this is
+/// plans and every derived running metric. Habits stay in [HenState]; this is
 /// the engine that makes the app a real running companion.
-class RunState extends ChangeNotifier {
-  RunState(this._store, this._pedometer) {
+class RunTracker extends ChangeNotifier {
+  RunTracker(this._store, this._pedometer) {
     _load();
   }
 
-  final LocalStore _store;
-  final PedometerService _pedometer;
+  final SnapshotStore _store;
+  final StepFeed _pedometer;
 
   // ── settings ──────────────────────────────────────────────────────────────
   int _stepGoal = 8000;

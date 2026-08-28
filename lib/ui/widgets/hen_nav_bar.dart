@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../core/theme/app_theme.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/theme/henyard_theme.dart';
 
 class HenNavItem {
   const HenNavItem({
@@ -35,16 +35,16 @@ class HenNavBar extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
+        Insets.md,
         0,
-        AppSpacing.md,
-        AppSpacing.md,
+        Insets.md,
+        Insets.md,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
           color: c.surface,
-          borderRadius: BorderRadius.circular(AppRadii.pill),
+          borderRadius: BorderRadius.circular(Corners.pill),
           border: Border.all(color: c.outline),
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -71,7 +71,7 @@ class HenNavBar extends StatelessWidget {
                   height: 46,
                   decoration: BoxDecoration(
                     color: selected ? c.accent : Colors.transparent,
-                    borderRadius: BorderRadius.circular(AppRadii.pill),
+                    borderRadius: BorderRadius.circular(Corners.pill),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

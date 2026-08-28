@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/coach.dart';
-import '../../../data/models/hen_rank.dart';
-import '../../../state/app_state.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/coach_lines.dart';
+import '../../../persistence/models/hen_rank.dart';
+import '../../../domain/hen_state.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -21,8 +21,8 @@ class CoopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
-    final run = context.watch<RunState>();
+    final app = context.watch<HenState>();
+    final run = context.watch<RunTracker>();
     final c = context.palette;
     final rank = run.rank;
     final next = rank.next;
@@ -43,7 +43,7 @@ class CoopScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: <Widget>[
                   Image.asset(
-                    AppAssets.background,
+                    Artwork.background,
                     fit: BoxFit.cover,
                     alignment: Alignment.bottomCenter,
                   ),
@@ -71,15 +71,15 @@ class CoopScreen extends StatelessWidget {
           ),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(
-              AppSpacing.md,
-              AppSpacing.sm,
-              AppSpacing.md,
+              Insets.md,
+              Insets.sm,
+              Insets.md,
               140,
             ),
             sliver: SliverList.list(
               children: <Widget>[
                 SoftCard(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  padding: const EdgeInsets.all(Insets.lg),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -106,7 +106,7 @@ class CoopScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(rank.blurb, style: context.text.bodyMedium),
-                      const SizedBox(height: AppSpacing.md),
+                      const SizedBox(height: Insets.md),
                       TrackBar(value: run.rankProgress, height: 10),
                       const SizedBox(height: 8),
                       Text(
@@ -118,7 +118,7 @@ class CoopScreen extends StatelessWidget {
                     ],
                   ),
                 ).animate().fadeIn(duration: 300.ms).moveY(begin: 12, end: 0),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: Insets.md),
                 SoftCard(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
@@ -128,9 +128,9 @@ class CoopScreen extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       const HenBadge(
-                        asset: AppAssets.henLegend,
+                        asset: Artwork.henLegend,
                         size: 54,
-                        tint: Brand.corn,
+                        tint: Meadow.corn,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -149,7 +149,7 @@ class CoopScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 SectionHeader(
                   title: 'The road ahead',
                   subtitle: 'Distance is earned by running and daily steps',
@@ -162,13 +162,13 @@ class CoopScreen extends StatelessWidget {
                     isLast: r == HenRank.values.last,
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 SoftCard(
-                  color: Brand.lavender.withValues(alpha: 0.10),
+                  color: Meadow.lavender.withValues(alpha: 0.10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const HenFigure(asset: AppAssets.henCoach, size: 64),
+                      const HenFigure(asset: Artwork.henCoach, size: 64),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -24,7 +24,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
 
     final anchor = DayKey.today().subtract(Duration(days: 7 * _weekOffset));
@@ -72,19 +72,19 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           Text(
             '${DayKey.medium(week.first)} — ${DayKey.medium(week.last)}',
             style: context.text.labelSmall,
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: const EdgeInsets.all(Insets.lg),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -107,14 +107,14 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                 ),
                 HenFigure(
                   asset: ratio >= 0.75
-                      ? AppAssets.henHappy
-                      : (ratio > 0 ? AppAssets.henCoach : AppAssets.henCurious),
+                      ? Artwork.henHappy
+                      : (ratio > 0 ? Artwork.henCoach : Artwork.henCurious),
                   size: 92,
                 ),
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           Row(
             children: <Widget>[
               Expanded(
@@ -125,16 +125,16 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                   tone: c.accent,
                 ),
               ),
-              const SizedBox(width: AppSpacing.sm),
+              const SizedBox(width: Insets.sm),
               Expanded(
                 child: _ReportStat(
                   label: 'Perfect days',
                   value: '$perfect',
                   hint: 'out of 7',
-                  tone: Brand.corn,
+                  tone: Meadow.corn,
                 ),
               ),
-              const SizedBox(width: AppSpacing.sm),
+              const SizedBox(width: Insets.sm),
               Expanded(
                 child: _ReportStat(
                   label: 'vs last week',
@@ -145,7 +145,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'Day by day'),
           SoftCard(
             child: Column(
@@ -188,7 +188,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
               }),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'What the hen noticed'),
           SoftCard(
             color: c.accentSoft,

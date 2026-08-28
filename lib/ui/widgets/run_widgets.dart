@@ -2,9 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../core/theme/app_theme.dart';
-import '../../data/models/run_type.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/theme/henyard_theme.dart';
+import '../../persistence/models/run_type.dart';
 import 'hen.dart';
 
 /// Stylised effort trace: a smooth curve built from normalised cadence samples
@@ -45,7 +45,7 @@ class RunTrace extends StatelessWidget {
               Positioned.fill(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadii.md),
+                    borderRadius: BorderRadius.circular(Corners.md),
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -60,7 +60,7 @@ class RunTrace extends StatelessWidget {
               ),
               Positioned.fill(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppRadii.md),
+                  borderRadius: BorderRadius.circular(Corners.md),
                   child: CustomPaint(
                     painter: _TracePainter(
                       samples: data,
@@ -234,7 +234,7 @@ class RunTypeChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: selected ? type.color : c.surface,
-          borderRadius: BorderRadius.circular(AppRadii.pill),
+          borderRadius: BorderRadius.circular(Corners.pill),
           border: Border.all(
             color: selected ? type.color : c.outline,
             width: 1.4,
@@ -304,7 +304,7 @@ class HenRunStrip extends StatelessWidget {
                   height: 8,
                   decoration: BoxDecoration(
                     color: tone.withValues(alpha: 0.16),
-                    borderRadius: BorderRadius.circular(AppRadii.pill),
+                    borderRadius: BorderRadius.circular(Corners.pill),
                   ),
                 ),
               ),
@@ -320,7 +320,7 @@ class HenRunStrip extends StatelessWidget {
                     width: (w * a).clamp(0.0, w),
                     decoration: BoxDecoration(
                       color: tone,
-                      borderRadius: BorderRadius.circular(AppRadii.pill),
+                      borderRadius: BorderRadius.circular(Corners.pill),
                     ),
                   ),
                 ),

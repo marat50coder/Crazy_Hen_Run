@@ -1,5 +1,5 @@
-class AppAssets {
-  const AppAssets._();
+class Artwork {
+  const Artwork._();
 
   static const String logo = 'assets/logo.webp';
   static const String icon = 'assets/icon.png';

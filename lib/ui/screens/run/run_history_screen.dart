@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/run_session.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/run_session.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/run_widgets.dart';
 import '../../widgets/surfaces.dart';
@@ -17,7 +17,7 @@ class RunHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final run = context.watch<RunState>();
+    final run = context.watch<RunTracker>();
     final runs = run.runs;
 
     return Scaffold(
@@ -30,14 +30,14 @@ class RunHistoryScreen extends StatelessWidget {
             )
           : ListView(
               padding: const EdgeInsets.fromLTRB(
-                AppSpacing.md,
-                AppSpacing.sm,
-                AppSpacing.md,
-                AppSpacing.xxl,
+                Insets.md,
+                Insets.sm,
+                Insets.md,
+                Insets.xxl,
               ),
               children: <Widget>[
                 SoftCard(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: const EdgeInsets.all(Insets.md),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -45,7 +45,7 @@ class RunHistoryScreen extends StatelessWidget {
                           value: run.distanceLabelOf(run.lifetimeRunMeters),
                           label: 'Total distance',
                           icon: Icons.route_rounded,
-                          color: Brand.moss,
+                          color: Meadow.moss,
                         ),
                       ),
                       Expanded(
@@ -53,7 +53,7 @@ class RunHistoryScreen extends StatelessWidget {
                           value: '${run.totalRuns}',
                           label: 'Runs',
                           icon: Icons.directions_run_rounded,
-                          color: Brand.sky,
+                          color: Meadow.sky,
                         ),
                       ),
                       Expanded(
@@ -61,13 +61,13 @@ class RunHistoryScreen extends StatelessWidget {
                           value: '${(run.totalRunSeconds / 3600).toStringAsFixed(1)}h',
                           label: 'Time',
                           icon: Icons.timer_rounded,
-                          color: Brand.corn,
+                          color: Meadow.corn,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: Insets.md),
                 AnimationLimiter(
                   child: Column(
                     children: List<Widget>.generate(runs.length, (i) {
@@ -78,7 +78,7 @@ class RunHistoryScreen extends StatelessWidget {
                           verticalOffset: 24,
                           child: FadeInAnimation(
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                              padding: const EdgeInsets.only(bottom: Insets.sm),
                               child: _HistoryCard(run: runs[i]),
                             ),
                           ),
@@ -104,7 +104,7 @@ class _HistoryCard extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(builder: (_) => RunDetailScreen(runId: run.id)),
       ),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -115,7 +115,7 @@ class _HistoryCard extends StatelessWidget {
                 height: 42,
                 decoration: BoxDecoration(
                   color: run.type.color.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(AppRadii.sm),
+                  borderRadius: BorderRadius.circular(Corners.sm),
                 ),
                 child: Icon(run.type.icon, color: run.type.color, size: 22),
               ),
@@ -132,9 +132,9 @@ class _HistoryCard extends StatelessWidget {
               TagChip(label: run.distanceLabel, color: run.type.color, dense: true),
             ],
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           RunTrace(samples: run.cadence, color: run.type.color, height: 64),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

@@ -4,11 +4,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/habit.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/habit.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -36,7 +36,7 @@ class _StatsScreenState extends State<StatsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
     final days = DayKey.lastDays(_ranges[_rangeIndex].days);
     final summaries = app.summariesFor(days);
@@ -58,9 +58,9 @@ class _StatsScreenState extends State<StatsScreen> {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(
-            AppSpacing.md,
-            AppSpacing.sm,
-            AppSpacing.md,
+            Insets.md,
+            Insets.sm,
+            Insets.md,
             140,
           ),
           children: <Widget>[
@@ -99,9 +99,9 @@ class _StatsScreenState extends State<StatsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: Insets.md),
             _HeadlineStrip(app: app),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: Insets.md),
             SoftCard(
               padding: const EdgeInsets.fromLTRB(14, 16, 16, 10),
               child: Column(
@@ -122,7 +122,7 @@ class _StatsScreenState extends State<StatsScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: Insets.md),
                   SizedBox(
                     height: 190,
                     child: _TrendChart(summaries: summaries),
@@ -130,7 +130,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: Insets.md),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -150,7 +150,7 @@ class _StatsScreenState extends State<StatsScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: AppSpacing.sm),
+                const SizedBox(width: Insets.sm),
                 Expanded(
                   child: SoftCard(
                     padding: const EdgeInsets.all(14),
@@ -169,7 +169,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: Insets.md),
             SectionHeader(
               title: 'Habit leaderboard',
               subtitle: 'Ranked by consistency since you created them',
@@ -181,7 +181,7 @@ class _StatsScreenState extends State<StatsScreen> {
     );
   }
 
-  List<Widget> _leaderboard(AppState app, BuildContext context) {
+  List<Widget> _leaderboard(HenState app, BuildContext context) {
     final habits = <Habit>[...app.habits];
     if (habits.isEmpty) {
       return <Widget>[
@@ -199,7 +199,7 @@ class _StatsScreenState extends State<StatsScreen> {
     );
 
     return habits.map((habit) {
-      final tone = HabitPalette.at(habit.colorIndex);
+      final tone = HabitSwatches.at(habit.colorIndex);
       final ratio = app.consistencyFor(habit);
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
@@ -212,7 +212,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 height: 38,
                 decoration: BoxDecoration(
                   color: tone.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(AppRadii.sm),
+                  borderRadius: BorderRadius.circular(Corners.sm),
                 ),
                 child: Icon(habit.category.icon, size: 18, color: tone),
               ),
@@ -248,7 +248,7 @@ class _StatsScreenState extends State<StatsScreen> {
 class _HeadlineStrip extends StatelessWidget {
   const _HeadlineStrip({required this.app});
 
-  final AppState app;
+  final HenState app;
 
   @override
   Widget build(BuildContext context) {
@@ -257,25 +257,25 @@ class _HeadlineStrip extends StatelessWidget {
         label: 'Distance',
         value: app.distanceLabel,
         icon: Icons.route_rounded,
-        tone: Brand.moss
+        tone: Meadow.moss
       ),
       (
         label: 'Completed',
         value: '${app.totalCompletions}',
         icon: Icons.check_circle_rounded,
-        tone: Brand.lime
+        tone: Meadow.lime
       ),
       (
         label: 'Best streak',
         value: '${app.longestStreak}d',
         icon: Icons.local_fire_department_rounded,
-        tone: Brand.yolk
+        tone: Meadow.yolk
       ),
       (
         label: 'Perfect days',
         value: '${app.perfectDays}',
         icon: Icons.verified_rounded,
-        tone: Brand.sky
+        tone: Meadow.sky
       ),
     ];
 
@@ -292,7 +292,7 @@ class _HeadlineStrip extends StatelessWidget {
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: item.tone.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(AppRadii.lg),
+              borderRadius: BorderRadius.circular(Corners.lg),
               border: Border.all(color: item.tone.withValues(alpha: 0.25)),
             ),
             child: Column(
@@ -334,7 +334,7 @@ class _RangeSwitch extends StatelessWidget {
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: c.surfaceMuted,
-        borderRadius: BorderRadius.circular(AppRadii.pill),
+        borderRadius: BorderRadius.circular(Corners.pill),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -347,7 +347,7 @@ class _RangeSwitch extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: selected ? c.surface : Colors.transparent,
-                borderRadius: BorderRadius.circular(AppRadii.pill),
+                borderRadius: BorderRadius.circular(Corners.pill),
                 border: selected ? Border.all(color: c.outline) : null,
               ),
               child: Text(
@@ -489,7 +489,7 @@ class _TrendChart extends StatelessWidget {
 class _CategoryDonut extends StatelessWidget {
   const _CategoryDonut({required this.app});
 
-  final AppState app;
+  final HenState app;
 
   @override
   Widget build(BuildContext context) {
@@ -515,7 +515,7 @@ class _CategoryDonut extends StatelessWidget {
               centerSpaceRadius: 26,
               sections: List<PieChartSectionData>.generate(entries.length, (i) {
                 final entry = entries[i];
-                final tone = HabitPalette.at(entry.key.index);
+                final tone = HabitSwatches.at(entry.key.index);
                 return PieChartSectionData(
                   value: entry.value.toDouble(),
                   color: tone,
@@ -531,7 +531,7 @@ class _CategoryDonut extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: entries.take(4).map((entry) {
-              final tone = HabitPalette.at(entry.key.index);
+              final tone = HabitSwatches.at(entry.key.index);
               final pct = ((entry.value / total) * 100).round();
               return Padding(
                 padding: const EdgeInsets.only(bottom: 6),
@@ -581,7 +581,7 @@ class _CategoryDonut extends StatelessWidget {
 class _WeekdayChart extends StatelessWidget {
   const _WeekdayChart({required this.app});
 
-  final AppState app;
+  final HenState app;
 
   @override
   Widget build(BuildContext context) {

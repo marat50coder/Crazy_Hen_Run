@@ -3,10 +3,10 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -23,7 +23,7 @@ class _StepsScreenState extends State<StepsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final run = context.watch<RunState>();
+    final run = context.watch<RunTracker>();
     final series = run.stepSeries(_range);
     final maxSteps = series.fold<int>(1, (m, e) => math.max(m, e.steps));
     final total = series.fold<int>(0, (s, e) => s + e.steps);
@@ -34,21 +34,21 @@ class _StepsScreenState extends State<StepsScreen> {
       appBar: AppBar(title: const Text('Steps')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: const EdgeInsets.all(Insets.lg),
             child: Row(
               children: <Widget>[
                 ProgressRing(
                   value: run.stepGoalProgress,
                   size: 118,
                   stroke: 11,
-                  color: Brand.lime,
+                  color: Meadow.lime,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -57,7 +57,7 @@ class _StepsScreenState extends State<StepsScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(width: AppSpacing.md),
+                const SizedBox(width: Insets.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +75,7 @@ class _StepsScreenState extends State<StepsScreen> {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           Row(
             children: <Widget>[
               const Text(''),
@@ -89,9 +89,9 @@ class _StepsScreenState extends State<StepsScreen> {
               _rangeToggle(),
             ],
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           SoftCard(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, AppSpacing.md),
+            padding: const EdgeInsets.fromLTRB(Insets.md, Insets.lg, Insets.md, Insets.md),
             child: _BarChart(
               series: series,
               maxSteps: maxSteps,
@@ -99,19 +99,19 @@ class _StepsScreenState extends State<StepsScreen> {
               showLabels: _range <= 14,
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           Row(
             children: <Widget>[
-              Expanded(child: _summaryCard(context, '$avg', 'Daily average', Brand.moss)),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(child: _summaryCard(context, '$best', 'Best day', Brand.corn)),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(child: _summaryCard(context, '$total', 'Total', Brand.sky)),
+              Expanded(child: _summaryCard(context, '$avg', 'Daily average', Meadow.moss)),
+              const SizedBox(width: Insets.sm),
+              Expanded(child: _summaryCard(context, '$best', 'Best day', Meadow.corn)),
+              const SizedBox(width: Insets.sm),
+              Expanded(child: _summaryCard(context, '$total', 'Total', Meadow.sky)),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _goalCard(run),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _strideCard(run),
         ],
       ),
@@ -123,7 +123,7 @@ class _StepsScreenState extends State<StepsScreen> {
     return Container(
       decoration: BoxDecoration(
         color: c.surfaceMuted,
-        borderRadius: BorderRadius.circular(AppRadii.pill),
+        borderRadius: BorderRadius.circular(Corners.pill),
       ),
       child: Row(
         children: <int>[7, 14, 30].map((r) {
@@ -134,7 +134,7 @@ class _StepsScreenState extends State<StepsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: selected ? c.accent : Colors.transparent,
-                borderRadius: BorderRadius.circular(AppRadii.pill),
+                borderRadius: BorderRadius.circular(Corners.pill),
               ),
               child: Text(
                 '$r',
@@ -151,7 +151,7 @@ class _StepsScreenState extends State<StepsScreen> {
 
   Widget _summaryCard(BuildContext context, String value, String label, Color color) {
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -162,9 +162,9 @@ class _StepsScreenState extends State<StepsScreen> {
     );
   }
 
-  Widget _goalCard(RunState run) {
+  Widget _goalCard(RunTracker run) {
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -190,9 +190,9 @@ class _StepsScreenState extends State<StepsScreen> {
     );
   }
 
-  Widget _strideCard(RunState run) {
+  Widget _strideCard(RunTracker run) {
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -264,7 +264,7 @@ class _BarChart extends StatelessWidget {
                           builder: (context, a, _) => Container(
                             height: math.max(3, box.maxHeight * a),
                             decoration: BoxDecoration(
-                              color: hit ? Brand.lime : c.accent.withValues(alpha: 0.45),
+                              color: hit ? Meadow.lime : c.accent.withValues(alpha: 0.45),
                               borderRadius: BorderRadius.circular(6),
                             ),
                           ),

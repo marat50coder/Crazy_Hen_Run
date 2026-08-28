@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'app_palette.dart';
+import 'palette.dart';
 
-class AppRadii {
-  const AppRadii._();
+class Corners {
+  const Corners._();
 
   static const double xs = 10;
   static const double sm = 14;
@@ -14,8 +14,8 @@ class AppRadii {
   static const double pill = 999;
 }
 
-class AppSpacing {
-  const AppSpacing._();
+class Insets {
+  const Insets._();
 
   static const double xs = 6;
   static const double sm = 10;
@@ -25,16 +25,16 @@ class AppSpacing {
   static const double xxl = 44;
 }
 
-class AppTheme {
-  const AppTheme._();
+class HenyardTheme {
+  const HenyardTheme._();
 
   static const String fontFamily = 'SpaceGrotesk';
 
-  static ThemeData light(Color seed) => _build(AppColors.light, seed, Brightness.light);
+  static ThemeData light(Color seed) => _build(Palette.light, seed, Brightness.light);
 
-  static ThemeData dark(Color seed) => _build(AppColors.dark, seed, Brightness.dark);
+  static ThemeData dark(Color seed) => _build(Palette.dark, seed, Brightness.dark);
 
-  static ThemeData _build(AppColors base, Color seed, Brightness brightness) {
+  static ThemeData _build(Palette base, Color seed, Brightness brightness) {
     final colors = base.copyWith(
       accent: seed,
       accentSoft: brightness == Brightness.light
@@ -93,7 +93,7 @@ class AppTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(Corners.lg),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -103,7 +103,7 @@ class AppTheme {
           minimumSize: const Size.fromHeight(56),
           textStyle: textTheme.labelLarge,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadii.md),
+            borderRadius: BorderRadius.circular(Corners.md),
           ),
         ),
       ),
@@ -114,7 +114,7 @@ class AppTheme {
           side: BorderSide(color: colors.outlineStrong),
           textStyle: textTheme.labelLarge,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadii.md),
+            borderRadius: BorderRadius.circular(Corners.md),
           ),
         ),
       ),
@@ -130,15 +130,15 @@ class AppTheme {
         hintStyle: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
         contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.md),
+          borderRadius: BorderRadius.circular(Corners.md),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.md),
+          borderRadius: BorderRadius.circular(Corners.md),
           borderSide: BorderSide(color: colors.outline),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.md),
+          borderRadius: BorderRadius.circular(Corners.md),
           borderSide: BorderSide(color: colors.accent, width: 1.6),
         ),
       ),
@@ -166,21 +166,21 @@ class AppTheme {
         backgroundColor: colors.surfaceInverse,
         contentTextStyle: textTheme.bodyMedium?.copyWith(color: colors.textInverse),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.sm),
+          borderRadius: BorderRadius.circular(Corners.sm),
         ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: colors.surface,
         surfaceTintColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadii.xl)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(Corners.xl)),
         ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: colors.surface,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(Corners.lg),
         ),
       ),
       pageTransitionsTheme: const PageTransitionsTheme(
@@ -194,7 +194,7 @@ class AppTheme {
   static Color _onColor(Color background) =>
       background.computeLuminance() > 0.55 ? const Color(0xFF102117) : Colors.white;
 
-  static TextTheme _textTheme(AppColors c) {
+  static TextTheme _textTheme(Palette c) {
     TextStyle base(double size, FontWeight weight, {double? height, double? spacing}) {
       return TextStyle(
         fontFamily: fontFamily,

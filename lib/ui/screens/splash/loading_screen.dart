@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
 
 /// First screen of the app.
 ///
 /// The bar starts completely empty and advances through discrete stages, so it
 /// visibly "steps" instead of sliding linearly. It only reaches 100% on the
 /// very last stage, immediately before [onFinished] hands over to the app.
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({
+class BootScreen extends StatefulWidget {
+  const BootScreen({
     super.key,
     required this.warmUp,
     required this.onFinished,
@@ -25,10 +25,10 @@ class LoadingScreen extends StatefulWidget {
   final VoidCallback onFinished;
 
   @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
+  State<BootScreen> createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen>
+class _LoadingScreenState extends State<BootScreen>
     with SingleTickerProviderStateMixin {
   /// Milestone percentages with the pause that follows each of them.
   static const List<({int percent, int rampMs, int holdMs})> _stages =
@@ -148,8 +148,8 @@ class _LoadingScreenState extends State<LoadingScreen>
         children: <Widget>[
           Image.asset(
             isLandscape
-                ? AppAssets.loadingLandscape
-                : AppAssets.loadingPortrait,
+                ? Artwork.loadingLandscape
+                : Artwork.loadingPortrait,
             fit: BoxFit.cover,
             alignment: Alignment.center,
             filterQuality: FilterQuality.medium,
@@ -165,8 +165,8 @@ class _LoadingScreenState extends State<LoadingScreen>
   Widget _portrait(Size size) {
     return Padding(
       padding: EdgeInsets.only(
-        left: AppSpacing.lg,
-        right: AppSpacing.lg,
+        left: Insets.lg,
+        right: Insets.lg,
         bottom: size.height * 0.12,
       ),
       child: Column(
@@ -181,9 +181,9 @@ class _LoadingScreenState extends State<LoadingScreen>
   Widget _landscape(Size size) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: AppSpacing.lg,
-        right: AppSpacing.lg,
-        bottom: AppSpacing.md,
+        left: Insets.lg,
+        right: Insets.lg,
+        bottom: Insets.md,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -224,10 +224,10 @@ class _LoadingScreenState extends State<LoadingScreen>
         Text(
           '$_percent%',
           style: TextStyle(
-            fontFamily: AppTheme.fontFamily,
+            fontFamily: HenyardTheme.fontFamily,
             fontSize: compact ? 16 : 22,
             fontWeight: FontWeight.w800,
-            color: Brand.forest,
+            color: Meadow.forest,
             letterSpacing: 0.4,
             shadows: const <Shadow>[
               Shadow(color: Color(0x40FFFFFF), blurRadius: 6, offset: Offset(0, 1)),
@@ -248,10 +248,10 @@ class _LoadingLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = TextStyle(
-      fontFamily: AppTheme.fontFamily,
+      fontFamily: HenyardTheme.fontFamily,
       fontSize: compact ? 15 : 19,
       fontWeight: FontWeight.w700,
-      color: Brand.forest,
+      color: Meadow.forest,
       letterSpacing: 0.6,
       shadows: const <Shadow>[
         Shadow(color: Color(0x40FFFFFF), blurRadius: 6, offset: Offset(0, 1)),
@@ -320,9 +320,9 @@ class _ProgressTrack extends StatelessWidget {
                   height: height,
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.55),
-                    borderRadius: BorderRadius.circular(AppRadii.pill),
+                    borderRadius: BorderRadius.circular(Corners.pill),
                     border: Border.all(
-                      color: Brand.forest.withValues(alpha: 0.55),
+                      color: Meadow.forest.withValues(alpha: 0.55),
                       width: 1.6,
                     ),
                     boxShadow: const <BoxShadow>[
@@ -343,9 +343,9 @@ class _ProgressTrack extends StatelessWidget {
                   width: filledInner,
                   decoration: filledInner > 0
                       ? BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppRadii.pill),
+                          borderRadius: BorderRadius.circular(Corners.pill),
                           gradient: const LinearGradient(
-                            colors: <Color>[Brand.lime, Brand.moss, Brand.forest],
+                            colors: <Color>[Meadow.lime, Meadow.moss, Meadow.forest],
                           ),
                         )
                       : null,
@@ -355,7 +355,7 @@ class _ProgressTrack extends StatelessWidget {
                 left: henLeft,
                 bottom: height - 6,
                 child: Image.asset(
-                  AppAssets.henRunner,
+                  Artwork.henRunner,
                   width: henSize,
                   height: henSize,
                   filterQuality: FilterQuality.medium,

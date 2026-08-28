@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/journal_entry.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/journal_entry.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/surfaces.dart';
 
 /// Mood-first entry form: pick the face, set the energy, then write.
@@ -27,7 +27,7 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
   @override
   void initState() {
     super.initState();
-    final entry = context.read<AppState>().journalFor(widget.day);
+    final entry = context.read<HenState>().journalFor(widget.day);
     _existing = entry != null;
     _note = TextEditingController(text: entry?.note ?? '');
     _mood = entry?.mood ?? Mood.okay;
@@ -41,7 +41,7 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
   }
 
   Future<void> _save() async {
-    final app = context.read<AppState>();
+    final app = context.read<HenState>();
     await app.saveJournal(
       JournalEntry(
         dayKey: DayKey.of(widget.day),
@@ -67,7 +67,7 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
               tooltip: 'Delete entry',
               onPressed: () async {
                 await context
-                    .read<AppState>()
+                    .read<HenState>()
                     .deleteJournal(DayKey.of(widget.day));
                 if (!context.mounted) return;
                 Navigator.of(context).pop();
@@ -79,16 +79,16 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           Text(DayKey.pretty(widget.day), style: context.text.headlineSmall),
           const SizedBox(height: 4),
           Text('How did the day actually feel?', style: context.text.bodyMedium),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           Row(
             children: Mood.values.map((mood) {
               final selected = mood == _mood;
@@ -105,7 +105,7 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
                         color: selected
                             ? mood.color.withValues(alpha: 0.18)
                             : c.surface,
-                        borderRadius: BorderRadius.circular(AppRadii.md),
+                        borderRadius: BorderRadius.circular(Corners.md),
                         border: Border.all(
                           color: selected ? mood.color : c.outline,
                           width: selected ? 2 : 1,
@@ -134,7 +134,7 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
               );
             }).toList(),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SoftCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +159,7 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           TextField(
             controller: _note,
             maxLines: 8,
@@ -169,7 +169,7 @@ class _JournalEditorScreenState extends State<JournalEditorScreen> {
                   'What worked, what got in the way, what you will change tomorrow…',
             ),
           ),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: Insets.xl),
           FilledButton(
             onPressed: _save,
             child: Text(_existing ? 'Update entry' : 'Save entry'),

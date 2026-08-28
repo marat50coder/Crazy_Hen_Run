@@ -1,3 +1,4 @@
+import '../../foundation/utils/formatting.dart';
 import 'run_type.dart';
 
 /// A single completed run. Distance is derived from real step-sensor data
@@ -55,23 +56,9 @@ class RunSession {
     return '${(distanceMeters / 1000).toStringAsFixed(2)} km';
   }
 
-  String get durationLabel {
-    final h = durationSec ~/ 3600;
-    final m = (durationSec % 3600) ~/ 60;
-    final s = durationSec % 60;
-    if (h > 0) {
-      return '$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
-    }
-    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
-  }
+  String get durationLabel => durationSec.formatClock();
 
-  String get paceLabel {
-    final p = paceSecPerKm;
-    if (p <= 0) return '--';
-    final m = p ~/ 60;
-    final s = p % 60;
-    return "$m'${s.toString().padLeft(2, '0')}\" /km";
-  }
+  String get paceLabel => paceSecPerKm.formatPace(suffix: ' /km');
 
   RunSession copyWith({
     int? feeling,

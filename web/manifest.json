@@ -1,6 +1,6 @@
 {
-    "name": "crazy_hen_run",
-    "short_name": "crazy_hen_run",
+    "name": "henyard_daily",
+    "short_name": "henyard_daily",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

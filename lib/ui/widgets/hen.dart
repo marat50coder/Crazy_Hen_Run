@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../core/constants/app_assets.dart';
-import '../../core/theme/app_palette.dart';
-import '../../core/theme/app_theme.dart';
+import '../../foundation/constants/artwork.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/theme/henyard_theme.dart';
 
 /// The hen artwork with an idle bob so the character never feels like a
 /// static sticker.
@@ -125,7 +125,7 @@ class RunTrackHero extends StatelessWidget {
                 child: Container(
                   height: 44,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadii.md),
+                    borderRadius: BorderRadius.circular(Corners.md),
                     gradient: LinearGradient(
                       colors: <Color>[
                         c.surfaceMuted,
@@ -153,7 +153,7 @@ class RunTrackHero extends StatelessWidget {
                     height: 44,
                     width: (width * animated).clamp(0.0, width),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppRadii.md),
+                      borderRadius: BorderRadius.circular(Corners.md),
                       gradient: LinearGradient(
                         colors: <Color>[
                           c.accent.withValues(alpha: 0.85),
@@ -235,7 +235,7 @@ class HenEmptyState extends StatelessWidget {
     super.key,
     required this.title,
     required this.message,
-    this.asset = AppAssets.henCurious,
+    this.asset = Artwork.henCurious,
     this.action,
     this.henSize = 180,
   });
@@ -251,27 +251,27 @@ class HenEmptyState extends StatelessWidget {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.xl,
+          horizontal: Insets.lg,
+          vertical: Insets.xl,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             HenFigure(asset: asset, size: henSize),
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: Insets.lg),
             Text(
               title,
               textAlign: TextAlign.center,
               style: context.text.headlineSmall,
             ),
-            const SizedBox(height: AppSpacing.xs),
+            const SizedBox(height: Insets.xs),
             Text(
               message,
               textAlign: TextAlign.center,
               style: context.text.bodyMedium,
             ),
             if (action != null) ...<Widget>[
-              const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: Insets.lg),
               action!,
             ],
           ],

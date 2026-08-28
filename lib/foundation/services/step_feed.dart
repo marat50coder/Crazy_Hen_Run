@@ -8,7 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 /// The hardware counter is cumulative since the last reboot, so callers get the
 /// raw value plus the walking/idle status and decide how to turn it into a
 /// per-day figure. No location is ever touched.
-class PedometerService {
+class StepFeed {
   StreamSubscription<StepCount>? _stepSub;
   StreamSubscription<PedestrianStatus>? _statusSub;
 

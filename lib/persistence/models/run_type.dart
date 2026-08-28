@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_assets.dart';
+import '../../foundation/constants/artwork.dart';
 
 /// The distinct flavours of run the app can guide and record. Each type
 /// carries its own colour, mascot pose and rough MET value used for the
@@ -11,7 +11,7 @@ enum RunType {
     'Just you and the road. No rules, no targets — let the hen set the pace.',
     Icons.directions_run_rounded,
     0xFF2E9E5B,
-    AppAssets.henRunner,
+    Artwork.henRunner,
     8.5,
     'Open pace',
   ),
@@ -20,7 +20,7 @@ enum RunType {
     'Alternate hard efforts with easy jogs. Builds speed and grit fast.',
     Icons.speed_rounded,
     0xFFF2683C,
-    AppAssets.henSprinter,
+    Artwork.henSprinter,
     11.5,
     'Work / rest',
   ),
@@ -29,7 +29,7 @@ enum RunType {
     'Comfortably hard, held steady. Your engine room for race pace.',
     Icons.local_fire_department_rounded,
     0xFFE0483D,
-    AppAssets.henSprinter,
+    Artwork.henSprinter,
     10.0,
     'Steady hard',
   ),
@@ -38,7 +38,7 @@ enum RunType {
     'Slow, patient miles. This is where the hen grows real endurance.',
     Icons.route_rounded,
     0xFF3E7BC2,
-    AppAssets.henStanding,
+    Artwork.henStanding,
     9.0,
     'Endurance',
   ),
@@ -47,7 +47,7 @@ enum RunType {
     'Feather-light shakeout to loosen the legs and stay consistent.',
     Icons.self_improvement_rounded,
     0xFF8A6FE0,
-    AppAssets.henHappy,
+    Artwork.henHappy,
     6.0,
     'Easy day',
   ),
@@ -56,7 +56,7 @@ enum RunType {
     'Short, explosive bursts. Chase the fox and empty the tank.',
     Icons.bolt_rounded,
     0xFFF2A93B,
-    AppAssets.henSprinter,
+    Artwork.henSprinter,
     13.0,
     'All out',
   );

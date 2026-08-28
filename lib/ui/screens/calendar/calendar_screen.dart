@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/habit.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/habit.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
 import '../habit/habit_detail_screen.dart';
@@ -30,7 +30,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
     final entries = app.habitsForDay(_selected);
     final summary = app.summaryFor(_selected);
@@ -45,9 +45,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  AppSpacing.sm,
-                  AppSpacing.md,
+                  Insets.md,
+                  Insets.sm,
+                  Insets.md,
                   0,
                 ),
                 child: Row(
@@ -92,7 +92,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.md),
+                padding: const EdgeInsets.all(Insets.md),
                 child: SoftCard(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 14),
                   child: TableCalendar<void>(
@@ -126,7 +126,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                       formatButtonDecoration: BoxDecoration(
                         color: c.accentSoft,
-                        borderRadius: BorderRadius.circular(AppRadii.pill),
+                        borderRadius: BorderRadius.circular(Corners.pill),
                       ),
                       leftChevronIcon: Icon(
                         Icons.chevron_left_rounded,
@@ -158,7 +158,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                padding: const EdgeInsets.symmetric(horizontal: Insets.md),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -188,21 +188,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.sm)),
+            const SliverToBoxAdapter(child: SizedBox(height: Insets.sm)),
             if (entries.isEmpty)
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: const EdgeInsets.all(Insets.md),
                   child: SoftCard(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    padding: const EdgeInsets.all(Insets.lg),
                     child: Row(
                       children: <Widget>[
                         const HenFigure(
-                          asset: AppAssets.henStanding,
+                          asset: Artwork.henStanding,
                           size: 56,
                           idle: false,
                         ),
-                        const SizedBox(width: AppSpacing.md),
+                        const SizedBox(width: Insets.md),
                         Expanded(
                           child: Text(
                             'No habits were scheduled on this day.',
@@ -216,13 +216,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
               )
             else
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                padding: const EdgeInsets.symmetric(horizontal: Insets.md),
                 sliver: SliverList.separated(
                   itemCount: entries.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
                   itemBuilder: (context, i) {
                     final entry = entries[i];
-                    final tone = HabitPalette.at(entry.habit.colorIndex);
+                    final tone = HabitSwatches.at(entry.habit.colorIndex);
                     return SoftCard(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
@@ -282,9 +282,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  AppSpacing.md,
-                  AppSpacing.md,
+                  Insets.md,
+                  Insets.md,
+                  Insets.md,
                   140,
                 ),
                 child: SoftCard(
@@ -293,14 +293,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       builder: (_) => JournalEditorScreen(day: _selected),
                     ),
                   ),
-                  color: Brand.lavender.withValues(alpha: 0.10),
+                  color: Meadow.lavender.withValues(alpha: 0.10),
                   child: Row(
                     children: <Widget>[
                       Icon(
                         journal == null
                             ? Icons.edit_note_rounded
                             : Icons.auto_stories_rounded,
-                        color: Brand.lavender,
+                        color: Meadow.lavender,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -352,7 +352,7 @@ class _DayCell extends StatelessWidget {
   });
 
   final DateTime day;
-  final AppState app;
+  final HenState app;
   final bool isToday;
   final bool isSelected;
   final bool dim;
@@ -384,7 +384,7 @@ class _DayCell extends StatelessWidget {
       margin: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: background,
-        borderRadius: BorderRadius.circular(AppRadii.sm),
+        borderRadius: BorderRadius.circular(Corners.sm),
         border: isToday && !isSelected
             ? Border.all(color: c.accent, width: 1.4)
             : null,

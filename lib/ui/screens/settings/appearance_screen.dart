@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -16,7 +16,7 @@ class AppearanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
 
     return Scaffold(
@@ -24,14 +24,14 @@ class AppearanceScreen extends StatelessWidget {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -42,7 +42,7 @@ class AppearanceScreen extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                HenBadge(asset: AppAssets.henRunner, size: 62, tint: c.accent),
+                HenBadge(asset: Artwork.henRunner, size: 62, tint: c.accent),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
@@ -65,7 +65,7 @@ class AppearanceScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'Theme'),
           Row(
             children: <Widget>[
@@ -76,7 +76,7 @@ class AppearanceScreen extends StatelessWidget {
                 selected: app.themeMode == ThemeMode.light,
                 onTap: () => app.setThemeMode(ThemeMode.light),
               ),
-              const SizedBox(width: AppSpacing.sm),
+              const SizedBox(width: Insets.sm),
               _ThemeOption(
                 mode: ThemeMode.dark,
                 label: 'Dark',
@@ -84,7 +84,7 @@ class AppearanceScreen extends StatelessWidget {
                 selected: app.themeMode == ThemeMode.dark,
                 onTap: () => app.setThemeMode(ThemeMode.dark),
               ),
-              const SizedBox(width: AppSpacing.sm),
+              const SizedBox(width: Insets.sm),
               _ThemeOption(
                 mode: ThemeMode.system,
                 label: 'System',
@@ -94,7 +94,7 @@ class AppearanceScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(
             title: 'Accent colour',
             subtitle: 'Used for buttons, rings and highlights',
@@ -103,8 +103,8 @@ class AppearanceScreen extends StatelessWidget {
             child: Wrap(
               spacing: 14,
               runSpacing: 14,
-              children: List<Widget>.generate(HabitPalette.swatches.length, (i) {
-                final tone = HabitPalette.at(i);
+              children: List<Widget>.generate(HabitSwatches.swatches.length, (i) {
+                final tone = HabitSwatches.at(i);
                 final selected = i == app.accentIndex;
                 return GestureDetector(
                   onTap: () => app.setAccentIndex(i),
@@ -164,7 +164,7 @@ class _ThemeOption extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 18),
           decoration: BoxDecoration(
             color: selected ? c.accentSoft : c.surface,
-            borderRadius: BorderRadius.circular(AppRadii.lg),
+            borderRadius: BorderRadius.circular(Corners.lg),
             border: Border.all(color: selected ? c.accent : c.outline),
           ),
           child: Column(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_config.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../state/app_state.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/constants/app_meta.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../domain/hen_state.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/avatar.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
@@ -17,7 +17,7 @@ import '../journal/journal_screen.dart';
 import '../run/run_history_screen.dart';
 import '../settings/about_screen.dart';
 import '../settings/settings_screen.dart';
-import '../web/web_page_screen.dart';
+import '../web/web_doc_screen.dart';
 import 'edit_profile_screen.dart';
 
 /// Identity screen: a centred hero, a stat band, then a compact link list.
@@ -26,8 +26,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
-    final run = context.watch<RunState>();
+    final app = context.watch<HenState>();
+    final run = context.watch<RunTracker>();
     final c = context.palette;
     final days = DateTime.now().difference(app.profile.joinedAt).inDays + 1;
 
@@ -37,9 +37,9 @@ class ProfileScreen extends StatelessWidget {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(
-            AppSpacing.md,
-            AppSpacing.sm,
-            AppSpacing.md,
+            Insets.md,
+            Insets.sm,
+            Insets.md,
             140,
           ),
           children: <Widget>[
@@ -91,18 +91,18 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: Insets.md),
                   Text(app.profile.name, style: context.text.displaySmall),
                   const SizedBox(height: 2),
                   Text(app.profile.tagline, style: context.text.bodyMedium),
-                  const SizedBox(height: AppSpacing.sm),
+                  const SizedBox(height: Insets.sm),
                   Wrap(
                     spacing: 8,
                     children: <Widget>[
                       TagChip(
                         label: run.rank.title,
                         icon: Icons.military_tech_rounded,
-                        color: Brand.corn,
+                        color: Meadow.corn,
                       ),
                       TagChip(
                         label: '${run.totalRuns} runs',
@@ -114,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: Insets.lg),
             SoftCard(
               padding: const EdgeInsets.symmetric(vertical: 18),
               child: Row(
@@ -129,9 +129,9 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: Insets.md),
             SoftCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: const EdgeInsets.all(Insets.md),
               child: Row(
                 children: <Widget>[
                   HenFigure(asset: run.rank.asset, size: 64),
@@ -156,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: Insets.lg),
             SectionHeader(title: 'Your stuff'),
             _LinkGroup(
               items: <_LinkItem>[
@@ -211,7 +211,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: Insets.lg),
             SectionHeader(title: 'Support & legal'),
             _LinkGroup(
               items: <_LinkItem>[
@@ -220,9 +220,9 @@ class ProfileScreen extends StatelessWidget {
                   label: 'Support',
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebPageScreen(
+                      builder: (_) => const WebDocScreen(
                         title: 'Support',
-                        url: AppConfig.supportUrl,
+                        url: AppMeta.supportUrl,
                       ),
                     ),
                   ),
@@ -232,9 +232,9 @@ class ProfileScreen extends StatelessWidget {
                   label: 'Privacy Policy',
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebPageScreen(
+                      builder: (_) => const WebDocScreen(
                         title: 'Privacy Policy',
-                        url: AppConfig.privacyPolicyUrl,
+                        url: AppMeta.privacyPolicyUrl,
                       ),
                     ),
                   ),
@@ -250,7 +250,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: Insets.lg),
             Center(
               child: Text(
                 'Member since ${DayKey.medium(app.profile.joinedAt)}',
@@ -337,14 +337,14 @@ class _LinkGroup extends StatelessWidget {
               InkWell(
                 onTap: item.onTap,
                 borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(i == 0 ? AppRadii.lg : 0),
+                  top: Radius.circular(i == 0 ? Corners.lg : 0),
                   bottom: Radius.circular(
-                    i == items.length - 1 ? AppRadii.lg : 0,
+                    i == items.length - 1 ? Corners.lg : 0,
                   ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
+                    horizontal: Insets.md,
                     vertical: 15,
                   ),
                   child: Row(

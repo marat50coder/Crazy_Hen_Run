@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import '../../state/app_state.dart';
+import '../../domain/hen_state.dart';
 
 class CoachLine {
   const CoachLine(this.headline, this.body);
@@ -14,7 +14,7 @@ class CoachLine {
 class Coach {
   const Coach._();
 
-  static CoachLine forToday(AppState state) {
+  static CoachLine forToday(HenState state) {
     final today = DateTime.now();
     final summary = state.summaryFor(today);
     final streak = state.currentBestStreak;

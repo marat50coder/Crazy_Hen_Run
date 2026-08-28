@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/utils/day_key.dart';
-import '../../state/app_state.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/theme/henyard_theme.dart';
+import '../../foundation/utils/day_key.dart';
+import '../../domain/hen_state.dart';
 
 /// Seven-day selector with a completion ring baked into each day.
 class WeekStrip extends StatelessWidget {
@@ -44,7 +44,7 @@ class WeekStrip extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 color: isSelected ? c.accent : Colors.transparent,
-                borderRadius: BorderRadius.circular(AppRadii.md),
+                borderRadius: BorderRadius.circular(Corners.md),
                 border: Border.all(
                   color: isSelected
                       ? Colors.transparent

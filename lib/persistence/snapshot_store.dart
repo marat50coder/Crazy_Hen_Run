@@ -11,8 +11,8 @@ import 'models/run_session.dart';
 
 /// Everything the app persists lives on the device only — no network, no
 /// account, no sync. A single [SharedPreferences] instance backs JSON blobs.
-class LocalStore {
-  LocalStore(this._prefs);
+class SnapshotStore {
+  SnapshotStore(this._prefs);
 
   final SharedPreferences _prefs;
 
@@ -29,8 +29,8 @@ class LocalStore {
   static const String _kPlans = 'chr.plans.v1';
   static const String _kRunSettings = 'chr.runsettings.v1';
 
-  static Future<LocalStore> open() async =>
-      LocalStore(await SharedPreferences.getInstance());
+  static Future<SnapshotStore> open() async =>
+      SnapshotStore(await SharedPreferences.getInstance());
 
   // ── habits ────────────────────────────────────────────────────────────────
   List<Habit> readHabits() {

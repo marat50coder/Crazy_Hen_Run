@@ -1,35 +1,35 @@
-import '../../core/constants/app_assets.dart';
+import '../../foundation/constants/artwork.dart';
 
 enum HenRank {
   chick(
     'Chick',
     'Fresh out of the shell. Every long run starts with one tiny step.',
     0,
-    AppAssets.henChick,
+    Artwork.henChick,
   ),
   hen(
     'Hen',
     'Standing tall and showing up. The routine is starting to stick.',
     5000,
-    AppAssets.henStanding,
+    Artwork.henStanding,
   ),
   runner(
     'Runner',
     'Headband on, pace found. Habits are no longer a fight.',
     25000,
-    AppAssets.henRunner,
+    Artwork.henRunner,
   ),
   sprinter(
     'Sprinter',
     'Full tracksuit, flames included. You are outrunning your excuses.',
     75000,
-    AppAssets.henSprinter,
+    Artwork.henSprinter,
   ),
   legend(
     'Legend',
     'Cape, medal, glory. The coop tells stories about you.',
     200000,
-    AppAssets.henLegend,
+    Artwork.henLegend,
   );
 
   const HenRank(this.title, this.blurb, this.requiredMetres, this.asset);

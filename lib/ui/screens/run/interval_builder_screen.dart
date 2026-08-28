@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/interval_plan.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/interval_plan.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/surfaces.dart';
 
 class IntervalBuilderScreen extends StatefulWidget {
@@ -58,13 +58,13 @@ class _IntervalBuilderScreenState extends State<IntervalBuilderScreen> {
       segments: _segments,
       repeats: _repeats,
     );
-    await context.read<RunState>().savePlan(plan);
+    await context.read<RunTracker>().savePlan(plan);
     if (mounted) Navigator.of(context).pop();
   }
 
   Future<void> _delete() async {
     if (widget.existing == null) return;
-    await context.read<RunState>().deletePlan(widget.existing!.id);
+    await context.read<RunTracker>().deletePlan(widget.existing!.id);
     if (mounted) Navigator.of(context).pop();
   }
 
@@ -83,7 +83,7 @@ class _IntervalBuilderScreenState extends State<IntervalBuilderScreen> {
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
+          padding: const EdgeInsets.all(Insets.md),
           child: FilledButton.icon(
             onPressed: _save,
             icon: const Icon(Icons.check_rounded),
@@ -92,15 +92,15 @@ class _IntervalBuilderScreenState extends State<IntervalBuilderScreen> {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
+        padding: const EdgeInsets.fromLTRB(Insets.md, Insets.sm, Insets.md, Insets.md),
         children: <Widget>[
           TextField(
             controller: _name,
             decoration: const InputDecoration(labelText: 'Plan name'),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             child: Row(
               children: <Widget>[
                 const Icon(Icons.repeat_rounded, size: 18),
@@ -114,10 +114,10 @@ class _IntervalBuilderScreenState extends State<IntervalBuilderScreen> {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           const SectionHeader(title: 'Segments'),
           ...List<Widget>.generate(_segments.length, (i) => _segmentCard(i)),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           OutlinedButton.icon(
             onPressed: _addSegment,
             icon: const Icon(Icons.add_rounded),
@@ -131,9 +131,9 @@ class _IntervalBuilderScreenState extends State<IntervalBuilderScreen> {
   Widget _segmentCard(int i) {
     final seg = _segments[i];
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      padding: const EdgeInsets.only(bottom: Insets.sm),
       child: SoftCard(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: const EdgeInsets.all(Insets.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -143,7 +143,7 @@ class _IntervalBuilderScreenState extends State<IntervalBuilderScreen> {
                   width: 14,
                   height: 14,
                   decoration: BoxDecoration(
-                    color: Color.lerp(Brand.sky, Brand.comb, seg.intensity),
+                    color: Color.lerp(Meadow.sky, Meadow.comb, seg.intensity),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -187,7 +187,7 @@ class _IntervalBuilderScreenState extends State<IntervalBuilderScreen> {
                 Expanded(
                   child: Slider(
                     value: seg.intensity,
-                    activeColor: Color.lerp(Brand.sky, Brand.comb, seg.intensity),
+                    activeColor: Color.lerp(Meadow.sky, Meadow.comb, seg.intensity),
                     onChanged: (v) => setState(() => _segments[i] = seg.copyWith(intensity: v)),
                   ),
                 ),

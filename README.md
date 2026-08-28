@@ -1,7 +1,8 @@
-# Crazy Hen Run
+# Henyard Daily
 
-An offline habit tracker for Android. Every habit you close turns into distance
-on a running track, and the hen in your pocket levels up as that distance grows.
+An offline habit tracker for iOS and Android. Every habit you close turns into
+distance on a running track, and the hen in your pocket levels up as that
+distance grows.
 
 ## Running it
 
@@ -10,32 +11,34 @@ flutter pub get
 flutter run
 ```
 
-The app targets Android only. Release builds are intentionally not part of the
-normal workflow — build one when you are ready to ship:
+Release builds are intentionally not part of the normal workflow — build one
+when you are ready to ship:
 
 ```bash
 flutter build apk --release
+flutter build ipa --release
 ```
 
 ## Identity
 
 | | |
 |---|---|
+| Product name | Crazy Hen Run |
 | Bundle ID | `com.crazyhenrun.crazyhenrungame` |
 | App ID | `6790464294` |
 | Privacy Policy | https://crazyhennrun.com/privacy-policy.html |
 | Support | https://crazyhennrun.com/support.html |
 
-## How it is put together
+## How the source is laid out
 
 ```
 lib/
-  core/        constants, theme (colours, typography, spacing), small utilities
-  data/        models + the SharedPreferences backed local store
-  state/       AppState — a single ChangeNotifier holding all app logic
+  foundation/    constants, theme (colours, typography, spacing), utilities
+  persistence/   models + the SharedPreferences-backed snapshot store
+  domain/        HenState and RunTracker — ChangeNotifiers driving the UI
   ui/
-    widgets/   the design system (cards, rings, track bar, heatmap, hen art)
-    screens/   one folder per feature area
+    widgets/     the design system (cards, rings, track bar, heatmap, hen art)
+    screens/     one folder per feature area
 ```
 
 There is no backend, no account and no analytics. Habits, logs, journal
@@ -51,10 +54,11 @@ app is portrait only.
 
 ### Privacy Policy and Support
 
-`ui/screens/web/web_page_screen.dart` loads the live pages in a WebView and
-injects CSS so the text is always black on white. If the network fails or
-stalls, the bundled copy in `core/constants/offline_pages.dart` is shown
-instead — the pages are therefore reachable with or without a connection.
+`ui/screens/web/web_doc_screen.dart` loads the live pages in a WebView and
+injects the reader stylesheet from `web_reader_style.dart` so the text is
+always black on white. If the network fails or stalls, the bundled copy in
+`foundation/constants/embedded_docs.dart` is shown instead — the pages are
+therefore reachable with or without a connection.
 
 ### Assets
 

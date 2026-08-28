@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../core/theme/app_theme.dart';
-import '../../data/models/habit.dart';
-import '../../state/app_state.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/theme/henyard_theme.dart';
+import '../../persistence/models/habit.dart';
+import '../../domain/hen_state.dart';
 import 'progress.dart';
 
 class HabitTile extends StatelessWidget {
@@ -28,7 +28,7 @@ class HabitTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.palette;
     final habit = entry.habit;
-    final tone = HabitPalette.at(habit.colorIndex);
+    final tone = HabitSwatches.at(habit.colorIndex);
     final done = entry.isComplete;
 
     return AnimatedContainer(
@@ -36,7 +36,7 @@ class HabitTile extends StatelessWidget {
       curve: Curves.easeOutCubic,
       decoration: BoxDecoration(
         color: done ? tone.withValues(alpha: 0.10) : c.surface,
-        borderRadius: BorderRadius.circular(AppRadii.lg),
+        borderRadius: BorderRadius.circular(Corners.lg),
         border: Border.all(
           color: done ? tone.withValues(alpha: 0.32) : c.outline,
         ),
@@ -55,7 +55,7 @@ class HabitTile extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(Corners.lg),
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Row(
@@ -91,13 +91,13 @@ class HabitTile extends StatelessWidget {
                             Icon(
                               Icons.local_fire_department_rounded,
                               size: 13,
-                              color: Brand.yolk,
+                              color: Meadow.yolk,
                             ),
                             const SizedBox(width: 2),
                             Text(
                               '$streak',
                               style: context.text.bodySmall?.copyWith(
-                                color: Brand.yolk,
+                                color: Meadow.yolk,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -153,7 +153,7 @@ class _CategoryBadge extends StatelessWidget {
       height: 46,
       decoration: BoxDecoration(
         color: tone.withValues(alpha: muted ? 0.16 : 0.14),
-        borderRadius: BorderRadius.circular(AppRadii.sm),
+        borderRadius: BorderRadius.circular(Corners.sm),
       ),
       child: Icon(habit.category.icon, size: 22, color: tone),
     );
@@ -218,7 +218,7 @@ class _Stepper extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: c.surfaceMuted,
-        borderRadius: BorderRadius.circular(AppRadii.pill),
+        borderRadius: BorderRadius.circular(Corners.pill),
         border: Border.all(color: c.outline),
       ),
       child: Column(

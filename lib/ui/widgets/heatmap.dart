@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../core/utils/day_key.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/utils/day_key.dart';
 
 /// Contribution-graph style grid: one column per week, one row per weekday.
 class HabitHeatmap extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_palette.dart';
-import '../../core/theme/app_theme.dart';
+import '../../foundation/theme/palette.dart';
+import '../../foundation/theme/henyard_theme.dart';
 
 /// The standard raised panel used across the app: flat fill, hairline border,
 /// very soft shadow. Everything else is composed on top of it.
@@ -11,8 +11,8 @@ class SoftCard extends StatelessWidget {
   const SoftCard({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(AppSpacing.md),
-    this.radius = AppRadii.lg,
+    this.padding = const EdgeInsets.all(Insets.md),
+    this.radius = Corners.lg,
     this.color,
     this.border = true,
     this.onTap,
@@ -68,8 +68,8 @@ class GlassPanel extends StatelessWidget {
   const GlassPanel({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(AppSpacing.md),
-    this.radius = AppRadii.lg,
+    this.padding = const EdgeInsets.all(Insets.md),
+    this.radius = Corners.lg,
     this.tint,
     this.blur = 18,
   });
@@ -127,7 +127,7 @@ class TagChip extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: tone.withValues(alpha: 0.13),
-        borderRadius: BorderRadius.circular(AppRadii.pill),
+        borderRadius: BorderRadius.circular(Corners.pill),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -153,7 +153,7 @@ class SectionHeader extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.trailing,
-    this.padding = const EdgeInsets.only(bottom: AppSpacing.sm),
+    this.padding = const EdgeInsets.only(bottom: Insets.sm),
   });
 
   final String title;

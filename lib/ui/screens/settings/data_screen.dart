@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../state/app_state.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../domain/hen_state.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/surfaces.dart';
 
 /// Storage overview plus the destructive actions, kept deliberately plain so
@@ -17,7 +17,7 @@ class DataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
 
     return Scaffold(
@@ -25,10 +25,10 @@ class DataScreen extends StatelessWidget {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           SoftCard(
@@ -54,7 +54,7 @@ class DataScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'What is stored'),
           SoftCard(
             padding: EdgeInsets.zero,
@@ -89,7 +89,7 @@ class DataScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'Export'),
           SoftCard(
             child: Column(
@@ -100,7 +100,7 @@ class DataScreen extends StatelessWidget {
                   'into a note or a file to keep your own backup.',
                   style: context.text.bodyMedium,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: Insets.md),
                 OutlinedButton.icon(
                   onPressed: () async {
                     final json = const JsonEncoder.withIndent('  ')
@@ -119,7 +119,7 @@ class DataScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'Danger zone'),
           SoftCard(
             border: true,
@@ -137,7 +137,7 @@ class DataScreen extends StatelessWidget {
                   'There is no undo and no backup on our side.',
                   style: context.text.bodyMedium,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: Insets.md),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: c.danger,
@@ -171,10 +171,10 @@ class DataScreen extends StatelessWidget {
                     if (confirmed != true) return;
                     await app.resetEverything();
                     if (context.mounted) {
-                      await context.read<RunState>().resetEverything();
+                      await context.read<RunTracker>().resetEverything();
                     }
                     if (!context.mounted) return;
-                    context.read<RunState>().resetRunningData();
+                    context.read<RunTracker>().resetRunningData();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Everything has been reset')),
                     );
@@ -211,7 +211,7 @@ class _CountRow extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
+            horizontal: Insets.md,
             vertical: 14,
           ),
           child: Row(
@@ -225,7 +225,7 @@ class _CountRow extends StatelessWidget {
         ),
         if (!last)
           Padding(
-            padding: const EdgeInsets.only(left: 50, right: AppSpacing.md),
+            padding: const EdgeInsets.only(left: 50, right: Insets.md),
             child: Divider(height: 1, color: c.outline),
           ),
       ],

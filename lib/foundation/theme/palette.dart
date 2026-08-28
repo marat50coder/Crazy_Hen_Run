@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Brand colours sampled from the Crazy Hen Run artwork.
-class Brand {
-  const Brand._();
+/// Meadow colours sampled from the Crazy Hen Run artwork.
+class Meadow {
+  const Meadow._();
 
   static const Color forest = Color(0xFF0E4429);
   static const Color forestDeep = Color(0xFF02311D);
@@ -20,18 +20,18 @@ class Brand {
 }
 
 /// Accent colours a user can pick for individual habits.
-class HabitPalette {
-  const HabitPalette._();
+class HabitSwatches {
+  const HabitSwatches._();
 
   static const List<Color> swatches = <Color>[
-    Brand.lime,
-    Brand.moss,
-    Brand.corn,
-    Brand.sunset,
-    Brand.comb,
-    Brand.blush,
-    Brand.lavender,
-    Brand.sky,
+    Meadow.lime,
+    Meadow.moss,
+    Meadow.corn,
+    Meadow.sunset,
+    Meadow.comb,
+    Meadow.blush,
+    Meadow.lavender,
+    Meadow.sky,
     Color(0xFF17BEBB),
     Color(0xFF7A5C3E),
   ];
@@ -42,8 +42,8 @@ class HabitPalette {
 /// Semantic colours resolved per brightness, exposed through [ThemeExtension]
 /// so screens never branch on `Theme.of(context).brightness` by hand.
 @immutable
-class AppColors extends ThemeExtension<AppColors> {
-  const AppColors({
+class Palette extends ThemeExtension<Palette> {
+  const Palette({
     required this.canvas,
     required this.canvasAlt,
     required this.surface,
@@ -79,46 +79,46 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color danger;
   final Color shadow;
 
-  static const AppColors light = AppColors(
+  static const Palette light = Palette(
     canvas: Color(0xFFF5F7F0),
     canvasAlt: Color(0xFFEDF1E4),
     surface: Colors.white,
     surfaceMuted: Color(0xFFF0F3EA),
-    surfaceInverse: Brand.forest,
+    surfaceInverse: Meadow.forest,
     outline: Color(0xFFE3E8DA),
     outlineStrong: Color(0xFFCBD3BE),
     textPrimary: Color(0xFF102117),
     textSecondary: Color(0xFF6C7A6E),
     textInverse: Color(0xFFF4FBF2),
-    accent: Brand.moss,
+    accent: Meadow.moss,
     accentSoft: Color(0xFFE3F3E3),
     positive: Color(0xFF3F9D5B),
-    warning: Brand.yolk,
-    danger: Brand.comb,
+    warning: Meadow.yolk,
+    danger: Meadow.comb,
     shadow: Color(0x1A0E4429),
   );
 
-  static const AppColors dark = AppColors(
+  static const Palette dark = Palette(
     canvas: Color(0xFF0B1310),
     canvasAlt: Color(0xFF101B16),
     surface: Color(0xFF15221C),
     surfaceMuted: Color(0xFF1B2A23),
-    surfaceInverse: Brand.limeSoft,
+    surfaceInverse: Meadow.limeSoft,
     outline: Color(0xFF243429),
     outlineStrong: Color(0xFF32473A),
     textPrimary: Color(0xFFEDF5EE),
     textSecondary: Color(0xFF93A69A),
     textInverse: Color(0xFF07130D),
-    accent: Brand.lime,
+    accent: Meadow.lime,
     accentSoft: Color(0xFF1D3226),
     positive: Color(0xFF64C97F),
-    warning: Brand.corn,
+    warning: Meadow.corn,
     danger: Color(0xFFFF6B60),
     shadow: Color(0x66000000),
   );
 
   @override
-  AppColors copyWith({
+  Palette copyWith({
     Color? canvas,
     Color? canvasAlt,
     Color? surface,
@@ -136,7 +136,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? danger,
     Color? shadow,
   }) {
-    return AppColors(
+    return Palette(
       canvas: canvas ?? this.canvas,
       canvasAlt: canvasAlt ?? this.canvasAlt,
       surface: surface ?? this.surface,
@@ -157,9 +157,9 @@ class AppColors extends ThemeExtension<AppColors> {
   }
 
   @override
-  AppColors lerp(ThemeExtension<AppColors>? other, double t) {
-    if (other is! AppColors) return this;
-    return AppColors(
+  Palette lerp(ThemeExtension<Palette>? other, double t) {
+    if (other is! Palette) return this;
+    return Palette(
       canvas: Color.lerp(canvas, other.canvas, t)!,
       canvasAlt: Color.lerp(canvasAlt, other.canvasAlt, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
@@ -180,7 +180,7 @@ class AppColors extends ThemeExtension<AppColors> {
   }
 }
 
-extension AppColorsX on BuildContext {
-  AppColors get palette => Theme.of(this).extension<AppColors>()!;
+extension PaletteX on BuildContext {
+  Palette get palette => Theme.of(this).extension<Palette>()!;
   TextTheme get text => Theme.of(this).textTheme;
 }

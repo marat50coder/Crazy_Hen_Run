@@ -6,5 +6,5 @@ import 'app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  runApp(const CrazyHenRunApp());
+  runApp(const HenyardApp());
 }

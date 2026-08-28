@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/run_type.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/run_type.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
 import 'live_run_screen.dart';
@@ -16,10 +16,10 @@ class RunTypesScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Run types')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
-          AppSpacing.sm,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.sm,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           Text(
@@ -27,9 +27,9 @@ class RunTypesScreen extends StatelessWidget {
             'effort trace adapt to that flavour of running.',
             style: context.text.bodyMedium,
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           ...RunType.values.map((t) => Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                padding: const EdgeInsets.only(bottom: Insets.sm),
                 child: _TypeCard(type: t),
               )),
         ],
@@ -53,7 +53,7 @@ class _TypeCard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -63,7 +63,7 @@ class _TypeCard extends StatelessWidget {
                   Color.alphaBlend(Colors.black.withValues(alpha: 0.2), type.color),
                 ],
               ),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadii.lg)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(Corners.lg)),
             ),
             child: Row(
               children: <Widget>[
@@ -80,7 +80,7 @@ class _TypeCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             child: Row(
               children: <Widget>[
                 Expanded(child: Text(type.blurb, style: context.text.bodyMedium)),

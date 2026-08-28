@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/run_session.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/run_session.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/run_widgets.dart';
 import '../../widgets/surfaces.dart';
@@ -38,7 +38,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
     super.dispose();
   }
 
-  RunSession? _find(RunState run) {
+  RunSession? _find(RunTracker run) {
     for (final r in run.runs) {
       if (r.id == widget.runId) return r;
     }
@@ -46,7 +46,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
   }
 
   Future<void> _save(RunSession run) async {
-    final rs = context.read<RunState>();
+    final rs = context.read<RunTracker>();
     await rs.updateRun(run.copyWith(feeling: _feeling, note: _note.text.trim()));
     if (!mounted) return;
     Navigator.of(context).popUntil((r) => r.isFirst);
@@ -54,7 +54,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final rs = context.watch<RunState>();
+    final rs = context.watch<RunTracker>();
     final run = _find(rs);
     final c = context.palette;
 
@@ -73,10 +73,10 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(
-              top: MediaQuery.paddingOf(context).top + AppSpacing.lg,
-              left: AppSpacing.lg,
-              right: AppSpacing.lg,
-              bottom: AppSpacing.xl,
+              top: MediaQuery.paddingOf(context).top + Insets.lg,
+              left: Insets.lg,
+              right: Insets.lg,
+              bottom: Insets.xl,
             ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -93,7 +93,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                 HenFigure(asset: run.type.henAsset, size: 96)
                     .animate()
                     .scale(duration: 420.ms, curve: Curves.easeOutBack),
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: Insets.sm),
                 Text(
                   'Run complete!',
                   style: context.text.headlineMedium?.copyWith(color: Colors.white),
@@ -108,12 +108,12 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SoftCard(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: const EdgeInsets.all(Insets.md),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -129,7 +129,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                           value: run.paceLabel.replaceAll(' /km', ''),
                           label: 'Pace /km',
                           icon: Icons.speed_rounded,
-                          color: Brand.sky,
+                          color: Meadow.sky,
                         ),
                       ),
                       Expanded(
@@ -137,13 +137,13 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                           value: '${run.calories}',
                           label: 'Kcal',
                           icon: Icons.local_fire_department_rounded,
-                          color: Brand.comb,
+                          color: Meadow.comb,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: Insets.md),
                 Text('Effort trace', style: context.text.labelSmall),
                 const SizedBox(height: 8),
                 RunTrace(
@@ -151,9 +151,9 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                   color: run.type.color,
                   height: 120,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: Insets.md),
                 SoftCard(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: const EdgeInsets.all(Insets.md),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -163,9 +163,9 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 Text('How did it feel?', style: context.text.titleMedium),
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: Insets.sm),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List<Widget>.generate(_feelings.length, (i) {
@@ -197,7 +197,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                     );
                   }),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 TextField(
                   controller: _note,
                   maxLines: 3,
@@ -205,13 +205,13 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                     hintText: 'Notes — how was the route, the weather, your legs?',
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 FilledButton.icon(
                   onPressed: () => _save(run),
                   icon: const Icon(Icons.check_rounded),
                   label: const Text('Save run'),
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: Insets.sm),
                 TextButton(
                   onPressed: () => Navigator.of(context).popUntil((r) => r.isFirst),
                   child: const Text('Skip for now'),

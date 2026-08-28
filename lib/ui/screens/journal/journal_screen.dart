@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/journal_entry.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/journal_entry.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
 import 'journal_editor_screen.dart';
@@ -18,7 +18,7 @@ class JournalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
 
     final entries = app.journal.values.toList()
@@ -47,7 +47,7 @@ class JournalScreen extends StatelessWidget {
               title: 'No entries yet',
               message:
                   'A couple of lines a day is enough. Later they explain why some weeks went well and others did not.',
-              asset: AppAssets.henCoach,
+              asset: Artwork.henCoach,
               henSize: 170,
               action: FilledButton.icon(
                 onPressed: () => Navigator.of(context).push(
@@ -62,9 +62,9 @@ class JournalScreen extends StatelessWidget {
           : ListView(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(
-                AppSpacing.md,
+                Insets.md,
                 0,
-                AppSpacing.md,
+                Insets.md,
                 120,
               ),
               children: <Widget>[
@@ -99,7 +99,7 @@ class JournalScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: Insets.lg),
                 ...List<Widget>.generate(entries.length, (i) {
                   final entry = entries[i];
                   return _TimelineRow(

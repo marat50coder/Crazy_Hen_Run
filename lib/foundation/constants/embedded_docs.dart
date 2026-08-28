@@ -2,8 +2,8 @@
 ///
 /// The app is fully offline, so these are shown whenever the live pages cannot
 /// be reached. The content mirrors the published pages word for word.
-class OfflinePages {
-  const OfflinePages._();
+class EmbeddedDocs {
+  const EmbeddedDocs._();
 
   static const String _style = '''
     <meta name="viewport" content="width=device-width, initial-scale=1">

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../state/app_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../domain/hen_state.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/surfaces.dart';
@@ -17,7 +17,7 @@ class SprintScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
+    final app = context.watch<HenState>();
     final c = context.palette;
 
     final week = DayKey.weekOf(DateTime.now(), firstWeekday: app.firstWeekday);
@@ -34,10 +34,10 @@ class SprintScreen extends StatelessWidget {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
+          Insets.lg,
           0,
-          AppSpacing.lg,
-          AppSpacing.xxl,
+          Insets.lg,
+          Insets.xxl,
         ),
         children: <Widget>[
           Center(
@@ -62,7 +62,7 @@ class SprintScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           Center(
             child: Text(
               remaining == 0
@@ -71,15 +71,15 @@ class SprintScreen extends StatelessWidget {
               style: context.text.titleMedium,
             ),
           ),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: Insets.xl),
           SoftCard(
             color: remaining == 0 ? c.accentSoft : null,
             child: Row(
               children: <Widget>[
                 HenFigure(
                   asset: remaining == 0
-                      ? AppAssets.henHappy
-                      : AppAssets.henSprinter,
+                      ? Artwork.henHappy
+                      : Artwork.henSprinter,
                   size: 72,
                 ),
                 const SizedBox(width: 12),
@@ -94,7 +94,7 @@ class SprintScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(title: 'This week'),
           SoftCard(
             child: Row(
@@ -141,7 +141,7 @@ class SprintScreen extends StatelessWidget {
               }),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           SectionHeader(
             title: 'Sprint target',
             subtitle: 'How many habits you want to close every week',

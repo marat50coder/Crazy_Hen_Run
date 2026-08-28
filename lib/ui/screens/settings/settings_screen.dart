@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_assets.dart';
-import '../../../core/constants/app_config.dart';
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../state/app_state.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/constants/artwork.dart';
+import '../../../foundation/constants/app_meta.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../domain/hen_state.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
 import '../habit/archive_screen.dart';
@@ -15,7 +15,7 @@ import '../run/challenges_screen.dart';
 import '../run/interval_plans_screen.dart';
 import '../run/steps_screen.dart';
 import '../sprint/sprint_screen.dart';
-import '../web/web_page_screen.dart';
+import '../web/web_doc_screen.dart';
 import 'about_screen.dart';
 import 'appearance_screen.dart';
 import 'data_screen.dart';
@@ -25,8 +25,8 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final app = context.watch<AppState>();
-    final run = context.watch<RunState>();
+    final app = context.watch<HenState>();
+    final run = context.watch<RunTracker>();
     final c = context.palette;
 
     return Scaffold(
@@ -34,14 +34,14 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -52,15 +52,15 @@ class SettingsScreen extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                const HenFigure(asset: AppAssets.henCoach, size: 62),
+                const HenFigure(asset: Artwork.henCoach, size: 62),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(AppConfig.appName, style: context.text.titleMedium),
+                      Text(AppMeta.appName, style: context.text.titleMedium),
                       Text(
-                        'Version ${AppConfig.version} · works fully offline',
+                        'Version ${AppMeta.version} · works fully offline',
                         style: context.text.bodySmall,
                       ),
                     ],
@@ -69,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: Insets.lg),
           _Group(
             title: 'Look and feel',
             children: <Widget>[
@@ -112,7 +112,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _Group(
             title: 'Running',
             children: <Widget>[
@@ -153,7 +153,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _Group(
             title: 'Tracking',
             children: <Widget>[
@@ -201,7 +201,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _Group(
             title: 'Data',
             children: <Widget>[
@@ -215,7 +215,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _Group(
             title: 'Support & legal',
             children: <Widget>[
@@ -225,9 +225,9 @@ class SettingsScreen extends StatelessWidget {
                 subtitle: 'Ask a question or report a bug',
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => const WebPageScreen(
+                    builder: (_) => const WebDocScreen(
                       title: 'Support',
-                      url: AppConfig.supportUrl,
+                      url: AppMeta.supportUrl,
                     ),
                   ),
                 ),
@@ -238,9 +238,9 @@ class SettingsScreen extends StatelessWidget {
                 subtitle: 'How your data is handled',
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => const WebPageScreen(
+                    builder: (_) => const WebDocScreen(
                       title: 'Privacy Policy',
-                      url: AppConfig.privacyPolicyUrl,
+                      url: AppMeta.privacyPolicyUrl,
                     ),
                   ),
                 ),
@@ -322,7 +322,7 @@ class _NavRow extends StatelessWidget {
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
+          horizontal: Insets.md,
           vertical: 14,
         ),
         child: Row(
@@ -377,7 +377,7 @@ class _SwitchRow extends StatelessWidget {
       onTap: () => onChanged(!value),
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
+          horizontal: Insets.md,
           vertical: 8,
         ),
         child: Row(

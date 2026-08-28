@@ -3,10 +3,11 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/run_type.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/formatting.dart';
+import '../../../persistence/models/run_type.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import 'run_summary_screen.dart';
 
@@ -31,7 +32,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final run = context.read<RunState>();
+      final run = context.read<RunTracker>();
       if (!run.isRunning) run.startRun(widget.type);
     });
   }
@@ -43,7 +44,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
   }
 
   Future<void> _finish() async {
-    final run = context.read<RunState>();
+    final run = context.read<RunTracker>();
     final session = await run.finishRun();
     if (!mounted || session == null) return;
     Navigator.of(context).pushReplacement(
@@ -70,14 +71,14 @@ class _LiveRunScreenState extends State<LiveRunScreen>
       ),
     );
     if (ok == true && mounted) {
-      context.read<RunState>().discardRun();
+      context.read<RunTracker>().discardRun();
       Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final run = context.watch<RunState>();
+    final run = context.watch<RunTracker>();
     final type = widget.type;
     final onColor = Colors.white;
 
@@ -100,7 +101,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: const EdgeInsets.all(Insets.lg),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -117,7 +118,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(AppRadii.pill),
+                            borderRadius: BorderRadius.circular(Corners.pill),
                           ),
                           child: Text('PAUSED',
                               style: context.text.labelSmall?.copyWith(color: onColor)),
@@ -142,9 +143,9 @@ class _LiveRunScreenState extends State<LiveRunScreen>
                       letterSpacing: 2,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: Insets.lg),
                   _runnerLane(type),
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: Insets.lg),
                   _metrics(run, onColor),
                   const Spacer(),
                   _controls(run),
@@ -194,7 +195,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
     );
   }
 
-  Widget _metrics(RunState run, Color onColor) {
+  Widget _metrics(RunTracker run, Color onColor) {
     Widget cell(String value, String label) => Expanded(
           child: Column(
             children: <Widget>[
@@ -214,16 +215,14 @@ class _LiveRunScreenState extends State<LiveRunScreen>
         );
 
     final dist = run.liveDistanceMeters;
-    final distText =
-        dist < 1000 ? '${dist.round()}' : (dist / 1000).toStringAsFixed(2);
-    final distUnit = dist < 1000 ? 'METRES' : 'KILOMETRES';
-    final pace = run.livePaceSecPerKm;
-    final paceText = pace <= 0 ? '--' : "${pace ~/ 60}'${(pace % 60).toString().padLeft(2, '0')}\"";
+    final distText = dist.formatDistanceCompact();
+    final distUnit = dist.compactDistanceUnit;
+    final paceText = run.livePaceSecPerKm.formatPace();
 
     return Column(
       children: <Widget>[
         Row(children: <Widget>[cell(distText, distUnit), cell(paceText, 'PACE /KM')]),
-        const SizedBox(height: AppSpacing.md),
+        const SizedBox(height: Insets.md),
         Row(children: <Widget>[
           cell('${run.liveSteps}', 'STEPS'),
           cell('${run.liveCalories}', 'KCAL'),
@@ -232,7 +231,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
     );
   }
 
-  Widget _controls(RunState run) {
+  Widget _controls(RunTracker run) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -261,15 +260,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
     );
   }
 
-  static String _fmt(int sec) {
-    final h = sec ~/ 3600;
-    final m = (sec % 3600) ~/ 60;
-    final s = sec % 60;
-    if (h > 0) {
-      return '$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
-    }
-    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
-  }
+  static String _fmt(int sec) => sec.formatClock();
 }
 
 class _LiveDot extends StatefulWidget {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/interval_plan.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/interval_plan.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/surfaces.dart';
 import 'interval_builder_screen.dart';
 import 'interval_session_screen.dart';
@@ -16,7 +16,7 @@ class IntervalPlansScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final run = context.watch<RunState>();
+    final run = context.watch<RunTracker>();
     final plans = run.plans;
 
     return Scaffold(
@@ -30,9 +30,9 @@ class IntervalPlansScreen extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
-          AppSpacing.sm,
-          AppSpacing.md,
+          Insets.md,
+          Insets.sm,
+          Insets.md,
           100,
         ),
         children: <Widget>[
@@ -41,9 +41,9 @@ class IntervalPlansScreen extends StatelessWidget {
             'slows down with every segment.',
             style: context.text.bodyMedium,
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           ...plans.map((p) => Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                padding: const EdgeInsets.only(bottom: Insets.sm),
                 child: _PlanCard(plan: p, preset: _isPreset(p.id)),
               )),
         ],
@@ -65,7 +65,7 @@ class _PlanCard extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(builder: (_) => IntervalSessionScreen(plan: plan)),
       ),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -92,9 +92,9 @@ class _PlanCard extends StatelessWidget {
             '${plan.durationLabel} · ${plan.repeats}× · ${plan.segments.length} segments',
             style: context.text.bodySmall,
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           _SegmentBar(plan: plan),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           Row(
             children: <Widget>[
               Icon(Icons.play_circle_fill_rounded, color: c.accent, size: 20),
@@ -118,7 +118,7 @@ class _SegmentBar extends StatelessWidget {
     final segs = plan.segments;
     final total = segs.fold<int>(0, (s, e) => s + e.seconds);
     return ClipRRect(
-      borderRadius: BorderRadius.circular(AppRadii.pill),
+      borderRadius: BorderRadius.circular(Corners.pill),
       child: SizedBox(
         height: 12,
         child: Row(
@@ -128,7 +128,7 @@ class _SegmentBar extends StatelessWidget {
               flex: flex,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 0.5),
-                color: Color.lerp(Brand.sky, Brand.comb, s.intensity),
+                color: Color.lerp(Meadow.sky, Meadow.comb, s.intensity),
               ),
             );
           }).toList(),

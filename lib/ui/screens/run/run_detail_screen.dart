@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/day_key.dart';
-import '../../../data/models/run_session.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../foundation/utils/day_key.dart';
+import '../../../persistence/models/run_session.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/run_widgets.dart';
 import '../../widgets/surfaces.dart';
@@ -15,7 +15,7 @@ class RunDetailScreen extends StatelessWidget {
 
   final String runId;
 
-  RunSession? _find(RunState run) {
+  RunSession? _find(RunTracker run) {
     for (final r in run.runs) {
       if (r.id == runId) return r;
     }
@@ -41,14 +41,14 @@ class RunDetailScreen extends StatelessWidget {
       ),
     );
     if (ok == true && context.mounted) {
-      await context.read<RunState>().deleteRun(runId);
+      await context.read<RunTracker>().deleteRun(runId);
       if (context.mounted) Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final rs = context.watch<RunState>();
+    final rs = context.watch<RunTracker>();
     final run = _find(rs);
     final c = context.palette;
 
@@ -71,14 +71,14 @@ class RunDetailScreen extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: const EdgeInsets.all(Insets.lg),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -110,28 +110,28 @@ class RunDetailScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           Row(
             children: <Widget>[
-              Expanded(child: _statCard(context, run.durationLabel, 'Duration', Icons.timer_rounded, Brand.sky)),
-              const SizedBox(width: AppSpacing.sm),
+              Expanded(child: _statCard(context, run.durationLabel, 'Duration', Icons.timer_rounded, Meadow.sky)),
+              const SizedBox(width: Insets.sm),
               Expanded(child: _statCard(context, run.paceLabel.replaceAll(' /km', ''), 'Pace /km', Icons.speed_rounded, run.type.color)),
             ],
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           Row(
             children: <Widget>[
-              Expanded(child: _statCard(context, '${run.calories}', 'Calories', Icons.local_fire_department_rounded, Brand.comb)),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(child: _statCard(context, '${run.steps}', 'Steps', Icons.directions_walk_rounded, Brand.moss)),
+              Expanded(child: _statCard(context, '${run.calories}', 'Calories', Icons.local_fire_department_rounded, Meadow.comb)),
+              const SizedBox(width: Insets.sm),
+              Expanded(child: _statCard(context, '${run.steps}', 'Steps', Icons.directions_walk_rounded, Meadow.moss)),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           const SectionHeader(title: 'Effort trace', subtitle: 'How intensity moved through the run'),
           RunTrace(samples: run.cadence, color: run.type.color, height: 140),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           SoftCard(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.all(Insets.md),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -142,9 +142,9 @@ class RunDetailScreen extends StatelessWidget {
             ),
           ),
           if (run.note.isNotEmpty) ...<Widget>[
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: Insets.md),
             SoftCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: const EdgeInsets.all(Insets.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -162,7 +162,7 @@ class RunDetailScreen extends StatelessWidget {
 
   Widget _statCard(BuildContext context, String value, String label, IconData icon, Color color) {
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: MetricTile(value: value, label: label, icon: icon, color: color, big: true),
     );
   }

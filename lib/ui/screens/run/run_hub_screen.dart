@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme/app_palette.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../data/models/run_session.dart';
-import '../../../data/models/run_type.dart';
-import '../../../state/run_state.dart';
+import '../../../foundation/theme/palette.dart';
+import '../../../foundation/theme/henyard_theme.dart';
+import '../../../persistence/models/run_session.dart';
+import '../../../persistence/models/run_type.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/avatar.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/progress.dart';
 import '../../widgets/run_widgets.dart';
 import '../../widgets/surfaces.dart';
-import '../../../state/app_state.dart';
+import '../../../domain/hen_state.dart';
 import '../settings/settings_screen.dart';
 import 'challenges_screen.dart';
 import 'interval_plans_screen.dart';
@@ -36,7 +36,7 @@ class _RunHubScreenState extends State<RunHubScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final run = context.read<RunState>();
+      final run = context.read<RunTracker>();
       if (!run.sensorGranted) run.requestSensor();
     });
   }
@@ -49,30 +49,30 @@ class _RunHubScreenState extends State<RunHubScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final run = context.watch<RunState>();
+    final run = context.watch<RunTracker>();
     final c = context.palette;
 
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md,
+          Insets.md,
           0,
-          AppSpacing.md,
-          AppSpacing.xxl,
+          Insets.md,
+          Insets.xxl,
         ),
         children: <Widget>[
           _header(run),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _startCard(run),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _typePicker(),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _stepsCard(run),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _quickGrid(),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           _weekCard(run),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           SectionHeader(
             title: 'Recent runs',
             subtitle: run.runs.isEmpty ? 'No runs yet' : '${run.totalRuns} total',
@@ -89,7 +89,7 @@ class _RunHubScreenState extends State<RunHubScreen> {
             _emptyRuns(c)
           else
             ...run.runs.take(3).map((r) => Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                  padding: const EdgeInsets.only(bottom: Insets.sm),
                   child: _RunRow(run: r),
                 )),
         ],
@@ -97,13 +97,13 @@ class _RunHubScreenState extends State<RunHubScreen> {
     );
   }
 
-  Widget _header(RunState run) {
-    final app = context.watch<AppState>();
+  Widget _header(RunTracker run) {
+    final app = context.watch<HenState>();
     final c = context.palette;
     return SafeArea(
       bottom: false,
       child: Padding(
-        padding: const EdgeInsets.only(top: AppSpacing.sm),
+        padding: const EdgeInsets.only(top: Insets.sm),
         child: Row(
           children: <Widget>[
             ProfileAvatar(profile: app.profile, size: 46),
@@ -138,10 +138,10 @@ class _RunHubScreenState extends State<RunHubScreen> {
     );
   }
 
-  Widget _startCard(RunState run) {
+  Widget _startCard(RunTracker run) {
     final c = context.palette;
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.all(Insets.lg),
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -172,14 +172,14 @@ class _RunHubScreenState extends State<RunHubScreen> {
               color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           GestureDetector(
             onTap: _startRun,
             child: Container(
               height: 58,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(AppRadii.md),
+                borderRadius: BorderRadius.circular(Corners.md),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -218,20 +218,20 @@ class _RunHubScreenState extends State<RunHubScreen> {
     );
   }
 
-  Widget _stepsCard(RunState run) {
+  Widget _stepsCard(RunTracker run) {
     final c = context.palette;
     return SoftCard(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(builder: (_) => const StepsScreen()),
       ),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Row(
         children: <Widget>[
           ProgressRing(
             value: run.stepGoalProgress,
             size: 92,
             stroke: 9,
-            color: Brand.lime,
+            color: Meadow.lime,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -243,7 +243,7 @@ class _RunHubScreenState extends State<RunHubScreen> {
               ],
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: Insets.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,23 +297,23 @@ class _RunHubScreenState extends State<RunHubScreen> {
             ),
           ),
         ),
-        const SizedBox(width: AppSpacing.sm),
+        const SizedBox(width: Insets.sm),
         Expanded(
           child: _QuickTile(
             icon: Icons.emoji_events_rounded,
             label: 'Challenges',
-            color: Brand.corn,
+            color: Meadow.corn,
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const ChallengesScreen()),
             ),
           ),
         ),
-        const SizedBox(width: AppSpacing.sm),
+        const SizedBox(width: Insets.sm),
         Expanded(
           child: _QuickTile(
             icon: Icons.directions_run_rounded,
             label: 'Run types',
-            color: Brand.sky,
+            color: Meadow.sky,
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const RunTypesScreen()),
             ),
@@ -323,14 +323,14 @@ class _RunHubScreenState extends State<RunHubScreen> {
     );
   }
 
-  Widget _weekCard(RunState run) {
+  Widget _weekCard(RunTracker run) {
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(Insets.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text('This week', style: context.text.labelSmall),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: Insets.sm),
           Row(
             children: <Widget>[
               Expanded(
@@ -338,7 +338,7 @@ class _RunHubScreenState extends State<RunHubScreen> {
                   value: run.distanceLabelOf(run.weekDistanceMeters),
                   label: 'Distance',
                   icon: Icons.route_rounded,
-                  color: Brand.moss,
+                  color: Meadow.moss,
                 ),
               ),
               Expanded(
@@ -346,7 +346,7 @@ class _RunHubScreenState extends State<RunHubScreen> {
                   value: '${run.weekRuns}',
                   label: 'Runs',
                   icon: Icons.directions_run_rounded,
-                  color: Brand.sky,
+                  color: Meadow.sky,
                 ),
               ),
               Expanded(
@@ -354,12 +354,12 @@ class _RunHubScreenState extends State<RunHubScreen> {
                   value: '${run.dayStreak}',
                   label: 'Day streak',
                   icon: Icons.local_fire_department_rounded,
-                  color: Brand.comb,
+                  color: Meadow.comb,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: Insets.md),
           HenRunStrip(
             progress: run.rankProgress,
             henAsset: run.rank.asset,
@@ -373,13 +373,13 @@ class _RunHubScreenState extends State<RunHubScreen> {
     );
   }
 
-  Widget _emptyRuns(AppColors c) {
+  Widget _emptyRuns(Palette c) {
     return SoftCard(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.all(Insets.lg),
       child: Row(
         children: <Widget>[
           const HenFigure(asset: 'assets/questions_chicken.webp', size: 64),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: Insets.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -416,7 +416,7 @@ class _QuickTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SoftCard(
       onTap: onTap,
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: Insets.md, horizontal: 10),
       child: Column(
         children: <Widget>[
           Container(
@@ -453,7 +453,7 @@ class _RunRow extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(builder: (_) => RunDetailScreen(runId: run.id)),
       ),
-      padding: const EdgeInsets.all(AppSpacing.sm),
+      padding: const EdgeInsets.all(Insets.sm),
       child: Row(
         children: <Widget>[
           Container(
@@ -461,7 +461,7 @@ class _RunRow extends StatelessWidget {
             height: 46,
             decoration: BoxDecoration(
               color: run.type.color.withValues(alpha: 0.14),
-              borderRadius: BorderRadius.circular(AppRadii.sm),
+              borderRadius: BorderRadius.circular(Corners.sm),
             ),
             child: Icon(run.type.icon, color: run.type.color),
           ),

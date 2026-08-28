@@ -4,47 +4,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'core/constants/app_assets.dart';
-import 'core/constants/app_config.dart';
-import 'core/services/pedometer_service.dart';
-import 'core/theme/app_palette.dart';
-import 'core/theme/app_theme.dart';
-import 'data/local_store.dart';
-import 'state/app_state.dart';
-import 'state/run_state.dart';
+import 'foundation/constants/artwork.dart';
+import 'foundation/constants/app_meta.dart';
+import 'foundation/services/step_feed.dart';
+import 'foundation/theme/palette.dart';
+import 'foundation/theme/henyard_theme.dart';
+import 'persistence/snapshot_store.dart';
+import 'domain/hen_state.dart';
+import 'domain/run_tracker.dart';
 import 'ui/screens/onboarding/onboarding_screen.dart';
 import 'ui/screens/root_shell.dart';
 import 'ui/screens/splash/loading_screen.dart';
 
-class CrazyHenRunApp extends StatefulWidget {
-  const CrazyHenRunApp({super.key});
+class HenyardApp extends StatefulWidget {
+  const HenyardApp({super.key});
 
   @override
-  State<CrazyHenRunApp> createState() => _CrazyHenRunAppState();
+  State<HenyardApp> createState() => _CrazyHenRunAppState();
 }
 
-class _CrazyHenRunAppState extends State<CrazyHenRunApp> {
-  AppState? _state;
-  RunState? _runState;
+class _CrazyHenRunAppState extends State<HenyardApp> {
+  HenState? _state;
+  RunTracker? _runState;
   bool _booted = false;
 
   static const List<String> _preloadable = <String>[
-    AppAssets.logo,
-    AppAssets.background,
-    AppAssets.henChick,
-    AppAssets.henStanding,
-    AppAssets.henRunner,
-    AppAssets.henSprinter,
-    AppAssets.henLegend,
-    AppAssets.henHappy,
-    AppAssets.henCoach,
-    AppAssets.henCurious,
+    Artwork.logo,
+    Artwork.background,
+    Artwork.henChick,
+    Artwork.henStanding,
+    Artwork.henRunner,
+    Artwork.henSprinter,
+    Artwork.henLegend,
+    Artwork.henHappy,
+    Artwork.henCoach,
+    Artwork.henCurious,
   ];
 
   Future<void> _warmUp() async {
-    final store = await LocalStore.open();
-    _state = AppState(store);
-    _runState = RunState(store, PedometerService());
+    final store = await SnapshotStore.open();
+    _state = HenState(store);
+    _runState = RunTracker(store, StepFeed());
 
     // Decode the artwork up front so the first real screen never pops in.
     await Future.wait(
@@ -86,31 +86,31 @@ class _CrazyHenRunAppState extends State<CrazyHenRunApp> {
     if (!_booted || state == null || runState == null) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: AppConfig.appName,
-        theme: AppTheme.light(Brand.moss),
-        home: LoadingScreen(warmUp: _warmUp, onFinished: _onBootFinished),
+        title: AppMeta.appName,
+        theme: HenyardTheme.light(Meadow.moss),
+        home: BootScreen(warmUp: _warmUp, onFinished: _onBootFinished),
       );
     }
 
     return MultiProvider(
       providers: <ChangeNotifierProvider<dynamic>>[
-        ChangeNotifierProvider<AppState>.value(value: state),
-        ChangeNotifierProvider<RunState>.value(value: runState),
+        ChangeNotifierProvider<HenState>.value(value: state),
+        ChangeNotifierProvider<RunTracker>.value(value: runState),
       ],
-      child: Consumer<AppState>(
+      child: Consumer<HenState>(
         builder: (context, app, _) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: AppConfig.appName,
+            title: AppMeta.appName,
             themeMode: app.themeMode,
-            theme: AppTheme.light(app.accentColor),
-            darkTheme: AppTheme.dark(app.accentColor),
+            theme: HenyardTheme.light(app.accentColor),
+            darkTheme: HenyardTheme.dark(app.accentColor),
             builder: (context, child) => MediaQuery.withClampedTextScaling(
               minScaleFactor: 1,
               maxScaleFactor: 1.15,
               child: child ?? const SizedBox.shrink(),
             ),
-            home: app.onboarded ? const RootShell() : const OnboardingScreen(),
+            home: app.onboarded ? const AppShell() : const WelcomeScreen(),
           );
         },
       ),
