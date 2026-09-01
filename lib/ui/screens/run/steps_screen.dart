@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../foundation/constants/artwork.dart';
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../../foundation/utils/day_key.dart';
@@ -62,7 +63,7 @@ class _StepsScreenState extends State<StepsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const HenFigure(asset: 'assets/happy_chicken.webp', size: 52),
+                      const HenFigure(asset: Artwork.henHappy, size: 52),
                       const SizedBox(height: 6),
                       Text(
                         run.distanceLabelOf(run.todayDistanceMeters),

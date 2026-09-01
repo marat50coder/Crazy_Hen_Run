@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
+import '../../../foundation/constants/artwork.dart';
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../../foundation/utils/day_key.dart';
@@ -26,7 +27,7 @@ class RunHistoryScreen extends StatelessWidget {
           ? HenEmptyState(
               title: 'No runs yet',
               message: 'Every run you finish lands here with its own effort trace.',
-              asset: 'assets/questions_chicken.webp',
+              asset: Artwork.henCurious,
             )
           : ListView(
               padding: const EdgeInsets.fromLTRB(

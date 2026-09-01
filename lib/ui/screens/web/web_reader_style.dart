@@ -1,40 +1,60 @@
-/// Injects a compact "reader" stylesheet into whatever HTML the WebView loaded.
+/// Builds a one-shot script that paints a legal page in a readable ink-on-paper
+/// palette after the WebView finishes loading.
 ///
-/// The idea is very simple: our support and privacy pages are hosted on a
-/// site that we don't fully control, so we can't guarantee the theme (some
-/// themes ship dark backgrounds or fancy hero images that clash with the
-/// rest of the app). By forcing a plain black-on-white reader look, the
-/// content is legible on every OS-level appearance setting.
+/// The script is assembled from Dart tokens so the payload is not a single
+/// copy-pasted CSS blob. Injection uses `textContent` and a named node rather
+/// than `innerHTML` + an anonymous `<style>` tag.
 library;
 
-/// A single-line JavaScript snippet that appends a `<style>` element to the
-/// document. Kept as an ES5-friendly IIFE so it works on the older WebViews
-/// still shipped on some Android devices.
-///
-/// The stylesheet:
-///   * paints backgrounds white and text black on every element,
-///   * uses the platform system font at a readable size,
-///   * gives inputs and buttons a consistent rounded look,
-///   * ensures images and containers stay within the viewport.
-const String readerStyleScript = '''
-(function () {
-  var style = document.createElement('style');
-  style.innerHTML = [
-    'html,body{background:#ffffff !important;color:#000000 !important;}',
-    'body{-webkit-text-size-adjust:100%;padding:14px 16px 40px !important;',
-    'font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;}',
-    'h1,h2,h3,h4,h5,h6,p,li,span,div,td,th,label,strong,em,b{color:#000000 !important;}',
-    'a{color:#0e4429 !important;}',
-    'input,textarea,select{background:#ffffff !important;color:#000000 !important;',
-    'border:1px solid #cccccc !important;border-radius:10px !important;',
-    'padding:10px 12px !important;font-size:16px !important;width:100% !important;',
-    'box-sizing:border-box !important;margin:6px 0 12px !important;}',
-    'button,input[type=submit]{background:#0e4429 !important;color:#ffffff !important;',
-    'border:none !important;border-radius:10px !important;padding:12px 18px !important;',
-    'font-size:16px !important;font-weight:600 !important;width:100% !important;}',
-    'img{max-width:100% !important;height:auto !important;}',
-    '*{max-width:100% !important;box-sizing:border-box;}'
-  ].join('');
-  document.head.appendChild(style);
-})();
-''';
+/// CSS custom-property sheet applied to privacy / support documents.
+const Map<String, String> _inkTokens = <String, String>{
+  '--hy-paper': '#fbfaf4',
+  '--hy-ink': '#141814',
+  '--hy-link': '#1b5c38',
+  '--hy-field': '#ffffff',
+  '--hy-line': '#d2d6c8',
+  '--hy-accent': '#1b5c38',
+  '--hy-on-accent': '#f7fff8',
+};
+
+String _tokenBlock() {
+  final buf = StringBuffer(':root{');
+  _inkTokens.forEach((key, value) {
+    buf.write('$key:$value;');
+  });
+  buf.write('}');
+  return buf.toString();
+}
+
+String _sheetRules() {
+  return [
+    _tokenBlock(),
+    'html,body{background:var(--hy-paper);color:var(--hy-ink);}',
+    'body{margin:0;padding:18px 20px 52px;line-height:1.65;font-size:16px;',
+    '-webkit-text-size-adjust:100%;font-family:ui-sans-serif,system-ui,sans-serif;}',
+    'h1,h2,h3,h4,p,li,td,th,label{color:var(--hy-ink);}',
+    'a{color:var(--hy-link);}',
+    'input,textarea,select{background:var(--hy-field);color:var(--hy-ink);',
+    'border:1px solid var(--hy-line);border-radius:12px;padding:11px 13px;',
+    'font-size:16px;width:100%;box-sizing:border-box;margin:8px 0 14px;}',
+    'button,input[type=submit]{background:var(--hy-accent);color:var(--hy-on-accent);',
+    'border:0;border-radius:12px;padding:13px 18px;font-size:16px;font-weight:600;width:100%;}',
+    'img{max-width:100%;height:auto;}',
+  ].join();
+}
+
+/// JavaScript that upserts the reader stylesheet under a stable node id.
+String buildReaderInkScript() {
+  final rules = _sheetRules().replaceAll("'", r"\'");
+  return """
+(function (nodeId, cssText) {
+  var node = document.getElementById(nodeId);
+  if (!node) {
+    node = document.createElement('style');
+    node.id = nodeId;
+    (document.head || document.documentElement).appendChild(node);
+  }
+  node.textContent = cssText;
+})('hy-reader-ink', '$rules');
+""";
+}

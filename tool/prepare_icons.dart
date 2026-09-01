@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:image/image.dart' as img;
 
 void main() {
-  final logo = img.decodeWebP(File('assets/logo.webp').readAsBytesSync())!;
+  final logo = img.decodeWebP(File('assets/crest_mark.webp').readAsBytesSync())!;
   stdout.writeln('logo numChannels=${logo.numChannels}');
   final c = logo.getPixel(2, 2);
   stdout.writeln('logo corner rgba=${c.r},${c.g},${c.b},${c.a}');
 
-  final icon = img.decodePng(File('assets/icon.png').readAsBytesSync())!;
+  final icon = img.decodePng(File('assets/henyard_mark.png').readAsBytesSync())!;
   final ic = icon.getPixel(3, 3);
   stdout.writeln('icon corner rgba=${ic.r},${ic.g},${ic.b},${ic.a}');
 

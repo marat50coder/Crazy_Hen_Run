@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../../foundation/constants/artwork.dart';
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../../persistence/models/interval_plan.dart';
@@ -168,8 +169,8 @@ class _IntervalSessionScreenState extends State<IntervalSessionScreen> {
                   const SizedBox(height: Insets.md),
                   HenFigure(
                     asset: seg.isEffort
-                        ? 'assets/run_fust_chicken.webp'
-                        : 'assets/happy_chicken.webp',
+                        ? Artwork.henSprinter
+                        : Artwork.henHappy,
                     size: 72,
                     idle: false,
                   ),

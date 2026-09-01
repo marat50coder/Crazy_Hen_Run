@@ -23,7 +23,7 @@ class OfflineNoticeBar extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Showing the offline copy included with the app.',
+              'Using the copy packed with this install — the live page is unreachable.',
               style: context.text.bodySmall?.copyWith(color: _ink),
             ),
           ),

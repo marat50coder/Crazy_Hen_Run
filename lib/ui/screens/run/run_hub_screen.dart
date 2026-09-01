@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
+import '../../../foundation/constants/artwork.dart';
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../../persistence/models/run_session.dart';
@@ -378,7 +379,7 @@ class _RunHubScreenState extends State<RunHubScreen> {
       padding: const EdgeInsets.all(Insets.lg),
       child: Row(
         children: <Widget>[
-          const HenFigure(asset: 'assets/questions_chicken.webp', size: 64),
+          const HenFigure(asset: Artwork.henCurious, size: 64),
           const SizedBox(width: Insets.md),
           Expanded(
             child: Column(

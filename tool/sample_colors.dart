@@ -8,7 +8,7 @@ String hex(img.Pixel p) =>
     '${p.b.toInt().toRadixString(16).padLeft(2, '0')}';
 
 void main() {
-  for (final name in ['loadingScreenvertical', 'loadingScreengorizontal']) {
+  for (final name in ['boot_portrait', 'boot_landscape']) {
     final im = img.decodeWebP(File('assets/$name.webp').readAsBytesSync())!;
     stdout.writeln('$name ${im.width}x${im.height}');
     stdout.writeln('  top-left  ${hex(im.getPixel(4, 4))}');

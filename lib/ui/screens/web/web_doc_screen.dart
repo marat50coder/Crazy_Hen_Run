@@ -19,9 +19,9 @@ import 'web_reader_style.dart';
 ///  * If the network is unreachable, times out, or the server responds with
 ///    an error, we transparently fall back to the copy bundled inside the
 ///    app (see [EmbeddedDocs]). No dead ends.
-///  * The rendered document is normalised to a plain black-on-white reader
-///    look via [readerStyleScript] so it stays legible even if the site
-///    theme changes.
+///  * The rendered document is normalised to a paper-and-ink reader
+    ///    look via [buildReaderInkScript] so it stays legible even if the site
+    ///    theme changes.
 class WebDocScreen extends StatefulWidget {
   const WebDocScreen({
     super.key,
@@ -39,7 +39,7 @@ class WebDocScreen extends StatefulWidget {
 class _WebDocScreenState extends State<WebDocScreen> {
   /// How long we let the live request run before giving up and switching to
   /// the bundled copy. A generous ceiling that still keeps the UX snappy.
-  static const Duration _liveTimeout = Duration(seconds: 8);
+  static const Duration _liveTimeout = Duration(milliseconds: 11200);
 
   static const Color _paperInk = Color(0xFF102117);
 
@@ -94,7 +94,7 @@ class _WebDocScreenState extends State<WebDocScreen> {
 
   Future<void> _handlePageFinished() async {
     _timeoutHandle?.cancel();
-    await _controller.runJavaScript(readerStyleScript);
+    await _controller.runJavaScript(buildReaderInkScript());
     if (!mounted) return;
     setState(() => _isBusy = false);
   }

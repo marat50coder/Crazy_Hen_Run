@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../foundation/constants/artwork.dart';
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../../persistence/models/running_challenge.dart';
@@ -42,7 +43,7 @@ class ChallengesScreen extends StatelessWidget {
             padding: const EdgeInsets.all(Insets.md),
             child: Row(
               children: <Widget>[
-                const HenFigure(asset: 'assets/achivments_and_strong_chicken.webp', size: 60),
+                const HenFigure(asset: Artwork.henLegend, size: 60),
                 const SizedBox(width: Insets.md),
                 Expanded(
                   child: Column(

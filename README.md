@@ -64,7 +64,7 @@ therefore reachable with or without a connection.
 
 `tool/webp_to_png.dart` renders previews of the WebP artwork, and
 `tool/prepare_icons.dart` regenerates the adaptive launcher icon layers.
-After changing `assets/icon.png`:
+After changing `assets/henyard_mark.png`:
 
 ```bash
 dart run tool/prepare_icons.dart
