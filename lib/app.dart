@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'foundation/constants/artwork.dart';
 import 'foundation/constants/app_meta.dart';
 import 'foundation/services/step_feed.dart';
+import 'foundation/services/yard_chime.dart';
 import 'foundation/theme/palette.dart';
 import 'foundation/theme/henyard_theme.dart';
 import 'persistence/snapshot_store.dart';
@@ -45,6 +46,8 @@ class _CrazyHenRunAppState extends State<HenyardApp> {
     final store = await SnapshotStore.open();
     _state = HenState(store);
     _runState = RunTracker(store, StepFeed());
+    await YardChime.instance.prepare();
+    await _state!.syncChimes();
 
     // Decode the artwork up front so the first real screen never pops in.
     await Future.wait(

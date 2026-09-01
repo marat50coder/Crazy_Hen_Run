@@ -52,7 +52,11 @@ class _RootShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _drainCelebrations());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<HenState>().promptChimesOnFirstLaunch();
+      _drainCelebrations();
+    });
   }
 
   void _drainCelebrations() {

@@ -8,6 +8,7 @@ import '../../../foundation/theme/henyard_theme.dart';
 import '../../../foundation/utils/day_key.dart';
 import '../../../persistence/models/habit.dart';
 import '../../../domain/hen_state.dart';
+import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
 import '../habit/habit_detail_screen.dart';
@@ -31,6 +32,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     final app = context.watch<HenState>();
+    final run = context.watch<RunTracker>();
     final c = context.palette;
     final entries = app.habitsForDay(_selected);
     final summary = app.summaryFor(_selected);
@@ -144,13 +146,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     calendarStyle: const CalendarStyle(outsideDaysVisible: false),
                     calendarBuilders: CalendarBuilders<void>(
                       defaultBuilder: (context, day, _) =>
-                          _DayCell(day: day, app: app),
+                          _DayCell(day: day, app: app, run: run),
                       todayBuilder: (context, day, _) =>
-                          _DayCell(day: day, app: app, isToday: true),
+                          _DayCell(day: day, app: app, run: run, isToday: true),
                       selectedBuilder: (context, day, _) =>
-                          _DayCell(day: day, app: app, isSelected: true),
+                          _DayCell(day: day, app: app, run: run, isSelected: true),
                       disabledBuilder: (context, day, _) =>
-                          _DayCell(day: day, app: app, dim: true),
+                          _DayCell(day: day, app: app, run: run, dim: true),
                     ),
                   ),
                 ),
@@ -346,6 +348,7 @@ class _DayCell extends StatelessWidget {
   const _DayCell({
     required this.day,
     required this.app,
+    required this.run,
     this.isToday = false,
     this.isSelected = false,
     this.dim = false,
@@ -353,6 +356,7 @@ class _DayCell extends StatelessWidget {
 
   final DateTime day;
   final HenState app;
+  final RunTracker run;
   final bool isToday;
   final bool isSelected;
   final bool dim;
@@ -362,6 +366,7 @@ class _DayCell extends StatelessWidget {
     final c = context.palette;
     final summary = app.summaryFor(day);
     final ratio = summary.ratio;
+    final ranToday = run.ranOnDay(day);
 
     final Color background;
     final Color foreground;
@@ -396,6 +401,28 @@ class _DayCell extends StatelessWidget {
             '${day.day}',
             style: context.text.titleSmall?.copyWith(color: foreground),
           ),
+          if (ranToday)
+            Positioned(
+              top: 3,
+              right: 3,
+              child: Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  color: Meadow.go,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected ? c.accent : c.surface,
+                    width: 1.2,
+                  ),
+                ),
+                child: const Icon(
+                  Icons.directions_run_rounded,
+                  size: 8,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           if (summary.scheduled > 0)
             Positioned(
               bottom: 5,

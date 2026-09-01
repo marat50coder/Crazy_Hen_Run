@@ -535,8 +535,8 @@ class _HabitEditorScreenState extends State<HabitEditorScreen> {
                     Text('Planned time', style: context.text.titleSmall),
                     Text(
                       time == null
-                          ? 'Anytime during the day'
-                          : time.format(context),
+                          ? 'Anytime — no reminder'
+                          : '${time.format(context)} · reminder if enabled',
                       style: context.text.bodySmall,
                     ),
                   ],

@@ -37,6 +37,15 @@ class _OnboardingScreenState extends State<WelcomeScreen> {
   final PageController _controller = PageController();
   int _index = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<HenState>().promptChimesOnFirstLaunch();
+    });
+  }
+
   static const List<_Slide> _slides = <_Slide>[
     _Slide(
       asset: Artwork.henCurious,

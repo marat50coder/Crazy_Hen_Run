@@ -49,6 +49,7 @@ post_install do |installer|
         'PERMISSION_SENSORS_MOTION=1',
         'PERMISSION_CAMERA=1',
         'PERMISSION_PHOTOS=1',
+        'PERMISSION_NOTIFICATIONS=1',
       ]
     end
   end

@@ -23,6 +23,26 @@ import 'data_screen.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
+  static String _clock(int minuteOfDay) {
+    final hour = minuteOfDay ~/ 60;
+    final minute = minuteOfDay % 60;
+    final hh = hour.toString().padLeft(2, '0');
+    final mm = minute.toString().padLeft(2, '0');
+    return '$hh:$mm';
+  }
+
+  Future<void> _pickRunChime(BuildContext context, HenState app) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(
+        hour: app.runChimeMinute ~/ 60,
+        minute: app.runChimeMinute % 60,
+      ),
+    );
+    if (picked == null) return;
+    await app.setRunChimeMinute(picked.hour * 60 + picked.minute);
+  }
+
   @override
   Widget build(BuildContext context) {
     final app = context.watch<HenState>();
@@ -150,6 +170,31 @@ class SettingsScreen extends StatelessWidget {
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(builder: (_) => const ChallengesScreen()),
                 ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Insets.md),
+          _Group(
+            title: 'Reminders',
+            children: <Widget>[
+              _SwitchRow(
+                icon: Icons.notifications_active_rounded,
+                title: 'Local reminders',
+                subtitle: app.chimesOn
+                    ? 'Habits with a planned time, plus a daily run nudge'
+                    : 'Off — nothing leaves this phone',
+                value: app.chimesOn,
+                onChanged: app.setChimesOn,
+              ),
+              _NavRow(
+                icon: Icons.directions_run_rounded,
+                title: 'Run reminder',
+                subtitle: app.chimesOn
+                    ? 'Daily at ${_clock(app.runChimeMinute)}'
+                    : 'Turn reminders on to pick a time',
+                onTap: app.chimesOn
+                    ? () => _pickRunChime(context, app)
+                    : () {},
               ),
             ],
           ),

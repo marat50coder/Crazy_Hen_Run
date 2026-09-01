@@ -9,6 +9,7 @@ import '../foundation/utils/day_key.dart';
 import '../persistence/snapshot_store.dart';
 import '../persistence/models/hen_rank.dart';
 import '../persistence/models/interval_plan.dart';
+import '../persistence/models/run_goal.dart';
 import '../persistence/models/run_session.dart';
 import '../persistence/models/run_type.dart';
 import '../persistence/models/running_challenge.dart';
@@ -29,10 +30,12 @@ class RunTracker extends ChangeNotifier {
   int _strideCm = 72;
   int _weightKg = 70;
   bool _haptics = true;
+  int _weeklyRunTarget = 3;
 
   int get stepGoal => _stepGoal;
   int get strideCm => _strideCm;
   int get weightKg => _weightKg;
+  int get weeklyRunTarget => _weeklyRunTarget;
   double get _strideM => _strideCm / 100;
 
   // ── sensor ──────────────────────────────────────────────────────────────
@@ -53,6 +56,31 @@ class RunTracker extends ChangeNotifier {
   List<IntervalPlan> get plans =>
       <IntervalPlan>[..._plans, ...IntervalPlan.presets()];
 
+  /// Newest finished session of this flavour, or null if none yet.
+  RunSession? lastOf(RunType type) {
+    for (final session in _runs) {
+      if (session.type == type) return session;
+    }
+    return null;
+  }
+
+  /// Longest finished session of this flavour by distance.
+  RunSession? bestOf(RunType type) {
+    RunSession? best;
+    for (final session in _runs) {
+      if (session.type != type) continue;
+      if (best == null || session.distanceMeters > best.distanceMeters) {
+        best = session;
+      }
+    }
+    return best;
+  }
+
+  bool isPersonalBest(RunSession session) {
+    final best = bestOf(session.type);
+    return best != null && best.id == session.id;
+  }
+
   // ── step baseline (turns boot-relative counter into per-day) ────────────────
   int? _baselineSteps;
   String _baselineDay = '';
@@ -71,11 +99,30 @@ class RunTracker extends ChangeNotifier {
   final List<double> _cadence = <double>[];
   Timer? _ticker;
 
+  RunGoal _activeGoal = RunGoal.open;
+  bool _goalCelebrated = false;
+
   bool get isRunning => _running;
   bool get isPaused => _paused;
   RunType get activeType => _activeType;
   int get elapsedSec => _elapsedSec;
   List<double> get liveCadence => List<double>.unmodifiable(_cadence);
+
+  /// Goal chosen for the current or most recent run. Read on the live screen.
+  RunGoal get activeGoal => _activeGoal;
+
+  /// Fires exactly once per run, the moment the goal is first reached.
+  bool consumeGoalReachedEvent() {
+    if (_activeGoal.isOpen || _goalCelebrated) return false;
+    if (!_activeGoal.isReached(
+      distanceMeters: liveDistanceMeters,
+      durationSec: _elapsedSec,
+    )) {
+      return false;
+    }
+    _goalCelebrated = true;
+    return true;
+  }
 
   bool _ready = false;
   bool get ready => _ready;
@@ -91,6 +138,7 @@ class RunTracker extends ChangeNotifier {
     _strideCm = (rs['strideCm'] as num?)?.toInt() ?? 72;
     _weightKg = (rs['weightKg'] as num?)?.toInt() ?? 70;
     _haptics = rs['haptics'] as bool? ?? true;
+    _weeklyRunTarget = (rs['weeklyRunTarget'] as num?)?.toInt() ?? 3;
 
     final base = _store.readStepBaseline();
     _baselineDay = base['day'] as String? ?? '';
@@ -106,6 +154,7 @@ class RunTracker extends ChangeNotifier {
         'strideCm': _strideCm,
         'weightKg': _weightKg,
         'haptics': _haptics,
+        'weeklyRunTarget': _weeklyRunTarget,
       });
 
   void _tap() {
@@ -172,10 +221,12 @@ class RunTracker extends ChangeNotifier {
   }
 
   // ── active run control ──────────────────────────────────────────────────────
-  Future<void> startRun(RunType type) async {
+  Future<void> startRun(RunType type, {RunGoal goal = RunGoal.open}) async {
     if (_running) return;
     if (!_sensorGranted) await requestSensor();
     _activeType = type;
+    _activeGoal = goal;
+    _goalCelebrated = false;
     _runStart = DateTime.now();
     _runStartCumulative = _lastCumulative;
     _elapsedSec = 0;
@@ -376,6 +427,12 @@ class RunTracker extends ChangeNotifier {
     await _persistSettings();
   }
 
+  Future<void> setWeeklyRunTarget(int value) async {
+    _weeklyRunTarget = value.clamp(1, 14);
+    notifyListeners();
+    await _persistSettings();
+  }
+
   // ── step metrics ──────────────────────────────────────────────────────────
   int stepsForDay(DateTime day) => _stepDays[DayKey.of(day)] ?? 0;
 
@@ -422,6 +479,24 @@ class RunTracker extends ChangeNotifier {
   String distanceLabelOf(double metres) {
     if (metres < 1000) return '${metres.round()} m';
     return '${(metres / 1000).toStringAsFixed(metres < 10000 ? 2 : 1)} km';
+  }
+
+  /// True if any session was started on [day] (calendar day, ignoring time).
+  bool ranOnDay(DateTime day) {
+    final key = DayKey.of(day);
+    return _runs.any((r) => DayKey.of(r.startedAt) == key);
+  }
+
+  /// Runs on [day].
+  int runsOnDay(DateTime day) {
+    final key = DayKey.of(day);
+    return _runs.where((r) => DayKey.of(r.startedAt) == key).length;
+  }
+
+  /// Fraction of the weekly run target that has been completed. Never > 1.
+  double get weeklyRunProgress {
+    if (_weeklyRunTarget <= 0) return 0;
+    return (weekRuns / _weeklyRunTarget).clamp(0.0, 1.0);
   }
 
   List<RunSession> runsInWeek([DateTime? ref]) {

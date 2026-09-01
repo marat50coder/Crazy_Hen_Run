@@ -2,7 +2,7 @@ name: henyard_daily
 description: "Henyard Daily — a warm habit companion that runs with you."
 publish_to: 'none'
 
-version: 1.0.2+6
+version: 1.0.2+7
 
 environment:
   sdk: ^3.12.2
@@ -35,6 +35,10 @@ dependencies:
   webview_flutter: ^4.13.0
   pedometer: ^4.2.0
   permission_handler: ^11.4.0
+  share_plus: ^10.1.4
+  flutter_local_notifications: ^19.4.2
+  flutter_timezone: ^4.1.1
+  timezone: ^0.10.1
 
 dev_dependencies:
   flutter_test:

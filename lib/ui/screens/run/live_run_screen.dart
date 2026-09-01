@@ -1,20 +1,28 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../../foundation/utils/formatting.dart';
+import '../../../persistence/models/run_goal.dart';
 import '../../../persistence/models/run_type.dart';
 import '../../../domain/run_tracker.dart';
+import '../../widgets/go_button.dart';
 import '../../widgets/hen.dart';
 import 'run_summary_screen.dart';
 
 class LiveRunScreen extends StatefulWidget {
-  const LiveRunScreen({super.key, required this.type});
+  const LiveRunScreen({
+    super.key,
+    required this.type,
+    this.goal = RunGoal.open,
+  });
 
   final RunType type;
+  final RunGoal goal;
 
   @override
   State<LiveRunScreen> createState() => _LiveRunScreenState();
@@ -23,6 +31,7 @@ class LiveRunScreen extends StatefulWidget {
 class _LiveRunScreenState extends State<LiveRunScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _runLoop;
+  bool _celebratedGoal = false;
 
   @override
   void initState() {
@@ -33,7 +42,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
     )..repeat(reverse: true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final run = context.read<RunTracker>();
-      if (!run.isRunning) run.startRun(widget.type);
+      if (!run.isRunning) run.startRun(widget.type, goal: widget.goal);
     });
   }
 
@@ -41,6 +50,27 @@ class _LiveRunScreenState extends State<LiveRunScreen>
   void dispose() {
     _runLoop.dispose();
     super.dispose();
+  }
+
+  void _maybeCelebrate(RunTracker run) {
+    if (_celebratedGoal) return;
+    if (!run.consumeGoalReachedEvent()) return;
+    _celebratedGoal = true;
+    HapticFeedback.mediumImpact();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Meadow.go,
+          content: Text(
+            'Goal reached — ${widget.goal.chipLabel}. Keep going or tap flag to finish.',
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+      );
   }
 
   Future<void> _finish() async {
@@ -58,14 +88,19 @@ class _LiveRunScreenState extends State<LiveRunScreen>
       builder: (ctx) => AlertDialog(
         title: const Text('Discard this run?'),
         content: const Text('Your progress for this session will not be saved.'),
+        actionsAlignment: MainAxisAlignment.center,
+        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
         actions: <Widget>[
-          TextButton(
+          GoButton(
+            label: 'Keep running',
+            icon: Icons.play_arrow_rounded,
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Keep running'),
           ),
-          FilledButton(
+          const SizedBox(height: 10),
+          GoButton(
+            label: 'Discard',
+            icon: Icons.flag_rounded,
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Discard'),
           ),
         ],
       ),
@@ -81,6 +116,8 @@ class _LiveRunScreenState extends State<LiveRunScreen>
     final run = context.watch<RunTracker>();
     final type = widget.type;
     final onColor = Colors.white;
+    final goal = widget.goal;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeCelebrate(run));
 
     return PopScope(
       canPop: false,
@@ -128,21 +165,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
                     ],
                   ),
                   const Spacer(),
-                  Text(
-                    _fmt(run.elapsedSec),
-                    style: context.text.displayLarge?.copyWith(
-                      color: onColor,
-                      fontSize: 68,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    'DURATION',
-                    style: context.text.labelSmall?.copyWith(
-                      color: onColor.withValues(alpha: 0.8),
-                      letterSpacing: 2,
-                    ),
-                  ),
+                  _timerBlock(run, goal, onColor),
                   const SizedBox(height: Insets.lg),
                   _runnerLane(type),
                   const SizedBox(height: Insets.lg),
@@ -156,6 +179,81 @@ class _LiveRunScreenState extends State<LiveRunScreen>
         ),
       ),
     );
+  }
+
+  Widget _timerBlock(RunTracker run, RunGoal goal, Color onColor) {
+    final elapsed = Text(
+      _fmt(run.elapsedSec),
+      style: context.text.displayLarge?.copyWith(
+        color: onColor,
+        fontSize: 68,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+    final subtitle = Text(
+      'DURATION',
+      style: context.text.labelSmall?.copyWith(
+        color: onColor.withValues(alpha: 0.8),
+        letterSpacing: 2,
+      ),
+    );
+    if (goal.isOpen) {
+      return Column(children: <Widget>[elapsed, subtitle]);
+    }
+    final progress = goal.progress(
+      distanceMeters: run.liveDistanceMeters,
+      durationSec: run.elapsedSec,
+    );
+    final reached = progress >= 1.0;
+    final goalText = _goalCaption(goal, run);
+    return SizedBox(
+      width: 240,
+      height: 240,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          SizedBox.expand(
+            child: CustomPaint(
+              painter: _GoalRingPainter(
+                progress: progress,
+                track: onColor.withValues(alpha: 0.22),
+                fill: reached ? Meadow.go : onColor,
+              ),
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              elapsed,
+              subtitle,
+              const SizedBox(height: 4),
+              Text(
+                goalText,
+                style: context.text.labelMedium?.copyWith(
+                  color: reached ? Meadow.go : onColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _goalCaption(RunGoal goal, RunTracker run) {
+    switch (goal.kind) {
+      case RunGoalKind.open:
+        return '';
+      case RunGoalKind.distance:
+        final current = run.liveDistanceMeters;
+        return '${current.formatDistanceCompact()} / ${goal.chipLabel}';
+      case RunGoalKind.duration:
+        final left = math.max(0, goal.value - run.elapsedSec);
+        return left == 0
+            ? 'Goal ${goal.chipLabel}'
+            : '${left.formatClock()} left';
+    }
   }
 
   Widget _runnerLane(RunType type) {
@@ -245,7 +343,7 @@ class _LiveRunScreenState extends State<LiveRunScreen>
         _CircleButton(
           icon: run.isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
           background: Colors.white,
-          foreground: widget.type.color,
+          foreground: Meadow.go,
           size: 86,
           onTap: () => run.isPaused ? run.resumeRun() : run.pauseRun(),
         ),
@@ -299,6 +397,44 @@ class _LiveDotState extends State<_LiveDot> with SingleTickerProviderStateMixin 
             style: context.text.labelSmall?.copyWith(color: widget.color, letterSpacing: 2)),
       ],
     );
+  }
+}
+
+class _GoalRingPainter extends CustomPainter {
+  _GoalRingPainter({
+    required this.progress,
+    required this.track,
+    required this.fill,
+  });
+
+  final double progress;
+  final Color track;
+  final Color fill;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final centre = Offset(size.width / 2, size.height / 2);
+    final radius = math.min(size.width, size.height) / 2 - 6;
+    final rect = Rect.fromCircle(center: centre, radius: radius);
+    final basePaint = Paint()
+      ..color = track
+      ..strokeWidth = 8
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    canvas.drawCircle(centre, radius, basePaint);
+    if (progress <= 0) return;
+    final arcPaint = Paint()
+      ..color = fill
+      ..strokeWidth = 8
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    final sweep = 2 * math.pi * progress.clamp(0.0, 1.0);
+    canvas.drawArc(rect, -math.pi / 2, sweep, false, arcPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _GoalRingPainter old) {
+    return old.progress != progress || old.fill != fill || old.track != track;
   }
 }
 

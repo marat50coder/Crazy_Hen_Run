@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/constants/app_meta.dart';
+import '../foundation/services/yard_chime.dart';
 import '../foundation/theme/palette.dart';
 import '../foundation/utils/day_key.dart';
 import '../persistence/snapshot_store.dart';
@@ -70,6 +71,10 @@ class HenState extends ChangeNotifier {
   bool _hideCompleted = false;
   int _weeklySprintTarget = 21;
   bool _onboarded = false;
+  bool _chimesOn = false;
+  bool _chimesAsked = false;
+  bool _chimesPromptBusy = false;
+  int _runChimeMinute = 8 * 60;
 
   bool _ready = false;
 
@@ -86,6 +91,8 @@ class HenState extends ChangeNotifier {
   bool get hideCompleted => _hideCompleted;
   int get weeklySprintTarget => _weeklySprintTarget;
   int get firstWeekday => _mondayFirst ? DateTime.monday : DateTime.sunday;
+  bool get chimesOn => _chimesOn;
+  int get runChimeMinute => _runChimeMinute;
 
   List<Habit> get habits =>
       _habits.where((h) => !h.archived).toList(growable: false);
@@ -117,6 +124,9 @@ class HenState extends ChangeNotifier {
     _mondayFirst = settings['mondayFirst'] as bool? ?? true;
     _hideCompleted = settings['hideCompleted'] as bool? ?? false;
     _weeklySprintTarget = (settings['sprintTarget'] as num?)?.toInt() ?? 21;
+    _chimesOn = settings['chimesOn'] as bool? ?? false;
+    _chimesAsked = settings['chimesAsked'] as bool? ?? false;
+    _runChimeMinute = (settings['runChimeMinute'] as num?)?.toInt() ?? 8 * 60;
 
     _ready = true;
     notifyListeners();
@@ -130,6 +140,9 @@ class HenState extends ChangeNotifier {
         'mondayFirst': _mondayFirst,
         'hideCompleted': _hideCompleted,
         'sprintTarget': _weeklySprintTarget,
+        'chimesOn': _chimesOn,
+        'chimesAsked': _chimesAsked,
+        'runChimeMinute': _runChimeMinute,
       });
 
   void _tap() {
@@ -180,6 +193,56 @@ class HenState extends ChangeNotifier {
     await _persistSettings();
   }
 
+  Future<void> setChimesOn(bool value) async {
+    if (value) {
+      final allowed = await YardChime.instance.askPermission();
+      _chimesAsked = true;
+      if (!allowed) {
+        _chimesOn = false;
+        notifyListeners();
+        await _persistSettings();
+        return;
+      }
+    }
+    _chimesOn = value;
+    _chimesAsked = true;
+    notifyListeners();
+    await _persistSettings();
+    await syncChimes();
+  }
+
+  Future<void> setRunChimeMinute(int minuteOfDay) async {
+    _runChimeMinute = minuteOfDay.clamp(0, 24 * 60 - 1);
+    notifyListeners();
+    await _persistSettings();
+    await syncChimes();
+  }
+
+  Future<void> syncChimes() {
+    return YardChime.instance.sync(
+      enabled: _chimesOn,
+      habits: habits,
+      runNudgeMinute: _runChimeMinute,
+    );
+  }
+
+  /// System permission sheet on the first real screen after splash.
+  /// Subsequent launches skip it; Settings can still toggle later.
+  Future<void> promptChimesOnFirstLaunch() async {
+    if (_chimesAsked || _chimesPromptBusy) return;
+    _chimesPromptBusy = true;
+    try {
+      final allowed = await YardChime.instance.askPermission();
+      _chimesAsked = true;
+      _chimesOn = allowed;
+      notifyListeners();
+      await _persistSettings();
+      await syncChimes();
+    } finally {
+      _chimesPromptBusy = false;
+    }
+  }
+
   Future<void> completeOnboarding() async {
     _onboarded = true;
     notifyListeners();
@@ -227,6 +290,7 @@ class HenState extends ChangeNotifier {
     notifyListeners();
     await _store.writeHabits(_habits);
     await _refreshUnlocked();
+    await syncChimes();
   }
 
   Future<void> setArchived(String habitId, bool archived) async {
@@ -235,6 +299,7 @@ class HenState extends ChangeNotifier {
     _habits[index] = _habits[index].copyWith(archived: archived);
     notifyListeners();
     await _store.writeHabits(_habits);
+    await syncChimes();
   }
 
   Future<void> deleteHabit(String habitId) async {
@@ -243,6 +308,7 @@ class HenState extends ChangeNotifier {
     notifyListeners();
     await _store.writeHabits(_habits);
     await _store.writeLogs(_logs);
+    await syncChimes();
   }
 
   Future<void> reorderHabits(int oldIndex, int newIndex) async {
@@ -595,7 +661,10 @@ class HenState extends ChangeNotifier {
     _journal = <String, JournalEntry>{};
     _profile = Profile.initial();
     _unlocked = <String>{};
+    _chimesOn = false;
+    _chimesAsked = false;
     notifyListeners();
+    await syncChimes();
   }
 
   Future<void> seedStarterHabits() async {

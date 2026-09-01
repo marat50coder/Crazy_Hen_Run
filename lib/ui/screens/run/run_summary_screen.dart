@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
@@ -9,6 +16,7 @@ import '../../../domain/run_tracker.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/run_widgets.dart';
 import '../../widgets/surfaces.dart';
+import 'run_share_card.dart';
 
 class RunSummaryScreen extends StatefulWidget {
   const RunSummaryScreen({super.key, required this.runId});
@@ -23,6 +31,8 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
   int _feeling = 3;
   final TextEditingController _note = TextEditingController();
   bool _initialised = false;
+  bool _sharing = false;
+  final GlobalKey _shareKey = GlobalKey();
 
   static const List<({IconData icon, String label})> _feelings = <({IconData icon, String label})>[
     (icon: Icons.sentiment_very_dissatisfied_rounded, label: 'Rough'),
@@ -52,6 +62,37 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
     Navigator.of(context).popUntil((r) => r.isFirst);
   }
 
+  Future<void> _share(RunSession run) async {
+    if (_sharing) return;
+    setState(() => _sharing = true);
+    try {
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted) return;
+      final boundary =
+          _shareKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      if (boundary == null) return;
+      final image = await boundary.toImage(pixelRatio: 2.4);
+      final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+      if (bytes == null) return;
+      final dir = await getTemporaryDirectory();
+      final file = File(
+        '${dir.path}/henyard_run_${run.id}.png',
+      );
+      await file.writeAsBytes(bytes.buffer.asUint8List(), flush: true);
+      await Share.shareXFiles(
+        <XFile>[XFile(file.path, mimeType: 'image/png')],
+        text: 'Today: ${run.distanceLabel} · ${run.durationLabel} — Henyard Daily',
+      );
+    } on PlatformException catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sharing is not available on this device')),
+      );
+    } finally {
+      if (mounted) setState(() => _sharing = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final rs = context.watch<RunTracker>();
@@ -68,7 +109,34 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
     }
 
     return Scaffold(
-      body: ListView(
+      body: Stack(
+        children: <Widget>[
+          _offstageShareCanvas(run),
+          _content(rs, run, c),
+        ],
+      ),
+    );
+  }
+
+  Widget _offstageShareCanvas(RunSession run) {
+    return Positioned(
+      left: -10000,
+      top: -10000,
+      child: RepaintBoundary(
+        key: _shareKey,
+        child: MediaQuery(
+          data: const MediaQueryData(),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: RunShareCard(run: run),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _content(RunTracker rs, RunSession run, Palette c) {
+    return ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
@@ -104,6 +172,20 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                     color: Colors.white.withValues(alpha: 0.9),
                   ),
                 ),
+                if (rs.isPersonalBest(run)) ...<Widget>[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      'Personal best · ${run.distanceLabel}',
+                      style: context.text.labelMedium?.copyWith(color: Meadow.go),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -212,6 +294,18 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
                   label: const Text('Save run'),
                 ),
                 const SizedBox(height: Insets.sm),
+                OutlinedButton.icon(
+                  onPressed: _sharing ? null : () => _share(run),
+                  icon: _sharing
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.ios_share_rounded),
+                  label: Text(_sharing ? 'Preparing…' : 'Share summary'),
+                ),
+                const SizedBox(height: Insets.sm),
                 TextButton(
                   onPressed: () => Navigator.of(context).popUntil((r) => r.isFirst),
                   child: const Text('Skip for now'),
@@ -220,8 +314,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _mini(String value, String label) => Column(

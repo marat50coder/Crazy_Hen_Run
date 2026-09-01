@@ -5,7 +5,7 @@ import '../../../foundation/theme/henyard_theme.dart';
 import '../../../persistence/models/run_type.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
-import 'live_run_screen.dart';
+import 'run_go_gate.dart';
 
 class RunTypesScreen extends StatelessWidget {
   const RunTypesScreen({super.key});
@@ -47,7 +47,7 @@ class _TypeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SoftCard(
       onTap: () => Navigator.of(context).push(
-        MaterialPageRoute<void>(builder: (_) => LiveRunScreen(type: type)),
+        MaterialPageRoute<void>(builder: (_) => RunGoGate(type: type)),
       ),
       padding: EdgeInsets.zero,
       child: Column(

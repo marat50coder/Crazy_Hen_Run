@@ -102,9 +102,7 @@ class HenyardTheme {
           foregroundColor: _onColor(colors.accent),
           minimumSize: const Size.fromHeight(56),
           textStyle: textTheme.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Corners.md),
-          ),
+          shape: const StadiumBorder(),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -113,9 +111,7 @@ class HenyardTheme {
           minimumSize: const Size.fromHeight(56),
           side: BorderSide(color: colors.outlineStrong),
           textStyle: textTheme.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Corners.md),
-          ),
+          shape: const StadiumBorder(),
         ),
       ),
       textButtonTheme: TextButtonThemeData(

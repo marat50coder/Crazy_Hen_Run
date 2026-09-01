@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import UserNotifications
 
 /// Application entry point for Henyard Daily on iOS.
 ///
@@ -18,6 +19,7 @@ import UIKit
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         launchTelemetry.mark(.didFinishLaunching)
+        UNUserNotificationCenter.current().delegate = self
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 

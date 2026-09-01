@@ -7,6 +7,8 @@ class Meadow {
   static const Color forest = Color(0xFF0E4429);
   static const Color forestDeep = Color(0xFF02311D);
   static const Color moss = Color(0xFF2F7D4F);
+  /// Play-triangle / primary go-button ink. White labels stay readable on it.
+  static const Color go = Color(0xFF2E9E5B);
   static const Color lime = Color(0xFF8FD13F);
   static const Color limeSoft = Color(0xFFCBE86D);
   static const Color corn = Color(0xFFFFC72C);
