@@ -17,7 +17,7 @@ class YardChime {
 
   static const int _runNoticeId = 7101;
   static const String _channelId = 'yard.daily.chime';
-  static const String _channelName = 'Henyard reminders';
+  static const String _channelName = 'Crazy Hen Run reminders';
 
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -50,7 +50,7 @@ class YardChime {
           const AndroidNotificationChannel(
             _channelId,
             _channelName,
-            description: 'Habit and run reminders from Henyard Daily',
+            description: 'Habit and run reminders from Crazy Hen Run',
             importance: Importance.defaultImportance,
           ),
         );
@@ -157,7 +157,7 @@ class YardChime {
       android: AndroidNotificationDetails(
         _channelId,
         _channelName,
-        channelDescription: 'Habit and run reminders from Henyard Daily',
+        channelDescription: 'Habit and run reminders from Crazy Hen Run',
         icon: '@drawable/ic_yard_chime',
       ),
       iOS: DarwinNotificationDetails(

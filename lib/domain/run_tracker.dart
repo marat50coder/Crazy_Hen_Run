@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../foundation/services/hen_analytics.dart';
 import '../foundation/services/step_feed.dart';
 import '../foundation/utils/day_key.dart';
 import '../persistence/snapshot_store.dart';
@@ -341,6 +342,10 @@ class RunTracker extends ChangeNotifier {
     _cadence.clear();
     if (_haptics) HapticFeedback.mediumImpact();
     notifyListeners();
+    await HenAnalytics.instance.log('run_finished', <String, dynamic>{
+      'type': session.type.name,
+      'duration_sec': session.durationSec,
+    });
     return session;
   }
 

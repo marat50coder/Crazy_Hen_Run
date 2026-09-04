@@ -74,9 +74,9 @@ class _OnboardingScreenState extends State<WelcomeScreen> {
     _Slide(
       asset: Artwork.henLegend,
       kicker: 'Own it',
-      title: 'Everything stays\non your phone',
+      title: 'Your notes stay\non your phone',
       body:
-          'No account, no sync, no internet needed. Your streaks, notes and photos never leave the device.',
+          'No account and no ads. Habits, notes and photos stay on this device. We use AppsFlyer only to measure installs and usage.',
       tint: Meadow.comb,
     ),
   ];
@@ -181,7 +181,7 @@ class _OnboardingScreenState extends State<WelcomeScreen> {
                       onPressed: _next,
                       child: Text(
                         _index == _slides.length - 1
-                            ? 'Start running'
+                            ? 'Get started'
                             : 'Continue',
                       ),
                     ),

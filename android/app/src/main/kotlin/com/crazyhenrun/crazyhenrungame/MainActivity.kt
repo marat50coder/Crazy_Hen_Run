@@ -4,7 +4,7 @@ import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 
 /**
- * Host activity for the Henyard Daily Flutter engine on Android.
+ * Host activity for the Crazy Hen Run Flutter engine on Android.
  *
  * The default [FlutterActivity] behaviour is exactly what we need – Flutter
  * takes over the entire window – but we still override [onCreate] to attach a

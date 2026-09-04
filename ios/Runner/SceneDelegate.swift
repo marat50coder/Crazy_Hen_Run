@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 
-/// Scene delegate for Henyard Daily.
+/// Scene delegate for Crazy Hen Run.
 ///
 /// The default ``FlutterSceneDelegate`` behaviour is exactly what we want for a
 /// portrait-first Flutter app, so this subclass only adds a couple of override

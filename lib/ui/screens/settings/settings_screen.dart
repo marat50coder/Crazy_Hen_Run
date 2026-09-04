@@ -15,7 +15,7 @@ import '../run/challenges_screen.dart';
 import '../run/interval_plans_screen.dart';
 import '../run/steps_screen.dart';
 import '../sprint/sprint_screen.dart';
-import '../web/web_doc_screen.dart';
+import '../legal/legal_doc_screen.dart';
 import 'about_screen.dart';
 import 'appearance_screen.dart';
 import 'data_screen.dart';
@@ -80,7 +80,7 @@ class SettingsScreen extends StatelessWidget {
                     children: <Widget>[
                       Text(AppMeta.appName, style: context.text.titleMedium),
                       Text(
-                        'Version ${AppMeta.version} · works fully offline',
+                        'Version ${AppMeta.version} · habits stay on this phone',
                         style: context.text.bodySmall,
                       ),
                     ],
@@ -267,26 +267,20 @@ class SettingsScreen extends StatelessWidget {
               _NavRow(
                 icon: Icons.support_agent_rounded,
                 title: 'Support',
-                subtitle: 'Ask a question or report a bug',
+                subtitle: 'Email us — the text is packed with the app',
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => const WebDocScreen(
-                      title: 'Support',
-                      url: AppMeta.supportUrl,
-                    ),
+                    builder: (_) => const LegalDocScreen.support(),
                   ),
                 ),
               ),
               _NavRow(
                 icon: Icons.privacy_tip_rounded,
                 title: 'Privacy Policy',
-                subtitle: 'How your data is handled',
+                subtitle: 'What stays on this phone',
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => const WebDocScreen(
-                      title: 'Privacy Policy',
-                      url: AppMeta.privacyPolicyUrl,
-                    ),
+                    builder: (_) => const LegalDocScreen.privacy(),
                   ),
                 ),
               ),

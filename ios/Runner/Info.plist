@@ -13,7 +13,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleName</key>
-	<string>henyard_daily</string>
+	<string>Crazy Hen Run</string>
 	<key>CFBundleDisplayName</key>
 	<string>Crazy Hen Run</string>
 	<key>CFBundleShortVersionString</key>
@@ -80,13 +80,19 @@
 	</dict>
 
 	<key>NSMotionUsageDescription</key>
-	<string>Henyard Daily reads motion &amp; fitness data so the hen can run alongside your daily steps.</string>
+	<string>Crazy Hen Run uses motion and fitness data to count steps for your daily goal. Location is never used.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Henyard Daily needs camera access when you want to snap a new profile picture.</string>
+	<string>Crazy Hen Run uses the camera only when you take a new profile picture.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Henyard Daily reads your photo library when you pick a profile picture.</string>
+	<string>Crazy Hen Run reads your photo library only when you pick a profile picture.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Henyard Daily can save images generated inside the app to your photo library.</string>
+	<string>Crazy Hen Run can save a profile picture you choose to your photo library.</string>
+
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>mailto</string>
+	</array>
 
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>

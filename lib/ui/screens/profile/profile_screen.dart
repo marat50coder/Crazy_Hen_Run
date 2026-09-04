@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../foundation/constants/app_meta.dart';
 import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../../foundation/utils/day_key.dart';
@@ -17,7 +16,7 @@ import '../journal/journal_screen.dart';
 import '../run/run_history_screen.dart';
 import '../settings/about_screen.dart';
 import '../settings/settings_screen.dart';
-import '../web/web_doc_screen.dart';
+import '../legal/legal_doc_screen.dart';
 import 'edit_profile_screen.dart';
 
 /// Identity screen: a centred hero, a stat band, then a compact link list.
@@ -220,10 +219,7 @@ class ProfileScreen extends StatelessWidget {
                   label: 'Support',
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebDocScreen(
-                        title: 'Support',
-                        url: AppMeta.supportUrl,
-                      ),
+                      builder: (_) => const LegalDocScreen.support(),
                     ),
                   ),
                 ),
@@ -232,10 +228,7 @@ class ProfileScreen extends StatelessWidget {
                   label: 'Privacy Policy',
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebDocScreen(
-                        title: 'Privacy Policy',
-                        url: AppMeta.privacyPolicyUrl,
-                      ),
+                      builder: (_) => const LegalDocScreen.privacy(),
                     ),
                   ),
                 ),

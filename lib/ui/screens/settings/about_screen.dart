@@ -6,7 +6,7 @@ import '../../../foundation/theme/palette.dart';
 import '../../../foundation/theme/henyard_theme.dart';
 import '../../widgets/hen.dart';
 import '../../widgets/surfaces.dart';
-import '../web/web_doc_screen.dart';
+import '../legal/legal_doc_screen.dart';
 
 /// Editorial layout: a centred logo, a short manifesto and a spec table.
 class AboutScreen extends StatelessWidget {
@@ -65,11 +65,12 @@ class AboutScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Offline by design', style: context.text.titleSmall),
+                      Text('On-device first', style: context.text.titleSmall),
                       const SizedBox(height: 4),
                       Text(
                         'No account, no sync, no ads. Habits, logs, journal '
-                        'entries and your profile photo never leave the device.',
+                        'entries and your profile photo stay on this device. '
+                        'AppsFlyer measures installs and usage only.',
                         style: context.text.bodyMedium,
                       ),
                     ],
@@ -98,10 +99,7 @@ class AboutScreen extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebDocScreen(
-                        title: 'Privacy Policy',
-                        url: AppMeta.privacyPolicyUrl,
-                      ),
+                      builder: (_) => const LegalDocScreen.privacy(),
                     ),
                   ),
                   icon: const Icon(Icons.privacy_tip_rounded, size: 18),
@@ -113,10 +111,7 @@ class AboutScreen extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => const WebDocScreen(
-                        title: 'Support',
-                        url: AppMeta.supportUrl,
-                      ),
+                      builder: (_) => const LegalDocScreen.support(),
                     ),
                   ),
                   icon: const Icon(Icons.support_agent_rounded, size: 18),

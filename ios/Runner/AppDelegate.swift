@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 import UserNotifications
 
-/// Application entry point for Henyard Daily on iOS.
+/// Application entry point for Crazy Hen Run on iOS.
 ///
 /// Flutter's implicit engine is used, so plugins are registered when the
 /// engine finishes spinning up rather than in ``application(_:didFinishLaunchingWithOptions:)``.

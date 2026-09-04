@@ -81,7 +81,7 @@ class _RunSummaryScreenState extends State<RunSummaryScreen> {
       await file.writeAsBytes(bytes.buffer.asUint8List(), flush: true);
       await Share.shareXFiles(
         <XFile>[XFile(file.path, mimeType: 'image/png')],
-        text: 'Today: ${run.distanceLabel} · ${run.durationLabel} — Henyard Daily',
+        text: 'Today: ${run.distanceLabel} · ${run.durationLabel} — Crazy Hen Run',
       );
     } on PlatformException catch (_) {
       if (!mounted) return;

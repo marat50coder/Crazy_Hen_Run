@@ -20,14 +20,14 @@ class AppShell extends StatefulWidget {
 class _RootShellState extends State<AppShell> {
   static const List<HenNavItem> _items = <HenNavItem>[
     HenNavItem(
-      icon: Icons.directions_run_outlined,
-      activeIcon: Icons.directions_run_rounded,
-      label: 'Run',
-    ),
-    HenNavItem(
       icon: Icons.bolt_outlined,
       activeIcon: Icons.bolt_rounded,
       label: 'Today',
+    ),
+    HenNavItem(
+      icon: Icons.directions_run_outlined,
+      activeIcon: Icons.directions_run_rounded,
+      label: 'Run',
     ),
     HenNavItem(
       icon: Icons.insights_outlined,
@@ -111,9 +111,9 @@ class _RootShellState extends State<AppShell> {
   Widget _page(int index) {
     switch (index) {
       case 0:
-        return const RunHubScreen();
-      case 1:
         return const TodayScreen();
+      case 1:
+        return const RunHubScreen();
       case 2:
         return const StatsScreen();
       case 3:

@@ -1,8 +1,8 @@
-# Henyard Daily
+# Crazy Hen Run
 
-An offline habit tracker for iOS and Android. Every habit you close turns into
-distance on a running track, and the hen in your pocket levels up as that
-distance grows.
+An offline habit tracker and running companion for iOS and Android. Every habit
+you close turns into distance on a track, and the hen in your pocket levels up
+as that distance grows.
 
 ## Running it
 
@@ -41,8 +41,9 @@ lib/
     screens/     one folder per feature area
 ```
 
-There is no backend, no account and no analytics. Habits, logs, journal
-entries and the profile photo live on the device.
+There is no product backend and no account. Habits, logs, journal entries
+and the profile photo live on the device. AppsFlyer measures installs and
+anonymous usage only.
 
 ### Loading screen
 
@@ -54,11 +55,10 @@ app is portrait only.
 
 ### Privacy Policy and Support
 
-`ui/screens/web/web_doc_screen.dart` loads the live pages in a WebView and
-injects the reader stylesheet from `web_reader_style.dart` so the text is
-always black on white. If the network fails or stalls, the bundled copy in
-`foundation/constants/embedded_docs.dart` is shown instead — the pages are
-therefore reachable with or without a connection.
+`ui/screens/legal/legal_doc_screen.dart` renders the bundled copy from
+`foundation/constants/embedded_docs.dart` as native Flutter widgets. Optional
+Email and Safari buttons leave the app via the system Mail composer or the
+system browser. There is no in-app WebView.
 
 ### Assets
 

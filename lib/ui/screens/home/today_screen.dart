@@ -77,6 +77,8 @@ class _TodayScreenState extends State<TodayScreen> {
           ),
           slivers: <Widget>[
             SliverToBoxAdapter(child: _header(app)),
+            if (app.showProductIntro)
+              SliverToBoxAdapter(child: _productIntro(app)),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
@@ -325,6 +327,41 @@ class _TodayScreenState extends State<TodayScreen> {
                   },
                 ),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _productIntro(HenState app) {
+    final c = context.palette;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(Insets.md, Insets.md, Insets.md, 0),
+      child: SoftCard(
+        color: c.accentSoft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'A habit tracker that runs with you',
+                    style: context.text.titleSmall,
+                  ),
+                ),
+                IconButton(
+                  tooltip: 'Dismiss',
+                  onPressed: app.dismissProductIntro,
+                  icon: const Icon(Icons.close_rounded, size: 18),
+                ),
+              ],
+            ),
+            Text(
+              'Close a habit on this list to earn metres. The Run tab logs a walk '
+              'or run from the motion sensor — no GPS. Coop is the hen levelling up.',
+              style: context.text.bodyMedium,
+            ),
           ],
         ),
       ),

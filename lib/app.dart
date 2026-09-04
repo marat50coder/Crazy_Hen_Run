@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'foundation/constants/artwork.dart';
 import 'foundation/constants/app_meta.dart';
+import 'foundation/services/hen_analytics.dart';
 import 'foundation/services/step_feed.dart';
 import 'foundation/services/yard_chime.dart';
 import 'foundation/theme/palette.dart';
@@ -80,6 +81,7 @@ class _CrazyHenRunAppState extends State<HenyardApp> {
       DeviceOrientation.portraitDown,
     ]);
     setState(() => _booted = true);
+    HenAnalytics.instance.prepare();
   }
 
   @override

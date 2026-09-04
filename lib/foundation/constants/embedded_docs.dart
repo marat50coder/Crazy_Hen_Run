@@ -1,144 +1,186 @@
-/// Bundled copies of the legal and support pages.
+/// Bundled Privacy Policy and Support copy, rendered as Flutter widgets.
 ///
-/// The app is fully offline, so these are shown whenever the live pages cannot
-/// be reached. The content mirrors the published pages word for word.
+/// These documents describe what the binary actually does: local storage,
+/// motion for steps, camera/photos for an optional avatar, local reminders,
+/// and AppsFlyer for install / usage measurement.
+class LegalDocument {
+  const LegalDocument({
+    required this.title,
+    required this.effective,
+    required this.intro,
+    required this.sections,
+    this.webUrl,
+    this.email,
+  });
+
+  final String title;
+  final String effective;
+  final String intro;
+  final List<LegalSection> sections;
+  final String? webUrl;
+  final String? email;
+}
+
+class LegalSection {
+  const LegalSection({
+    required this.heading,
+    this.paragraphs = const <String>[],
+    this.bullets = const <String>[],
+  });
+
+  final String heading;
+  final List<String> paragraphs;
+  final List<String> bullets;
+}
+
 class EmbeddedDocs {
   const EmbeddedDocs._();
 
-  static const String _style = '''
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      :root { color-scheme: light; }
-      html, body {
-        background: #ffffff !important;
-        color: #000000 !important;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-        line-height: 1.6;
-        font-size: 16px;
-        padding: 20px 18px 48px;
-        -webkit-text-size-adjust: 100%;
-      }
-      h1 { font-size: 26px; margin: 0 0 6px; color: #000000; }
-      h2 { font-size: 18px; margin: 26px 0 8px; color: #000000; }
-      p, li { color: #000000; }
-      ul { padding-left: 20px; }
-      a { color: #0e4429; }
-      .meta { color: #444444; font-size: 14px; margin-bottom: 22px; }
-      .card {
-        border: 1px solid #dddddd;
-        border-radius: 14px;
-        padding: 16px;
-        margin-top: 18px;
-      }
-      .label { font-size: 13px; color: #444444; margin-bottom: 4px; }
-      .value { font-size: 16px; font-weight: 600; color: #000000; }
-      .note {
-        background: #f4f7ef;
-        border-radius: 14px;
-        padding: 14px 16px;
-        margin-top: 22px;
-        font-size: 14px;
-        color: #000000;
-      }
-    </style>
-  ''';
+  static const LegalDocument privacy = LegalDocument(
+    title: 'Privacy Policy',
+    effective: 'September 2026',
+    intro:
+        'Crazy Hen Run ("the app") is a habit tracker and running companion. '
+        'This policy explains what stays on your phone and what is sent to AppsFlyer.',
+    webUrl: 'https://crazyhennrun.com/privacy-policy.html',
+    email: 'support@crazyhennrun.com',
+    sections: <LegalSection>[
+      LegalSection(
+        heading: 'What the app stores',
+        paragraphs: <String>[
+          'All of the following is saved only in the app\'s local storage on this device:',
+        ],
+        bullets: <String>[
+          'Habits, streaks, completions and archive status',
+          'Journal entries and the weekly sprint target',
+          'Run history, interval plans, step totals and challenges',
+          'Your display name and an optional profile photo you choose',
+          'Theme, reminder times and other settings',
+        ],
+      ),
+      LegalSection(
+        heading: 'What we do not collect',
+        paragraphs: <String>[
+          'Crazy Hen Run has no account and no product backend. We do not upload '
+          'your habit titles, journal text, profile photo, or run notes. Those stay '
+          'in the app\'s local storage on this device.',
+        ],
+      ),
+      LegalSection(
+        heading: 'AppsFlyer',
+        paragraphs: <String>[
+          'The app uses AppsFlyer to measure installs, opens and a few anonymous '
+          'product events (onboarding finished, a habit closed, a run saved). '
+          'AppsFlyer may receive device type, OS version, IP address, a vendor '
+          'or install identifier, and diagnostic information. Advertising identifiers '
+          '(IDFA) are disabled and the app does not show an App Tracking prompt. '
+          'This is the same measurement described on crazyhennrun.com.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Device permissions',
+        paragraphs: <String>[
+          'The app only asks for access when you use the matching feature:',
+        ],
+        bullets: <String>[
+          'Motion & Fitness — optional step counting via the on-device sensor. No GPS and no location.',
+          'Camera — optional, only if you snap a new profile picture.',
+          'Photo Library — optional, only if you pick or save a profile picture.',
+          'Notifications — optional local reminders for habits and a daily run nudge. There are no remote push messages.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Sharing',
+        paragraphs: <String>[
+          'If you tap Share after a run, the system share sheet sends a picture '
+          'you generated. That hand-off is initiated by you and is not a background upload.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Third parties',
+        paragraphs: <String>[
+          'The only third-party SDK in the app is AppsFlyer, for install and usage '
+          'measurement. There are no ads and no social SDKs. Opening Support or this '
+          'policy in Safari uses the system browser.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Data retention and deletion',
+        paragraphs: <String>[
+          'Because data lives only on the device, uninstalling Crazy Hen Run '
+          'permanently deletes habits, runs, journal entries and your profile photo. '
+          'You can also wipe storage from Settings → Data & storage.',
+          'If you contact us about deletion, we can ask AppsFlyer to delete the '
+          'measurement record tied to this install. We have no server-side copy of '
+          'your habits or journal.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Children',
+        paragraphs: <String>[
+          'The app is not directed at children under 13, and it does not collect personal information from anyone.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Your rights',
+        paragraphs: <String>[
+          'Depending on where you live, you may have rights to access, correct or '
+          'delete personal data. For this app those rights are exercised on the device: '
+          'edit or delete habits, journal entries and your profile, or uninstall the app.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Changes',
+        paragraphs: <String>[
+          'If this policy changes, the updated text ships inside the next app version. '
+          'The copy you are reading is the one packed with this install.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Contact',
+        paragraphs: <String>[
+          'Questions about this policy: support@crazyhennrun.com',
+        ],
+      ),
+    ],
+  );
 
-  static const String privacyPolicy = '''
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Privacy Policy</title>$_style</head>
-<body>
-<h1>Privacy Policy</h1>
-<p class="meta"><strong>Effective Date:</strong> June 2026</p>
-
-<p>Developer ("we", "us", or "our") operates the <strong>Crazy Hen Run</strong> mobile application ("Service"). This Privacy Policy explains how information is collected, used, and protected when you use the Service.</p>
-
-<h2>Information We Collect</h2>
-<p>The Service may collect limited technical information necessary for operation and improvement of the application, including:</p>
-<ul>
-  <li>Device type and model</li>
-  <li>Operating system version</li>
-  <li>Anonymous usage statistics</li>
-  <li>Diagnostic and crash information</li>
-  <li>IP address (when required for security and analytics purposes)</li>
-</ul>
-<p>We do not intentionally collect sensitive personal information such as financial account details, government-issued identification numbers, or biometric data.</p>
-
-<h2>How We Use Information</h2>
-<ul>
-  <li>Provide and maintain the Service</li>
-  <li>Improve app functionality and user experience</li>
-  <li>Monitor application performance and stability</li>
-  <li>Detect, prevent, and resolve technical issues</li>
-  <li>Comply with legal obligations</li>
-</ul>
-
-<h2>Data Storage and Security</h2>
-<p>We take reasonable measures to protect information from unauthorized access, alteration, disclosure, or destruction. However, no method of electronic transmission or storage is completely secure.</p>
-
-<h2>Third-Party Services</h2>
-<p>The Service may use third-party providers for analytics, crash reporting, hosting, or other operational purposes. These providers may process information solely to provide services on our behalf.</p>
-
-<h2>Data Retention</h2>
-<p>We retain information only for as long as necessary to provide the Service, comply with legal obligations, resolve disputes, and enforce agreements.</p>
-
-<h2>Data Deletion</h2>
-<p>Users have the right to request deletion of their personal data. To request deletion of data associated with Crazy Hen Run, please contact us at:</p>
-<p><strong>Email:</strong> <a href="mailto:support@crazyhennrun.com">support@crazyhennrun.com</a></p>
-<p>When submitting a deletion request, please provide sufficient information to identify your account or device. Verified requests will be processed within a reasonable timeframe.</p>
-<p>If the application stores data only on the user's device, users may permanently delete all stored data by uninstalling the application and clearing the application's local storage.</p>
-
-<h2>Your Rights</h2>
-<p>Depending on your location, you may have rights regarding access, correction, deletion, restriction, or portability of your personal data under applicable privacy laws, including the GDPR.</p>
-
-<h2>Children's Privacy</h2>
-<p>The Service is not intended for children under the age of 18, and we do not knowingly collect personal information from children.</p>
-
-<h2>Changes to This Privacy Policy</h2>
-<p>We may update this Privacy Policy from time to time. Changes become effective when posted on this page. Users are encouraged to review this policy periodically.</p>
-
-<h2>Contact Us</h2>
-<p>If you have questions about this Privacy Policy or wish to exercise your privacy rights, please contact:</p>
-<p><strong>Developer:</strong> Crazy Hen Run<br>
-<strong>Email:</strong> <a href="mailto:support@crazyhennrun.com">support@crazyhennrun.com</a></p>
-
-<div class="note">You are reading the offline copy that ships with the app, so this policy is always available — even without an internet connection.</div>
-</body></html>
-''';
-
-  static const String support = '''
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Support</title>$_style</head>
-<body>
-<h1>Support for Crazy Hen Run</h1>
-<p class="meta">Questions, bug reports and feature requests are all welcome.</p>
-
-<p>The support form needs an internet connection. While you are offline you can still reach us directly by email — write from any mail app and we will pick it up.</p>
-
-<div class="card">
-  <div class="label">Support email</div>
-  <div class="value"><a href="mailto:support@crazyhennrun.com">support@crazyhennrun.com</a></div>
-</div>
-
-<div class="card">
-  <div class="label">Support page</div>
-  <div class="value"><a href="https://crazyhennrun.com/support.html">crazyhennrun.com/support.html</a></div>
-</div>
-
-<h2>What to include</h2>
-<ul>
-  <li>What you were doing when the problem appeared</li>
-  <li>Your device model and Android version</li>
-  <li>A screenshot, if the issue is visual</li>
-</ul>
-
-<h2>Your data</h2>
-<p>Crazy Hen Run stores habits, streaks, journal entries and your profile photo on your device only. Uninstalling the app removes all of it.</p>
-
-<div class="note">You are reading the offline copy that ships with the app. Reconnect and reopen this screen to use the online support form.</div>
-</body></html>
-''';
+  static const LegalDocument support = LegalDocument(
+    title: 'Support',
+    effective: 'Crazy Hen Run',
+    intro:
+        'Questions, bug reports and feature requests are welcome. Write from any mail app — '
+        'there is no in-app form and no account to look up.',
+    webUrl: 'https://crazyhennrun.com/support.html',
+    email: 'support@crazyhennrun.com',
+    sections: <LegalSection>[
+      LegalSection(
+        heading: 'How to reach us',
+        paragraphs: <String>[
+          'Email support@crazyhennrun.com. Include enough detail that we can reproduce the issue.',
+        ],
+        bullets: <String>[
+          'What you were doing when the problem appeared',
+          'Your device model and iOS or Android version',
+          'App version from Settings → About',
+          'A screenshot, if the issue is visual',
+        ],
+      ),
+      LegalSection(
+        heading: 'Your data',
+        paragraphs: <String>[
+          'Crazy Hen Run stores habits, streaks, journal entries, run history and your '
+          'profile photo on this device only. Uninstalling the app removes all of it. '
+          'We cannot reset a streak or restore a journal from our side.',
+        ],
+      ),
+      LegalSection(
+        heading: 'Permissions',
+        paragraphs: <String>[
+          'Step counting needs Motion & Fitness. Profile photos need Camera or Photos. '
+          'Reminders need Notifications. Each of these is optional — the rest of the app works without them.',
+        ],
+      ),
+    ],
+  );
 }

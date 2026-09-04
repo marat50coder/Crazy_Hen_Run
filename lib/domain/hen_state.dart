@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/constants/app_meta.dart';
+import '../foundation/services/hen_analytics.dart';
 import '../foundation/services/yard_chime.dart';
 import '../foundation/theme/palette.dart';
 import '../foundation/utils/day_key.dart';
@@ -75,6 +76,7 @@ class HenState extends ChangeNotifier {
   bool _chimesAsked = false;
   bool _chimesPromptBusy = false;
   int _runChimeMinute = 8 * 60;
+  bool _showProductIntro = true;
 
   bool _ready = false;
 
@@ -93,6 +95,7 @@ class HenState extends ChangeNotifier {
   int get firstWeekday => _mondayFirst ? DateTime.monday : DateTime.sunday;
   bool get chimesOn => _chimesOn;
   int get runChimeMinute => _runChimeMinute;
+  bool get showProductIntro => _showProductIntro;
 
   List<Habit> get habits =>
       _habits.where((h) => !h.archived).toList(growable: false);
@@ -127,6 +130,7 @@ class HenState extends ChangeNotifier {
     _chimesOn = settings['chimesOn'] as bool? ?? false;
     _chimesAsked = settings['chimesAsked'] as bool? ?? false;
     _runChimeMinute = (settings['runChimeMinute'] as num?)?.toInt() ?? 8 * 60;
+    _showProductIntro = settings['showProductIntro'] as bool? ?? true;
 
     _ready = true;
     notifyListeners();
@@ -143,6 +147,7 @@ class HenState extends ChangeNotifier {
         'chimesOn': _chimesOn,
         'chimesAsked': _chimesAsked,
         'runChimeMinute': _runChimeMinute,
+        'showProductIntro': _showProductIntro,
       });
 
   void _tap() {
@@ -183,6 +188,12 @@ class HenState extends ChangeNotifier {
 
   Future<void> setHideCompleted(bool value) async {
     _hideCompleted = value;
+    notifyListeners();
+    await _persistSettings();
+  }
+
+  Future<void> dismissProductIntro() async {
+    _showProductIntro = false;
     notifyListeners();
     await _persistSettings();
   }
@@ -244,9 +255,11 @@ class HenState extends ChangeNotifier {
   }
 
   Future<void> completeOnboarding() async {
+    await seedStarterHabits();
     _onboarded = true;
     notifyListeners();
     await _store.setOnboarded(true);
+    await HenAnalytics.instance.log('onboarding_complete');
   }
 
   // ── profile ───────────────────────────────────────────────────────────────
@@ -362,6 +375,13 @@ class HenState extends ChangeNotifier {
     notifyListeners();
     await _store.writeLogs(_logs);
     await _refreshUnlocked();
+    final nowComplete = clamped >= target;
+    final wasComplete = existing != null && existing.value >= target;
+    if (nowComplete && !wasComplete) {
+      await HenAnalytics.instance.log('habit_completed', <String, dynamic>{
+        'category': habit.category.name,
+      });
+    }
   }
 
   Future<void> toggleComplete(Habit habit, DateTime day) async {
@@ -710,8 +730,15 @@ class HenState extends ChangeNotifier {
         createdAt: now,
       ),
     ];
+    _logs['seed-water@${DayKey.of(now)}'] = HabitLog(
+      habitId: 'seed-water',
+      dayKey: DayKey.of(now),
+      value: 2,
+      target: 8,
+    );
     notifyListeners();
     await _store.writeHabits(_habits);
+    await _store.writeLogs(_logs);
   }
 
   Map<String, dynamic> exportSnapshot() => <String, dynamic>{

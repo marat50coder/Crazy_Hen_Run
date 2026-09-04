@@ -19,9 +19,9 @@ class Profile {
   final int dailyGoal;
 
   static Profile initial() => Profile(
-        name: 'Runner',
+        name: 'You',
         avatarPath: '',
-        tagline: 'Chasing a better routine',
+        tagline: 'Habits that turn into miles',
         joinedAt: DateTime.now(),
         dailyGoal: 3,
       );

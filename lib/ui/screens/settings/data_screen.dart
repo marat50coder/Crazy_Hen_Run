@@ -44,8 +44,9 @@ class DataScreen extends StatelessWidget {
                       Text('Stored on this device', style: context.text.titleSmall),
                       const SizedBox(height: 4),
                       Text(
-                        'Crazy Hen Run has no server. Nothing you write here is '
-                        'uploaded, and the app works with the connection turned off.',
+                        'Crazy Hen Run has no product server. Habits, journal '
+                        'entries and photos stay on this device. AppsFlyer only '
+                        'receives install and anonymous usage events.',
                         style: context.text.bodyMedium,
                       ),
                     ],
