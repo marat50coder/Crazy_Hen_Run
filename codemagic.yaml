@@ -30,11 +30,36 @@ workflows:
         script: |
           set -euo pipefail
           keychain initialize
-          # Create/refresh App Store cert + profile via the CodeMagic API key
-          # if they are not already stored under Code signing identities.
+
+          # fetch-signing-files reuses any existing Apple Distribution
+          # certificate it finds on the Developer Portal — including ones
+          # Codemagic never created and has no private key for, which is
+          # exactly the "Cannot save Signing Certificates without
+          # certificate private key" failure. Supplying our own key removes
+          # the ambiguity: the tool only looks for/creates a certificate
+          # that matches THIS key, so a stray old certificate can never be
+          # picked by mistake.
+          CERT_KEY_PATH="$CM_BUILD_DIR/ios_distribution_key.pem"
+          if [ -n "${IOS_DISTRIBUTION_CERT_KEY:-}" ]; then
+            echo "Reusing the stored Distribution certificate key."
+            echo "$IOS_DISTRIBUTION_CERT_KEY" | base64 --decode > "$CERT_KEY_PATH"
+          else
+            echo "No IOS_DISTRIBUTION_CERT_KEY set yet — generating a new one."
+            openssl genrsa -out "$CERT_KEY_PATH" 2048
+            echo "=================================================================="
+            echo "Save this as a secret variable named IOS_DISTRIBUTION_CERT_KEY"
+            echo "(Codemagic → app settings → Environment variables), otherwise the"
+            echo "next build will generate ANOTHER certificate and eventually hit"
+            echo "Apple's 3-certificate limit:"
+            echo "=================================================================="
+            base64 -i "$CERT_KEY_PATH"
+            echo "=================================================================="
+          fi
+
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --platform IOS \
+            --certificate-key=@file:"$CERT_KEY_PATH" \
             --create
           keychain add-certificates
           # stripSwiftSymbols is the closest thing to obfuscation on native
