@@ -31,6 +31,8 @@
 	<string>Crazy Hen Run uses motion and fitness data to count steps during a run or walk. Location is never used.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>Crazy Hen Run reads your daily step and walking distance data from Health so your dashboard matches the Health app. Nothing is written back and nothing leaves your phone.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Crazy Hen Run never writes any data to Health. This description is only required because the Health entitlement is enabled for reading your steps.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Crazy Hen Run uses the camera only when you take a new profile picture.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
