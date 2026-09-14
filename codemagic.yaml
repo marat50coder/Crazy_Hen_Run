@@ -11,6 +11,12 @@ workflows:
 
     environment:
       xcode: latest
+      # Variable group that must exist in Codemagic → app settings →
+      # Environment variables, holding IOS_DISTRIBUTION_CERT_KEY (and
+      # optionally REVOKE_STALE_DISTRIBUTION_CERTS). Without this line the
+      # build cannot see them.
+      groups:
+        - signing
       vars:
         BUNDLE_ID: com.crazyhenrun.crazyhenrungame
         APP_STORE_APPLE_ID: "6790464294"
