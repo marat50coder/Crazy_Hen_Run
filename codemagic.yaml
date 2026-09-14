@@ -140,8 +140,12 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
-        # Uploads the IPA to App Store Connect and submits it to TestFlight.
-        submit_to_testflight: true
+        # The upload itself already makes the build available in TestFlight
+        # for internal testers. This flag additionally sends it to Apple's
+        # Beta App Review for external testers, which fails unless the test
+        # information (feedback email, review contact) is filled in under
+        # TestFlight → Test Information. Turn it on once that's done.
+        submit_to_testflight: false
         # Set to true only after version 1.0.4 exists in App Store Connect
         # with screenshots, description and age rating filled in — then
         # every successful build is also sent for App Store review.
