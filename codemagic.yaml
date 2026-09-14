@@ -56,11 +56,60 @@ workflows:
             echo "=================================================================="
           fi
 
-          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+          # Apple caps a team at a handful of active Distribution
+          # certificates. Every build that generated its own key and then
+          # failed left a certificate behind that nobody holds the private
+          # key for, so the quota fills with dead certificates and Apple
+          # answers 409 to every new request. With
+          # REVOKE_STALE_DISTRIBUTION_CERTS=true we first drop the ones
+          # whose public key doesn't match CERT_KEY_PATH — comparing RSA
+          # moduli means a certificate we can actually sign with is never
+          # touched.
+          if [ "${REVOKE_STALE_DISTRIBUTION_CERTS:-false}" = "true" ]; then
+            CERTS_JSON=$(app-store-connect certificates list \
+              --type DISTRIBUTION IOS_DISTRIBUTION --json)
+            STALE_IDS=$(python3 - "$CERTS_JSON" "$CERT_KEY_PATH" <<'PY'
+          import base64, json, subprocess, sys
+
+          certificates, key_path = json.loads(sys.argv[1]), sys.argv[2]
+
+          def modulus(args, stdin=None):
+              done = subprocess.run(args, input=stdin, capture_output=True)
+              return done.stdout.decode().strip() if done.returncode == 0 else ""
+
+          ours = modulus(["openssl", "rsa", "-in", key_path, "-noout", "-modulus"])
+          for certificate in certificates:
+              attributes = certificate.get("attributes", {})
+              content = attributes.get("certificateContent") or attributes.get("certificate_content")
+              if not content:
+                  continue
+              theirs = modulus(
+                  ["openssl", "x509", "-inform", "DER", "-noout", "-modulus"],
+                  base64.b64decode(content),
+              )
+              if not ours or theirs != ours:
+                  print(certificate["id"])
+          PY
+            )
+            for CERT_ID in $STALE_IDS; do
+              echo "Revoking Distribution certificate $CERT_ID — no private key for it."
+              app-store-connect certificates delete "$CERT_ID" --ignore-not-found
+            done
+          fi
+
+          if ! app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --platform IOS \
             --certificate-key=@file:"$CERT_KEY_PATH" \
-            --create
+            --create; then
+            echo "=================================================================="
+            echo "If this failed with 409 'You already have a current Distribution"
+            echo "certificate', the team's certificate quota is full. Either revoke"
+            echo "the unused ones at developer.apple.com/account/resources/certificates"
+            echo "or set REVOKE_STALE_DISTRIBUTION_CERTS=true for one build."
+            echo "=================================================================="
+            exit 1
+          fi
           keychain add-certificates
           # stripSwiftSymbols is the closest thing to obfuscation on native
           # Swift: Release binary is optimized and Swift symbols are stripped
