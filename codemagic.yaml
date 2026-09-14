@@ -5,53 +5,37 @@ workflows:
     instance_type: mac_mini_m2
 
     integrations:
-      # TODO: replace with the exact App Store Connect integration name
-      # configured in the Codemagic team settings for the Crazy Hen Run app.
       app_store_connect: Crazy Hen Run Codemagic
 
     environment:
-      groups:
-        - code-signing
-      flutter: 3.44.7
       xcode: latest
-      cocoapods: default
       vars:
         BUNDLE_ID: com.crazyhenrun.crazyhenrungame
         APP_STORE_APPLE_ID: "6790464294"
         APPLE_TEAM_ID: "SP5WD556PA"
+        XCODE_PROJECT: CrazyHenRun.xcodeproj
+        XCODE_SCHEME: CrazyHenRun
 
     triggering:
       events:
         - push
       branch_patterns:
-        - pattern: ios-white-part
+        - pattern: ios-white-part-swift
           include: true
 
     scripts:
-      - name: Install Flutter dependencies
-        script: flutter pub get
-
-      - name: Install CocoaPods
-        script: pod install
-        working_directory: ios
-
       - name: Code signing & Build IPA
         script: |
           keychain initialize
-          # Fetch (and create if missing) the App Store distribution cert
-          # + provisioning profile for the app's bundle id.
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --platform IOS \
             --create
           keychain add-certificates
-          # Compile Dart/Flutter unsigned first — this can rewrite the
-          # Xcode project, so apply provisioning profiles AFTER it.
-          flutter build ios --release --no-codesign
           xcode-project use-profiles
           xcode-project build-ipa \
-            --workspace "ios/Runner.xcworkspace" \
-            --scheme "Runner"
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -60,5 +44,9 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
-        submit_to_testflight: false
+        # Every build lands in TestFlight automatically once it's uploaded.
+        submit_to_testflight: true
+        # Flip to true only after an App Store version with metadata,
+        # screenshots and age rating is prepared in App Store Connect —
+        # see the Codemagic guide for the exact order of steps.
         submit_to_app_store: false

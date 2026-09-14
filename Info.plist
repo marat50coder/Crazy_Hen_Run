@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Crazy Hen Run</string>
+	<key>CFBundleName</key>
+	<string>Crazy Hen Run</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.healthcare-fitness</string>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+	</dict>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>NSMotionUsageDescription</key>
+	<string>Crazy Hen Run uses motion and fitness data to count steps during a run or walk. Location is never used.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Crazy Hen Run reads your daily step and walking distance data from Health so your dashboard matches the Health app. Nothing is written back and nothing leaves your phone.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Crazy Hen Run uses the camera only when you take a new profile picture.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Crazy Hen Run reads your photo library only when you pick a profile picture.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SpaceGrotesk-Light.ttf</string>
+		<string>SpaceGrotesk-Regular.ttf</string>
+		<string>SpaceGrotesk-Medium.ttf</string>
+		<string>SpaceGrotesk-SemiBold.ttf</string>
+		<string>SpaceGrotesk-Bold.ttf</string>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01458192D7354ADC8C2F475A /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF464208FDA4266B8AAFA9D /* StatsView.swift */; };
+		02855ECE480742EA859CEA94 /* Meadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B95C45AC67C4C3B95C919F3 /* Meadow.swift */; };
+		047F1A01B37447BE92212519 /* HabitFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF00CFC1813749518D9FF9AB /* HabitFlow.swift */; };
+		409F723C943848BFA26A6343 /* HealthKitSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828937B0E1C34E0596A81F02 /* HealthKitSensor.swift */; };
+		04D49359AECD4240B4BF1C1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D94D015246294A3CB09ABDAB /* Assets.xcassets */; };
+		057AC69F09524A308E534B47 /* veteran.webp in Resources */ = {isa = PBXBuildFile; fileRef = 81B73BA91295457286587742 /* veteran.webp */; };
+		076FCD74EB374F94B7969510 /* WebSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B58B3F9B5D4F30BA7166D7 /* WebSheet.swift */; };
+		0DBAEB601A2B4D65A23C6D05 /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85071AD34364409AE13EAEC /* SharedViews.swift */; };
+		0DD50C466397408DACEB7D61 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D40A47369A41249007DA6C /* TodayView.swift */; };
+		0DD5FAFD37C9457D9EFC3D12 /* SpaceGrotesk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8103684A64FC42F1A0313864 /* SpaceGrotesk-Regular.ttf */; };
+		15202F890236419DA651A73C /* CrazyHenRunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84C54D437284CB1B86CD123 /* CrazyHenRunApp.swift */; };
+		1F2500A575BB4E7DB2525B2C /* YardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3615F9E90B4A5BA9839636 /* YardView.swift */; };
+		1F4A357630E0497C85089FB6 /* SpaceGrotesk-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 433255B53056416FA0F73D2B /* SpaceGrotesk-SemiBold.ttf */; };
+		36E31E685F0A4102BB301F0C /* stride.webp in Resources */ = {isa = PBXBuildFile; fileRef = F164E524FE4F4D5AA0CE3BB7 /* stride.webp */; };
+		3822AA4F1BB9440384AC6520 /* StepSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33C993CF4D145CF94C2AC41 /* StepSensor.swift */; };
+		3BFD788CDCD647AE9B577167 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAEE47D6C674F958C6A5473 /* Catalog.swift */; };
+		4C34A94F48274A6693D09618 /* RunHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2600C94CF646918D5609F5 /* RunHub.swift */; };
+		540BB602624C4C58AA8F38AD /* RunMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90538484AA3447A190811A90 /* RunMore.swift */; };
+		5458E117D2C343B4B03DA11F /* cheer.webp in Resources */ = {isa = PBXBuildFile; fileRef = BF55709CF7284782944D772C /* cheer.webp */; };
+		5576EC00EBC04191AFE80150 /* RootFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64343FC69304BA98806A7CF /* RootFlow.swift */; };
+		583CEA9356AA49DA8F28E623 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D773D28D814CB8A47A01E7 /* ProfileView.swift */; };
+		588B823775514A3D85E04B85 /* tutor.webp in Resources */ = {isa = PBXBuildFile; fileRef = BCC3C16CA6974BAD97093432 /* tutor.webp */; };
+		58A61E2194F24E4A910F7AC2 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488341CED8B44C68F3F9BD8 /* WelcomeView.swift */; };
+		5A6567FCA6B34304BAD4CBCA /* henyard_mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B645D4401354C92A71E82E5 /* henyard_mark.png */; };
+		6C7A75A1D1B04B8EAD1C1538 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855ACC7CBF714CE78ED85761 /* SettingsView.swift */; };
+		708C422E706841C1A47AA97F /* SpaceGrotesk-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E954B7F90CA04A47B9787F53 /* SpaceGrotesk-Medium.ttf */; };
+		70F58F6B49DE465E99E6DB28 /* boot_portrait.webp in Resources */ = {isa = PBXBuildFile; fileRef = 4F1513BCFA2A42AAB507FF85 /* boot_portrait.webp */; };
+		7108664212F5460F8C91B2E3 /* LiveRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB88BC45CDDC4367B9BB47E5 /* LiveRun.swift */; };
+		801600089AF34F4F9F9BCCFE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 400521E609FD48C18103E942 /* PrivacyInfo.xcprivacy */; };
+		8FAB9A63F395443ABED1E422 /* perch.webp in Resources */ = {isa = PBXBuildFile; fileRef = 9071B738B84B474C8F819D73 /* perch.webp */; };
+		9FCA8D62CD884CDC8F965E06 /* SnapshotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAC636BACD44A449B244854 /* SnapshotStore.swift */; };
+		AB39F4DA390D46F1BA563229 /* pullet.webp in Resources */ = {isa = PBXBuildFile; fileRef = 9AADCD0BAAA548B691C331A2 /* pullet.webp */; };
+		B6561D4E8F0145CB94652DB9 /* meadow_wash.webp in Resources */ = {isa = PBXBuildFile; fileRef = 3DB0B24759F3425C93535612 /* meadow_wash.webp */; };
+		BA87BBF2CBDF4562AAF9D7AE /* BootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEF2121D7C34F71B4E04E13 /* BootView.swift */; };
+		BFFC081990DB45B8B95A0BF9 /* dash.webp in Resources */ = {isa = PBXBuildFile; fileRef = 52E57BADD2EF4FD9ACDAE19C /* dash.webp */; };
+		C3A93745A2344536B31FAD75 /* SpaceGrotesk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BECA8A2C34504BAE9AD976E2 /* SpaceGrotesk-Bold.ttf */; };
+		CAE3C1B17EA24387B9A98F47 /* boot_landscape.webp in Resources */ = {isa = PBXBuildFile; fileRef = F1DADBD6D6474F0290593C23 /* boot_landscape.webp */; };
+		D007A3951F59447BA3528DD2 /* inquisitive.webp in Resources */ = {isa = PBXBuildFile; fileRef = 0EF9D742D1F8454EB95B0ADB /* inquisitive.webp */; };
+		D8CA772E4AC140DEBD2B3727 /* Yard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAEBD9F25A406B85205F4F /* Yard.swift */; };
+		DAFA99EEE934491EB8C7E4C3 /* JournalCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8BCC0E7334240B8400728 /* JournalCalendar.swift */; };
+		DB2CE205442E422586A59EBC /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DE4FAF9AC54675B2BBFF19 /* Models.swift */; };
+		DC4D8680682F45BF9F660C00 /* crest_mark.webp in Resources */ = {isa = PBXBuildFile; fileRef = 75142A30B1464A97A5870E76 /* crest_mark.webp */; };
+		F20808BF1B0F440C8CA3CB02 /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A573D175FD994038B24A7CC5 /* SpaceGrotesk-Light.ttf */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0EF464208FDA4266B8AAFA9D /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatsView.swift; path = Stats/StatsView.swift; sourceTree = "<group>"; };
+		0EF9D742D1F8454EB95B0ADB /* inquisitive.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = inquisitive.webp; path = Resources/inquisitive.webp; sourceTree = "<group>"; };
+		1B645D4401354C92A71E82E5 /* henyard_mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = henyard_mark.png; path = Resources/henyard_mark.png; sourceTree = "<group>"; };
+		1B95C45AC67C4C3B95C919F3 /* Meadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Meadow.swift; path = Design/Meadow.swift; sourceTree = "<group>"; };
+		23D40A47369A41249007DA6C /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TodayView.swift; path = Today/TodayView.swift; sourceTree = "<group>"; };
+		3DB0B24759F3425C93535612 /* meadow_wash.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = meadow_wash.webp; path = Resources/meadow_wash.webp; sourceTree = "<group>"; };
+		3DEF2121D7C34F71B4E04E13 /* BootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BootView.swift; path = Launch/BootView.swift; sourceTree = "<group>"; };
+		400521E609FD48C18103E942 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		42AAEBD9F25A406B85205F4F /* Yard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Yard.swift; path = Engine/Yard.swift; sourceTree = "<group>"; };
+		433255B53056416FA0F73D2B /* SpaceGrotesk-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpaceGrotesk-SemiBold.ttf"; path = "Resources/Fonts/SpaceGrotesk-SemiBold.ttf"; sourceTree = "<group>"; };
+		4F1513BCFA2A42AAB507FF85 /* boot_portrait.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = boot_portrait.webp; path = Resources/boot_portrait.webp; sourceTree = "<group>"; };
+		52E57BADD2EF4FD9ACDAE19C /* dash.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = dash.webp; path = Resources/dash.webp; sourceTree = "<group>"; };
+		58D773D28D814CB8A47A01E7 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileView.swift; path = You/ProfileView.swift; sourceTree = "<group>"; };
+		5EF8BCC0E7334240B8400728 /* JournalCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JournalCalendar.swift; path = Today/JournalCalendar.swift; sourceTree = "<group>"; };
+		65B92AFE77A84DACA7BA2D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		828937B0E1C34E0596A81F02 /* HealthKitSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HealthKitSensor.swift; path = Engine/HealthKitSensor.swift; sourceTree = "<group>"; };
+		B8D7284EBFC549EB83A7F60D /* CrazyHenRun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CrazyHenRun.entitlements; sourceTree = "<group>"; };
+		68B58B3F9B5D4F30BA7166D7 /* WebSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WebSheet.swift; path = You/WebSheet.swift; sourceTree = "<group>"; };
+		71DE4FAF9AC54675B2BBFF19 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Models.swift; path = Model/Models.swift; sourceTree = "<group>"; };
+		75142A30B1464A97A5870E76 /* crest_mark.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = crest_mark.webp; path = Resources/crest_mark.webp; sourceTree = "<group>"; };
+		8103684A64FC42F1A0313864 /* SpaceGrotesk-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpaceGrotesk-Regular.ttf"; path = "Resources/Fonts/SpaceGrotesk-Regular.ttf"; sourceTree = "<group>"; };
+		81B73BA91295457286587742 /* veteran.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = veteran.webp; path = Resources/veteran.webp; sourceTree = "<group>"; };
+		8488341CED8B44C68F3F9BD8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WelcomeView.swift; path = Launch/WelcomeView.swift; sourceTree = "<group>"; };
+		855ACC7CBF714CE78ED85761 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = You/SettingsView.swift; sourceTree = "<group>"; };
+		90538484AA3447A190811A90 /* RunMore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RunMore.swift; path = Run/RunMore.swift; sourceTree = "<group>"; };
+		9071B738B84B474C8F819D73 /* perch.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = perch.webp; path = Resources/perch.webp; sourceTree = "<group>"; };
+		9AADCD0BAAA548B691C331A2 /* pullet.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = pullet.webp; path = Resources/pullet.webp; sourceTree = "<group>"; };
+		A573D175FD994038B24A7CC5 /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpaceGrotesk-Light.ttf"; path = "Resources/Fonts/SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; };
+		AC3615F9E90B4A5BA9839636 /* YardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = YardView.swift; path = Yard/YardView.swift; sourceTree = "<group>"; };
+		AE2600C94CF646918D5609F5 /* RunHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RunHub.swift; path = Run/RunHub.swift; sourceTree = "<group>"; };
+		BCC3C16CA6974BAD97093432 /* tutor.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = tutor.webp; path = Resources/tutor.webp; sourceTree = "<group>"; };
+		BECA8A2C34504BAE9AD976E2 /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpaceGrotesk-Bold.ttf"; path = "Resources/Fonts/SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; };
+		BED75D51EA8448A08601B6B0 /* CrazyHenRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrazyHenRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF55709CF7284782944D772C /* cheer.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = cheer.webp; path = Resources/cheer.webp; sourceTree = "<group>"; };
+		BFAEE47D6C674F958C6A5473 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Catalog.swift; path = Model/Catalog.swift; sourceTree = "<group>"; };
+		C64343FC69304BA98806A7CF /* RootFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootFlow.swift; path = Launch/RootFlow.swift; sourceTree = "<group>"; };
+		C84C54D437284CB1B86CD123 /* CrazyHenRunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CrazyHenRunApp.swift; path = App/CrazyHenRunApp.swift; sourceTree = "<group>"; };
+		CDAC636BACD44A449B244854 /* SnapshotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SnapshotStore.swift; path = Engine/SnapshotStore.swift; sourceTree = "<group>"; };
+		D33C993CF4D145CF94C2AC41 /* StepSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StepSensor.swift; path = Engine/StepSensor.swift; sourceTree = "<group>"; };
+		D85071AD34364409AE13EAEC /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SharedViews.swift; path = Design/SharedViews.swift; sourceTree = "<group>"; };
+		D94D015246294A3CB09ABDAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DB88BC45CDDC4367B9BB47E5 /* LiveRun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LiveRun.swift; path = Run/LiveRun.swift; sourceTree = "<group>"; };
+		DF00CFC1813749518D9FF9AB /* HabitFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HabitFlow.swift; path = Today/HabitFlow.swift; sourceTree = "<group>"; };
+		E954B7F90CA04A47B9787F53 /* SpaceGrotesk-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpaceGrotesk-Medium.ttf"; path = "Resources/Fonts/SpaceGrotesk-Medium.ttf"; sourceTree = "<group>"; };
+		F164E524FE4F4D5AA0CE3BB7 /* stride.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = stride.webp; path = Resources/stride.webp; sourceTree = "<group>"; };
+		F1DADBD6D6474F0290593C23 /* boot_landscape.webp */ = {isa = PBXFileReference; lastKnownFileType = file; name = boot_landscape.webp; path = Resources/boot_landscape.webp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C6062B7042CC405EA070A0A5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1349864B6982473F96BA44EF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BED75D51EA8448A08601B6B0 /* CrazyHenRun.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ACF3E3B9F8324DEA977B7200 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				C84C54D437284CB1B86CD123 /* CrazyHenRunApp.swift */,
+				1B95C45AC67C4C3B95C919F3 /* Meadow.swift */,
+				D85071AD34364409AE13EAEC /* SharedViews.swift */,
+				CDAC636BACD44A449B244854 /* SnapshotStore.swift */,
+				D33C993CF4D145CF94C2AC41 /* StepSensor.swift */,
+				828937B0E1C34E0596A81F02 /* HealthKitSensor.swift */,
+				42AAEBD9F25A406B85205F4F /* Yard.swift */,
+				3DEF2121D7C34F71B4E04E13 /* BootView.swift */,
+				C64343FC69304BA98806A7CF /* RootFlow.swift */,
+				8488341CED8B44C68F3F9BD8 /* WelcomeView.swift */,
+				BFAEE47D6C674F958C6A5473 /* Catalog.swift */,
+				71DE4FAF9AC54675B2BBFF19 /* Models.swift */,
+				DB88BC45CDDC4367B9BB47E5 /* LiveRun.swift */,
+				AE2600C94CF646918D5609F5 /* RunHub.swift */,
+				90538484AA3447A190811A90 /* RunMore.swift */,
+				0EF464208FDA4266B8AAFA9D /* StatsView.swift */,
+				DF00CFC1813749518D9FF9AB /* HabitFlow.swift */,
+				5EF8BCC0E7334240B8400728 /* JournalCalendar.swift */,
+				23D40A47369A41249007DA6C /* TodayView.swift */,
+				AC3615F9E90B4A5BA9839636 /* YardView.swift */,
+				58D773D28D814CB8A47A01E7 /* ProfileView.swift */,
+				855ACC7CBF714CE78ED85761 /* SettingsView.swift */,
+				68B58B3F9B5D4F30BA7166D7 /* WebSheet.swift */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E88578BF158F497699FDA3D6 = {
+			isa = PBXGroup;
+			children = (
+				ACF3E3B9F8324DEA977B7200 /* Source */,
+				EA2C8C32862141CC8860D46E /* Resources */,
+				65B92AFE77A84DACA7BA2D89 /* Info.plist */,
+				B8D7284EBFC549EB83A7F60D /* CrazyHenRun.entitlements */,
+				1349864B6982473F96BA44EF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EA2C8C32862141CC8860D46E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F1DADBD6D6474F0290593C23 /* boot_landscape.webp */,
+				4F1513BCFA2A42AAB507FF85 /* boot_portrait.webp */,
+				BF55709CF7284782944D772C /* cheer.webp */,
+				75142A30B1464A97A5870E76 /* crest_mark.webp */,
+				52E57BADD2EF4FD9ACDAE19C /* dash.webp */,
+				0EF9D742D1F8454EB95B0ADB /* inquisitive.webp */,
+				3DB0B24759F3425C93535612 /* meadow_wash.webp */,
+				9071B738B84B474C8F819D73 /* perch.webp */,
+				9AADCD0BAAA548B691C331A2 /* pullet.webp */,
+				F164E524FE4F4D5AA0CE3BB7 /* stride.webp */,
+				BCC3C16CA6974BAD97093432 /* tutor.webp */,
+				81B73BA91295457286587742 /* veteran.webp */,
+				1B645D4401354C92A71E82E5 /* henyard_mark.png */,
+				BECA8A2C34504BAE9AD976E2 /* SpaceGrotesk-Bold.ttf */,
+				A573D175FD994038B24A7CC5 /* SpaceGrotesk-Light.ttf */,
+				E954B7F90CA04A47B9787F53 /* SpaceGrotesk-Medium.ttf */,
+				8103684A64FC42F1A0313864 /* SpaceGrotesk-Regular.ttf */,
+				433255B53056416FA0F73D2B /* SpaceGrotesk-SemiBold.ttf */,
+				400521E609FD48C18103E942 /* PrivacyInfo.xcprivacy */,
+				D94D015246294A3CB09ABDAB /* Assets.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0B9A89A069034AA493735CD4 /* CrazyHenRun */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DF6875DA67B457A89090F79 /* Build configuration list for PBXNativeTarget "CrazyHenRun" */;
+			buildPhases = (
+				64E1A190EB834B838D9CA943 /* Sources */,
+				C6062B7042CC405EA070A0A5 /* Frameworks */,
+				067052B1EB774E17A3FD2DE9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CrazyHenRun;
+			productName = CrazyHenRun;
+			productReference = BED75D51EA8448A08601B6B0 /* CrazyHenRun.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4F17053589D84AF3A177C594 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+			};
+			buildConfigurationList = A96D3967CDE24ED99BE742A4 /* Build configuration list for PBXProject "CrazyHenRun" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E88578BF158F497699FDA3D6;
+			productRefGroup = 1349864B6982473F96BA44EF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0B9A89A069034AA493735CD4 /* CrazyHenRun */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		067052B1EB774E17A3FD2DE9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAE3C1B17EA24387B9A98F47 /* boot_landscape.webp in Resources */,
+				70F58F6B49DE465E99E6DB28 /* boot_portrait.webp in Resources */,
+				5458E117D2C343B4B03DA11F /* cheer.webp in Resources */,
+				DC4D8680682F45BF9F660C00 /* crest_mark.webp in Resources */,
+				BFFC081990DB45B8B95A0BF9 /* dash.webp in Resources */,
+				D007A3951F59447BA3528DD2 /* inquisitive.webp in Resources */,
+				B6561D4E8F0145CB94652DB9 /* meadow_wash.webp in Resources */,
+				8FAB9A63F395443ABED1E422 /* perch.webp in Resources */,
+				AB39F4DA390D46F1BA563229 /* pullet.webp in Resources */,
+				36E31E685F0A4102BB301F0C /* stride.webp in Resources */,
+				588B823775514A3D85E04B85 /* tutor.webp in Resources */,
+				057AC69F09524A308E534B47 /* veteran.webp in Resources */,
+				5A6567FCA6B34304BAD4CBCA /* henyard_mark.png in Resources */,
+				C3A93745A2344536B31FAD75 /* SpaceGrotesk-Bold.ttf in Resources */,
+				F20808BF1B0F440C8CA3CB02 /* SpaceGrotesk-Light.ttf in Resources */,
+				708C422E706841C1A47AA97F /* SpaceGrotesk-Medium.ttf in Resources */,
+				0DD5FAFD37C9457D9EFC3D12 /* SpaceGrotesk-Regular.ttf in Resources */,
+				1F4A357630E0497C85089FB6 /* SpaceGrotesk-SemiBold.ttf in Resources */,
+				801600089AF34F4F9F9BCCFE /* PrivacyInfo.xcprivacy in Resources */,
+				04D49359AECD4240B4BF1C1A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		64E1A190EB834B838D9CA943 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15202F890236419DA651A73C /* CrazyHenRunApp.swift in Sources */,
+				02855ECE480742EA859CEA94 /* Meadow.swift in Sources */,
+				0DBAEB601A2B4D65A23C6D05 /* SharedViews.swift in Sources */,
+				9FCA8D62CD884CDC8F965E06 /* SnapshotStore.swift in Sources */,
+				3822AA4F1BB9440384AC6520 /* StepSensor.swift in Sources */,
+				409F723C943848BFA26A6343 /* HealthKitSensor.swift in Sources */,
+				D8CA772E4AC140DEBD2B3727 /* Yard.swift in Sources */,
+				BA87BBF2CBDF4562AAF9D7AE /* BootView.swift in Sources */,
+				5576EC00EBC04191AFE80150 /* RootFlow.swift in Sources */,
+				58A61E2194F24E4A910F7AC2 /* WelcomeView.swift in Sources */,
+				3BFD788CDCD647AE9B577167 /* Catalog.swift in Sources */,
+				DB2CE205442E422586A59EBC /* Models.swift in Sources */,
+				7108664212F5460F8C91B2E3 /* LiveRun.swift in Sources */,
+				4C34A94F48274A6693D09618 /* RunHub.swift in Sources */,
+				540BB602624C4C58AA8F38AD /* RunMore.swift in Sources */,
+				01458192D7354ADC8C2F475A /* StatsView.swift in Sources */,
+				047F1A01B37447BE92212519 /* HabitFlow.swift in Sources */,
+				DAFA99EEE934491EB8C7E4C3 /* JournalCalendar.swift in Sources */,
+				0DD50C466397408DACEB7D61 /* TodayView.swift in Sources */,
+				1F2500A575BB4E7DB2525B2C /* YardView.swift in Sources */,
+				583CEA9356AA49DA8F28E623 /* ProfileView.swift in Sources */,
+				6C7A75A1D1B04B8EAD1C1538 /* SettingsView.swift in Sources */,
+				076FCD74EB374F94B7969510 /* WebSheet.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4B118F4AF5EA42BEA958712E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6C1B66A6A2674B2095CE2820 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AD736054B2DB4584A726FA90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGN_ENTITLEMENTS = CrazyHenRun.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				DEVELOPMENT_TEAM = SP5WD556PA;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Crazy Hen Run";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crazyhenrun.crazyhenrungame;
+				PRODUCT_NAME = CrazyHenRun;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E78B0069852F4C16AD38CBBB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGN_ENTITLEMENTS = CrazyHenRun.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				DEVELOPMENT_TEAM = SP5WD556PA;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Crazy Hen Run";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crazyhenrun.crazyhenrungame;
+				PRODUCT_NAME = CrazyHenRun;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6DF6875DA67B457A89090F79 /* Build configuration list for PBXNativeTarget "CrazyHenRun" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E78B0069852F4C16AD38CBBB /* Debug */,
+				AD736054B2DB4584A726FA90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A96D3967CDE24ED99BE742A4 /* Build configuration list for PBXProject "CrazyHenRun" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C1B66A6A2674B2095CE2820 /* Debug */,
+				4B118F4AF5EA42BEA958712E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4F17053589D84AF3A177C594 /* Project object */;
+}
