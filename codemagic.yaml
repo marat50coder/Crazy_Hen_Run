@@ -1,18 +1,20 @@
 workflows:
   ios-release:
-    name: iOS Release → App Store
+    name: iOS Release → App Store Connect
     max_build_duration: 60
     instance_type: mac_mini_m2
 
+    # Must match the App Store Connect API key name in
+    # Codemagic → Team settings → Integrations → Developer Portal.
     integrations:
-      app_store_connect: Crazy Hen Run Codemagic
+      app_store_connect: CodeMagic
 
     environment:
       xcode: latest
       vars:
         BUNDLE_ID: com.crazyhenrun.crazyhenrungame
         APP_STORE_APPLE_ID: "6790464294"
-        APPLE_TEAM_ID: "SP5WD556PA"
+        APPLE_TEAM_ID: SP5WD556PA
         XCODE_PROJECT: CrazyHenRun.xcodeproj
         XCODE_SCHEME: CrazyHenRun
 
@@ -24,29 +26,43 @@ workflows:
           include: true
 
     scripts:
-      - name: Code signing & Build IPA
+      - name: Set up signing
         script: |
+          set -euo pipefail
           keychain initialize
+          # Create/refresh App Store cert + profile via the CodeMagic API key
+          # if they are not already stored under Code signing identities.
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --platform IOS \
             --create
           keychain add-certificates
-          xcode-project use-profiles
+          # stripSwiftSymbols is the closest thing to obfuscation on native
+          # Swift: Release binary is optimized and Swift symbols are stripped
+          # from the IPA. dSYMs stay uploaded for crash reports.
+          xcode-project use-profiles \
+            --custom-export-options='{"stripSwiftSymbols": true, "uploadSymbols": true}'
+
+      - name: Build Release IPA
+        script: |
+          set -euo pipefail
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME"
+            --scheme "$XCODE_SCHEME" \
+            --config Release \
+            --archive-xcargs "SWIFT_OPTIMIZATION_LEVEL=-O SWIFT_COMPILATION_MODE=wholemodule STRIP_SWIFT_SYMBOLS=YES STRIP_INSTALLED_PRODUCT=YES DEPLOYMENT_POSTPROCESSING=YES COPY_PHASE_STRIP=YES DEAD_CODE_STRIPPING=YES COMPILER_INDEX_STORE_ENABLE=NO"
 
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
+      - build/ios/xcarchive/*.xcarchive/dSYMs/*.dSYM
 
     publishing:
       app_store_connect:
         auth: integration
-        # Every build lands in TestFlight automatically once it's uploaded.
+        # Uploads the IPA to App Store Connect and submits it to TestFlight.
         submit_to_testflight: true
-        # Flip to true only after an App Store version with metadata,
-        # screenshots and age rating is prepared in App Store Connect —
-        # see the Codemagic guide for the exact order of steps.
+        # Set to true only after version 1.0.4 exists in App Store Connect
+        # with screenshots, description and age rating filled in — then
+        # every successful build is also sent for App Store review.
         submit_to_app_store: false
